@@ -1,0 +1,13 @@
+html {
+  margin: 0 auto;
+}
+
+body {
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container { 
+  max-width: 960px;
+}
