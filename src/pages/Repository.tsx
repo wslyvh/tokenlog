@@ -1,16 +1,24 @@
+import { IssueList } from 'components/IssueList';
+import { RepositoryInfo } from 'components/RepositoryInfo';
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export default function Repository() {
   const { org, repo } = useParams();
-  console.log(org, repo);
 
   return (
     <>
       <div>
-        <h2>
-          {repo} <small>{org}</small>
-        </h2>
+        <h2>{repo}</h2>
+        <h3>
+          <small>
+            <Link to={`/${org}`}>{org}</Link>
+          </small>
+        </h3>
+
+        <RepositoryInfo organization={org} repository={repo} />
+
+        <IssueList organization={org} repository={repo} />
       </div>
     </>
   );

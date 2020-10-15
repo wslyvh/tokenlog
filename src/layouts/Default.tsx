@@ -4,6 +4,7 @@ import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 const Home = lazy(() => import('pages/Home'));
+const Organization = lazy(() => import('pages/Organization'));
 const Repository = lazy(() => import('pages/Repository'));
 
 export function Default() {
@@ -18,7 +19,10 @@ export function Default() {
               <Route exact path="/">
                 <Home />
               </Route>
-              <Route path="/:org/:repo">
+              <Route exact path="/:org">
+                <Organization />
+              </Route>
+              <Route exact path="/:org/:repo">
                 <Repository />
               </Route>
               <Redirect to="/" />
