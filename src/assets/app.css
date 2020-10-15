@@ -1,3 +1,6 @@
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+@import url('https://unpkg.com/shards-ui@latest/dist/css/shards.min.css');
+
 html {
   margin: 0 auto;
 }
@@ -9,5 +12,5 @@ body {
 }
 
 .container { 
-  max-width: 960px;
+  max-width: 768px;
 }
