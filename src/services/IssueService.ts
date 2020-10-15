@@ -1,13 +1,15 @@
 import { Octokit } from '@octokit/rest';
 import { Repository } from 'types/Repository';
 import { Owner } from 'types/Owner';
-import { Issue } from 'types/Issue';
+import { Issue, IssueState } from 'types/Issue';
 import { Label } from 'types/Label';
 
 export default {
   GetRepositories,
   GetRepository,
+  GetRepositoryLabels,
   GetRepositoryIssues,
+  GetIssue
 };
 
 async function GetRepositories(owner: string): Promise<Array<Repository>> {
@@ -26,12 +28,28 @@ async function GetRepository(owner: string, repo: string): Promise<Repository> {
   return toRepository(result.data);
 }
 
-async function GetRepositoryIssues(owner: string, repo: string): Promise<Array<Issue>> {
+async function GetRepositoryLabels(owner: string, repo: string): Promise<Array<Label>> {
   const octokit = new Octokit();
-  const result = await octokit.issues.listForRepo({ owner, repo });
+  const result = await octokit.issues.listLabelsForRepo({ owner, repo });
+  if (result.status !== 200) throw new Error("Couldn't retrieve repository labels");
+
+  return Array.from(result.data).map((i) => toLabel(i));
+}
+
+async function GetRepositoryIssues(owner: string, repo: string, state: IssueState = IssueState.OPEN): Promise<Array<Issue>> {
+  const octokit = new Octokit();
+  const result = await octokit.issues.listForRepo({ owner, repo, state });
   if (result.status !== 200) throw new Error("Couldn't retrieve repository issues");
 
   return Array.from(result.data).map((i) => toIssue(i));
+}
+
+async function GetIssue(owner: string, repo: string, number: number): Promise<Issue> {
+  const octokit = new Octokit();
+  const result = await octokit.issues.get({ owner, repo, issue_number: number});
+  if (result.status !== 200) throw new Error("Couldn't retrieve issue");
+
+  return toIssue(result.data);
 }
 
 function toRepository(source: any): Repository {
@@ -42,6 +60,7 @@ function toRepository(source: any): Repository {
     description: source.description,
     owner: toOwner(source.owner),
     url: source.name,
+    homepage: source.homepage,
     stargazersCount: source.stargazers_count,
     watchersCount: source.watchers_count,
     forksCount: source.forks_count,
@@ -55,6 +74,7 @@ function toOwner(source: any): Owner {
     name: source.login,
     type: source.type,
     url: source.url,
+    avatarUrl: source.avatar_url
   } as Owner;
 }
 
