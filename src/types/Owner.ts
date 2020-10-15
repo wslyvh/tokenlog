@@ -1,6 +1,6 @@
 export enum OwnerType {
   USER = 'User',
-  ORGANIZATION = 'Organization'
+  ORGANIZATION = 'Organization',
 }
 
 export interface Owner {

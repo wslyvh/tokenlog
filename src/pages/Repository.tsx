@@ -16,6 +16,8 @@ export default function Repository() {
           </small>
         </h3>
 
+        <Link to={`/${org}/${repo}/settings`}>settings</Link>
+
         <RepositoryInfo organization={org} repository={repo} />
 
         <IssueList organization={org} repository={repo} />

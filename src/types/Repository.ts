@@ -4,7 +4,7 @@ export interface Repository {
   id: number;
   name: string;
   fullName: string;
-  description: string; // enum or list
+  description: string;
   owner: Owner;
   url: string;
   homepage: string;

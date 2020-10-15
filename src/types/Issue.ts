@@ -1,10 +1,10 @@
 import { Label } from './Label';
 import { Owner } from './Owner';
 
-export enum IssueState { 
+export enum IssueState {
   ALL = 'all',
   OPEN = 'open',
-  CLOSED = 'closed'
+  CLOSED = 'closed',
 }
 
 export interface Issue {
