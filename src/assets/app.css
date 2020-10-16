@@ -1,5 +1,6 @@
 @import url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
 @import url('https://unpkg.com/shards-ui@latest/dist/css/shards.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
 
 html {
   margin: 0 auto;

@@ -1,3 +1,4 @@
+import { IconLink } from 'components/IconLink';
 import React, { useEffect, useState } from 'react';
 import IssueService from 'services/IssueService';
 import { Repository } from 'types/Repository';
@@ -13,7 +14,7 @@ export function RepositoryInfo(props: RepositoryInfoProps) {
   useEffect(() => {
     async function asyncEffect() {
       const data = await IssueService.GetRepository(props.organization, props.repository);
-
+      
       setRepository(data);
     }
 
@@ -24,5 +25,10 @@ export function RepositoryInfo(props: RepositoryInfoProps) {
     return <></>;
   }
 
-  return <div>{repository.description}</div>;
+  return (
+    <div>
+      <IconLink url={repository.url} icon="fab fa-github" external={true} />
+      <p>{repository.description}</p>
+    </div>
+  );
 }

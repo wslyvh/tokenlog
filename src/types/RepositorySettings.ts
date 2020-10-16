@@ -1,12 +1,15 @@
 import { Label } from './Label';
 
+export enum Method {
+  STANDARD = 'Standard voting',
+  QUADRATIC = 'Quadratic voting',
+  STAKING = 'Staking',
+}
+
 export interface RepositorySettings {
-  id?: number;
   org: string;
   repo: string;
-  owner: string;
   tokenAddress: string;
   labels: Array<Label>;
-  method: string;
-  timePeriod: number;
+  method: Method;
 }

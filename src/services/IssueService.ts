@@ -67,7 +67,7 @@ function toRepository(source: any): Repository {
     fullName: source.full_name,
     description: source.description,
     owner: toOwner(source.owner),
-    url: source.name,
+    url: source.html_url,
     homepage: source.homepage,
     stargazersCount: source.stargazers_count,
     watchersCount: source.watchers_count,
@@ -81,7 +81,7 @@ function toOwner(source: any): Owner {
     id: source.id,
     name: source.login,
     type: source.type,
-    url: source.url,
+    url: source.html_url,
     avatarUrl: source.avatar_url,
   } as Owner;
 }
@@ -97,7 +97,7 @@ function toIssue(source: any): Issue {
     assignees: Array.from(source.assignees).map((i) => toOwner(i)),
     created: new Date(source.created_at),
     updated: new Date(source.updated_at),
-    url: source.url,
+    url: source.html_url,
   } as Issue;
 }
 

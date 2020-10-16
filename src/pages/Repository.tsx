@@ -1,3 +1,4 @@
+import { IconLink } from 'components/IconLink';
 import { IssueList } from 'components/IssueList';
 import { RepositoryInfo } from 'components/RepositoryInfo';
 import React from 'react';
@@ -16,7 +17,7 @@ export default function Repository() {
           </small>
         </h3>
 
-        <Link to={`/${org}/${repo}/settings`}>settings</Link>
+        <IconLink url={`/${org}/${repo}/settings`} icon="fas fa-cog" />
 
         <RepositoryInfo organization={org} repository={repo} />
 
