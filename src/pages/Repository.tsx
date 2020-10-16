@@ -1,8 +1,8 @@
-import { IconLink } from 'components/IconLink';
 import { IssueList } from 'components/IssueList';
 import { RepositoryInfo } from 'components/RepositoryInfo';
+import { TokenInfo } from 'components/TokenInfo';
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 export default function Repository() {
   const { org, repo } = useParams();
@@ -10,16 +10,11 @@ export default function Repository() {
   return (
     <>
       <div>
-        <h2>{repo}</h2>
-        <h3>
-          <small>
-            <Link to={`/${org}`}>{org}</Link>
-          </small>
-        </h3>
+        <div className="card-deck">
+          <RepositoryInfo organization={org} repository={repo} />
 
-        <IconLink url={`/${org}/${repo}/settings`} icon="fas fa-cog" />
-
-        <RepositoryInfo organization={org} repository={repo} />
+          <TokenInfo organization={org} repository={repo} />
+        </div>
 
         <IssueList organization={org} repository={repo} />
       </div>

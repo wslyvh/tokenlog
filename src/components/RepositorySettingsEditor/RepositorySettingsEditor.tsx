@@ -38,7 +38,6 @@ export function RepositorySettingsEditor(props: RepositorySettingsEditorProps) {
   useEffect(() => {
     async function asyncEffect() {
       if (repositorySettings.tokenAddress && isValidAddress(repositorySettings.tokenAddress)) {
-
         const token = await VotingService.GetTokenInfo(repositorySettings.tokenAddress);
         setToken(token);
       }
