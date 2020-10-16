@@ -1,3 +1,4 @@
+import { IssueCard } from 'components/IssueCard/IssueCard';
 import React, { useEffect, useState } from 'react';
 import IssueService from 'services/IssueService';
 import { Issue } from 'types/Issue';
@@ -23,15 +24,11 @@ export function IssueList(props: IssueListProps) {
   return (
     <div>
       <h4>Open issues</h4>
-      <ul className="list-group">
+      <div>
         {issues.map((i: Issue) => {
-          return (
-            <li key={i.id}>
-              #{i.number} {i.title}{' '}
-            </li>
-          );
+          return <IssueCard key={i.id} issue={i} />;
         })}
-      </ul>
+      </div>
     </div>
   );
 }

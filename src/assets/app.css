@@ -16,3 +16,16 @@ body {
   max-width: 768px;
   margin-top: 20px;
 }
+
+.counter {
+  margin: auto;
+  padding: 10px;
+}
+
+.counter-card { 
+  margin: auto;
+  max-width: 50%;
+  text-align: center;
+  padding: 10px;
+  transform: rotate(0);
+}

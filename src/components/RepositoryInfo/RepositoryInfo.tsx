@@ -14,7 +14,7 @@ export function RepositoryInfo(props: RepositoryInfoProps) {
   useEffect(() => {
     async function asyncEffect() {
       const data = await IssueService.GetRepository(props.organization, props.repository);
-      
+
       setRepository(data);
     }
 

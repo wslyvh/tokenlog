@@ -1,0 +1,1 @@
+export { LabelBadges } from './LabelBadges';
