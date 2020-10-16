@@ -119,7 +119,7 @@ function toIssue(source: any): Issue {
     created: new Date(source.created_at),
     updated: new Date(source.updated_at),
     url: source.html_url,
-    commentsCount: source.comments
+    commentsCount: source.comments,
   } as Issue;
 }
 

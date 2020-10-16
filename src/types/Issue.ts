@@ -9,7 +9,7 @@ export enum IssueState {
 
 export enum IssueType {
   ISSUE = 'issue',
-  PR = 'pr'
+  PR = 'pr',
 }
 
 export interface Issue {

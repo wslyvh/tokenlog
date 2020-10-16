@@ -8,8 +8,8 @@ export function TimeFromNow(date: Date): string {
 export function IssueColor(type: IssueType): string {
   switch (type) {
     case IssueType.ISSUE:
-      return '#28a745'
+      return '#28a745';
     case IssueType.PR:
-      return '#6f42c1'
+      return '#6f42c1';
   }
 }

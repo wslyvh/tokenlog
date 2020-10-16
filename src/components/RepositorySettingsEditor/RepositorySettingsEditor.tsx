@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import IssueService from 'services/IssueService';
+import VotingService from 'services/VotingService';
 import { Label } from 'types/Label';
 import { RepositorySettings } from 'types/RepositorySettings';
+import { Token } from 'types/Token';
+import { isValidAddress } from 'utils/web3';
 
 interface RepositorySettingsEditorProps {
   organization: string;
@@ -10,6 +13,7 @@ interface RepositorySettingsEditorProps {
 
 export function RepositorySettingsEditor(props: RepositorySettingsEditorProps) {
   const [labels, setLabels] = useState<Array<Label>>([]);
+  const [token, setToken] = useState<Token | undefined>();
   const [repositorySettings, setRepositorySettings] = useState<RepositorySettings>({
     org: props.organization,
     repo: props.repository,
@@ -30,6 +34,18 @@ export function RepositorySettingsEditor(props: RepositorySettingsEditorProps) {
 
     getRepository();
   }, [props]);
+
+  useEffect(() => {
+    async function asyncEffect() {
+      if (repositorySettings.tokenAddress && isValidAddress(repositorySettings.tokenAddress)) {
+
+        const token = await VotingService.GetTokenInfo(repositorySettings.tokenAddress);
+        setToken(token);
+      }
+    }
+
+    asyncEffect();
+  }, [repositorySettings.tokenAddress]);
 
   function onChange(type: string, value: any) {
     if (type === 'tokenAddress') {
@@ -73,11 +89,17 @@ export function RepositorySettingsEditor(props: RepositorySettingsEditorProps) {
           value={repositorySettings.tokenAddress}
           onChange={(e) => onChange('tokenAddress', e.target.value)}
         />
+
+        {token && (
+          <div className="alert alert-light my-3" role="alert">
+            This token address belongs to {token.name} ({token.symbol})
+          </div>
+        )}
       </div>
 
       <div className="form-group">
         <label htmlFor="labels">Labels</label>
-        <select 
+        <select
           value={repositorySettings.labels}
           multiple
           size={10}
