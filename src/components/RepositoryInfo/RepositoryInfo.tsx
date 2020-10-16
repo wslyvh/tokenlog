@@ -24,7 +24,7 @@ export function RepositoryInfo(props: RepositoryInfoProps) {
   }, [props]);
 
   if (!repository) {
-    return <></>
+    return <></>;
   }
 
   return (

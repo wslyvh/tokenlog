@@ -14,7 +14,7 @@ export function IssueColor(type: IssueType): string {
   }
 }
 
-export function ShortenAddress(address: string, substring: number = 5): string { 
+export function ShortenAddress(address: string, substring: number = 5): string {
   const begin = address.substring(0, substring);
   const end = address.substring(address.length - substring, address.length);
   const formatted = `${begin}...${end}`;

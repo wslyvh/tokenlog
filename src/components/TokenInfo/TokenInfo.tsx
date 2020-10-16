@@ -35,20 +35,26 @@ export function TokenInfo(props: TokenInfoProps) {
   if (!token) {
     return (
       <div className="card">
-      <div className="card-body">
-        <h5 className="card-title">Configure</h5>
-        <h6 className="card-subtitle my-1 text-muted">&nbsp;</h6>
-        <p className="card-text text-truncate">This repository is not configured yet</p>
-        <IconLink url={`/${props.organization}/${props.repository}/settings`} icon="fas fa-cog" linkClass={'card-link'} />
+        <div className="card-body">
+          <h5 className="card-title">Configure</h5>
+          <h6 className="card-subtitle my-1 text-muted">&nbsp;</h6>
+          <p className="card-text text-truncate">This repository is not configured yet</p>
+          <IconLink
+            url={`/${props.organization}/${props.repository}/settings`}
+            icon="fas fa-cog"
+            linkClass={'card-link'}
+          />
+        </div>
       </div>
-    </div>
-    )
+    );
   }
 
   return (
     <div className="card">
       <div className="card-body">
-        <h5 className="card-title">{token.name} ({token.symbol})</h5>
+        <h5 className="card-title">
+          {token.name} ({token.symbol})
+        </h5>
         <h6 className="card-subtitle my-1 text-muted">
           <a href={`https://etherscan.io/token/${token.address}`}>{ShortenAddress(token.address, 12)}</a>
         </h6>
