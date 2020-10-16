@@ -12,7 +12,7 @@ export function IssueCard(props: IssueCardProps) {
   }
 
   return (
-    <div className="card mb-3">
+    <div className={'card mb-3 issue-card ' + props.issue.type}>
       <div className="row no-gutters">
         <div className="col-md-2 counter">
           <div className="counter-card border rounded">

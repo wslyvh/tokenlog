@@ -7,15 +7,22 @@ export enum IssueState {
   CLOSED = 'closed',
 }
 
+export enum IssueType {
+  ISSUE = 'issue',
+  PR = 'pr'
+}
+
 export interface Issue {
   id: number;
   number: number;
   title: string;
   description: string;
   state: IssueState;
+  type: IssueType;
   labels: Array<Label>;
   assignees: Array<Owner>;
   created: Date;
   updated: Date;
   url: string;
+  commentsCount: number;
 }

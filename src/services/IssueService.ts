@@ -1,7 +1,7 @@
 import { Octokit } from '@octokit/rest';
 import { Repository } from 'types/Repository';
 import { Owner } from 'types/Owner';
-import { Issue, IssueState } from 'types/Issue';
+import { Issue, IssueState, IssueType } from 'types/Issue';
 import { Label } from 'types/Label';
 import { RepositorySettings } from 'types/RepositorySettings';
 import CompoundConfig from 'config/compound-finance.json';
@@ -42,10 +42,13 @@ async function GetRepositoryLabels(owner: string, repo: string): Promise<Array<L
 async function GetRepositoryIssues(
   owner: string,
   repo: string,
-  state: IssueState = IssueState.OPEN
+  state: IssueState = IssueState.OPEN,
+  labels: string = '',
+  limit: number = 20,
+  page: number = 1
 ): Promise<Array<Issue>> {
   const octokit = new Octokit();
-  const result = await octokit.issues.listForRepo({ owner, repo, state });
+  const result = await octokit.issues.listForRepo({ owner, repo, state, labels, per_page: limit, page });
   if (result.status !== 200) throw new Error("Couldn't retrieve repository issues");
 
   return Array.from(result.data).map((i) => toIssue(i));
@@ -110,11 +113,13 @@ function toIssue(source: any): Issue {
     title: source.title,
     description: source.body,
     state: source.state,
+    type: source.pull_request ? IssueType.PR : IssueType.ISSUE,
     labels: Array.from(source.labels).map((i) => toLabel(i)),
     assignees: Array.from(source.assignees).map((i) => toOwner(i)),
     created: new Date(source.created_at),
     updated: new Date(source.updated_at),
     url: source.html_url,
+    commentsCount: source.comments
   } as Issue;
 }
 

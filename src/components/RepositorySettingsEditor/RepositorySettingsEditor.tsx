@@ -76,8 +76,8 @@ export function RepositorySettingsEditor(props: RepositorySettingsEditorProps) {
       </div>
 
       <div className="form-group">
-        <label htmlFor="labels">Example multiple select</label>
-        <select
+        <label htmlFor="labels">Labels</label>
+        <select 
           value={repositorySettings.labels}
           multiple
           size={10}
