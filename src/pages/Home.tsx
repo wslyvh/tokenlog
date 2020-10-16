@@ -16,6 +16,9 @@ export default function Home() {
           <li>
             <Link to={'/compound-finance/compound-protocol'}>compound-finance/compound-protocol</Link>
           </li>
+          <li>
+            <Link to={'/wslyvh/tokenlog'}>wslyvh/tokenlog</Link>
+          </li>
         </ul>
       </div>
     </>

@@ -4,6 +4,7 @@ import { Owner } from 'types/Owner';
 import { Issue, IssueState } from 'types/Issue';
 import { Label } from 'types/Label';
 import { RepositorySettings } from 'types/RepositorySettings';
+import CompoundConfig from 'config/compound-finance.json';
 
 export default {
   GetRepositories,
@@ -11,7 +12,7 @@ export default {
   GetRepositoryLabels,
   GetRepositoryIssues,
   GetIssue,
-  SaveRepositorySettings,
+  GetRepositorySettings,
 };
 
 async function GetRepositories(owner: string): Promise<Array<Repository>> {
@@ -58,7 +59,23 @@ async function GetIssue(owner: string, repo: string, number: number): Promise<Is
   return toIssue(result.data);
 }
 
-async function SaveRepositorySettings(settings: RepositorySettings): Promise<void> {}
+async function GetRepositorySettings(owner: string, repo: string): Promise<RepositorySettings | undefined> {
+  if (owner === 'compound-finance' && repo === 'compound-protocol') {
+    return CompoundConfig;
+  }
+
+  try {
+    const octokit = new Octokit();
+    const result = await octokit.repos.getContent({ owner, repo, path: 'tokenlog.json' });
+    if (result.status !== 200) throw new Error("Couldn't retrieve tokenlog config");
+
+    const content = Buffer.from(result.data.content, 'base64').toString();
+
+    return JSON.parse(content) as RepositorySettings;
+  } catch {
+    console.error("Couldn't retrieve tokenlog config. The file likely doesn't exist at the requested repository.");
+  }
+}
 
 function toRepository(source: any): Repository {
   return {

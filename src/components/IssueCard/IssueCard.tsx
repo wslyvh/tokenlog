@@ -7,9 +7,8 @@ interface IssueCardProps {
 }
 
 export function IssueCard(props: IssueCardProps) {
-
   function onVote() {
-    console.log("VOTE on", props.issue.title);
+    console.log('VOTE on', props.issue.title);
   }
 
   return (
