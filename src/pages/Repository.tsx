@@ -12,7 +12,6 @@ export default function Repository() {
       <div>
         <div className="card-deck">
           <RepositoryInfo organization={org} repository={repo} />
-
           <TokenInfo organization={org} repository={repo} />
         </div>
 

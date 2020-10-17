@@ -1,9 +1,10 @@
+import { useWeb3React } from '@web3-react/core';
 import { IconLink } from 'components/IconLink';
 import React, { useEffect, useState } from 'react';
 import IssueService from 'services/IssueService';
 import VotingService from 'services/VotingService';
 import { Token } from 'types/Token';
-import { ShortenAddress } from 'utils/format';
+import { Percentage, ShortenAddress } from 'utils/format';
 
 interface TokenInfoProps {
   organization: string;
@@ -12,7 +13,9 @@ interface TokenInfoProps {
 }
 
 export function TokenInfo(props: TokenInfoProps) {
+  const web3React = useWeb3React();
   const [token, setToken] = useState<Token>();
+  const [balance, setBalance] = useState<number>();
 
   useEffect(() => {
     async function asyncEffect() {
@@ -32,6 +35,20 @@ export function TokenInfo(props: TokenInfoProps) {
     asyncEffect();
   }, [props]);
 
+  useEffect(() => {
+    async function asyncEffect() {
+      if (token?.address && web3React.account) {
+        const balance = await VotingService.GetTokenBalance(token.address, web3React.account);
+
+        if (balance) {
+          setBalance(balance);
+        }
+      }
+    }
+
+    asyncEffect();
+  }, [token, web3React.account]);
+
   if (!token) {
     return (
       <div className="card">
@@ -49,6 +66,12 @@ export function TokenInfo(props: TokenInfoProps) {
     );
   }
 
+  const renderBalance = balance ? (
+    balance.toFixed(2) + ' votes (' + Percentage(balance, token.totalSupply) + '%)'
+  ) : (
+    <small>No voting power</small>
+  );
+
   return (
     <div className="card">
       <div className="card-body">
@@ -58,7 +81,7 @@ export function TokenInfo(props: TokenInfoProps) {
         <h6 className="card-subtitle my-1 text-muted">
           <a href={`https://etherscan.io/token/${token.address}`}>{ShortenAddress(token.address, 12)}</a>
         </h6>
-        <p className="card-text text-truncate">{token.description}</p>
+        <p className="card-text text-truncate">{renderBalance}</p>
         <IconLink
           url={`/${props.organization}/${props.repository}/settings`}
           icon="fas fa-cog"

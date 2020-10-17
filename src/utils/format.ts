@@ -21,3 +21,7 @@ export function ShortenAddress(address: string, substring: number = 5): string {
 
   return formatted;
 }
+
+export function Percentage(share: number, total: number, precision: number = 2) {
+  return ((share / total) * 100).toFixed(precision);
+}
