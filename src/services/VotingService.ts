@@ -1,13 +1,26 @@
 import axios from 'axios';
+import mongoose from 'mongoose';
 import { AppConfig } from 'config/App';
 import { ethers } from 'ethers';
 import { Token } from 'types/Token';
+import { Vote } from 'types/Vote';
 import { ERC20_READ } from 'utils/abi';
 import { isValidAddress } from 'utils/web3';
+import VoteModel from 'data/models/VoteModel';
+import { DbConfig } from 'config/Db';
+
+const dbOptions = {
+  useNewUrlParser: true,
+  useFindAndModify: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+};
 
 export default {
   GetTokenInfo,
   GetTokenBalance,
+  CreateVote,
+  GetVotes,
 };
 
 async function GetTokenInfo(address: string): Promise<Token | undefined> {
@@ -41,6 +54,32 @@ async function GetTokenBalance(tokenAddress: string, address: string): Promise<n
   } catch {
     console.error("Couldn't retrieve token balance");
   }
+}
+
+async function CreateVote(vote: Vote): Promise<Vote | undefined> {
+  try {
+    await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+
+    return await VoteModel.create(vote);
+  } catch (ex) {
+    console.error(ex);
+  } finally {
+    await mongoose.disconnect();
+  }
+}
+
+async function GetVotes(org: string, repo: string): Promise<Array<Vote>> {
+  try {
+    await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+
+    return await VoteModel.find({ org: org, repo: repo });
+  } catch (ex) {
+    console.error(ex);
+  } finally {
+    await mongoose.disconnect();
+  }
+
+  return [];
 }
 
 function toToken(source: any): Token {

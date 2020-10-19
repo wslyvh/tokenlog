@@ -4,10 +4,11 @@ import VotingService from 'services/VotingService';
 export async function handler(event: APIGatewayEvent, context: Context) {
   if (event.httpMethod !== 'GET') return { statusCode: 405, body: 'Method Not Allowed' };
 
-  const address = event.queryStringParameters?.address ?? '';
-  if (!address) return { statusCode: 400, body: 'Bad Request' };
+  const org = event.queryStringParameters?.org ?? '';
+  const repo = event.queryStringParameters?.repo ?? '';
+  if (!org || !repo) return { statusCode: 400, body: 'Bad Request' };
 
-  const data = await VotingService.GetTokenInfo(address);
+  const data = await VotingService.GetVotes(org, repo);
 
   return {
     statusCode: 200,
