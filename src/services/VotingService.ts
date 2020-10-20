@@ -16,7 +16,7 @@ async function GetTokenInfo(address: string): Promise<Token | undefined> {
   if (!isValidAddress(address)) return;
 
   try {
-    const result = await axios.get(`/.netlify/functions/tokeninfo?address=${address}`);
+    const result = await axios.get(`/.netlify/functions/token?address=${address}`);
     if (result.status !== 200) throw new Error("Couldn't retrieve token info");
 
     return result.data;
