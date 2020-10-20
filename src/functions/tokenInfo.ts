@@ -1,5 +1,5 @@
 import { Context, APIGatewayEvent } from 'aws-lambda';
-import VotingService from 'services/VotingService';
+import TokenRepository from 'data/TokenRepository';
 
 export async function handler(event: APIGatewayEvent, context: Context) {
   if (event.httpMethod !== 'GET') return { statusCode: 405, body: 'Method Not Allowed' };
@@ -7,7 +7,8 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   const address = event.queryStringParameters?.address ?? '';
   if (!address) return { statusCode: 400, body: 'Bad Request' };
 
-  const data = await VotingService.GetTokenInfo(address);
+  const repository = new TokenRepository();
+  const data = await repository.GetTokenInfo(address);
 
   return {
     statusCode: 200,

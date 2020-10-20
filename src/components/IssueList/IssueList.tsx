@@ -1,32 +1,31 @@
 import { IssueCard } from 'components/IssueCard/IssueCard';
+import { useRepositoryContext } from 'context/RepoContext';
 import React, { useEffect, useState } from 'react';
 import IssueService from 'services/IssueService';
 import { Issue } from 'types/Issue';
 
-interface IssueListProps {
-  organization: string;
-  repository: string;
-}
-
-export function IssueList(props: IssueListProps) {
+export function IssueList() {
+  const context = useRepositoryContext();
   const [issues, setIssues] = useState<Array<Issue>>([]);
 
   useEffect(() => {
     async function asyncEffect() {
-      const data = await IssueService.GetRepositoryIssues(props.organization, props.repository);
+      if (context.repository?.owner?.name && context.repository.name) {
+        const data = await IssueService.GetRepositoryIssues(context.repository?.owner?.name, context.repository.name);
 
-      setIssues(data);
+        setIssues(data);
+      }
     }
 
     asyncEffect();
-  }, [props]);
+  }, [context.repository]);
 
   return (
     <div>
       <h4>Open issues</h4>
       <div>
         {issues.map((i: Issue) => {
-          return <IssueCard organization={props.organization} repository={props.repository} key={i.id} issue={i} />;
+          return <IssueCard key={i.id} issue={i} />;
         })}
       </div>
     </div>

@@ -71,21 +71,27 @@ async function GetIssue(owner: string, repo: string, number: number, includeVote
 }
 
 async function GetRepositorySettings(owner: string, repo: string): Promise<RepositorySettings | undefined> {
+  let settings: RepositorySettings | undefined = undefined;
   if (owner === 'compound-finance' && repo === 'compound-protocol') {
-    return CompoundConfig;
+    settings = CompoundConfig;
+  } else {
+    try {
+      const octokit = new Octokit();
+      const result = await octokit.repos.getContent({ owner, repo, path: 'tokenlog.json' });
+      if (result.status !== 200) throw new Error("Couldn't retrieve tokenlog config");
+
+      const content = Buffer.from(result.data.content, 'base64').toString();
+      settings = JSON.parse(content) as RepositorySettings;
+    } catch {
+      console.error("Couldn't retrieve tokenlog config. The file likely doesn't exist at the requested repository.");
+    }
   }
 
-  try {
-    const octokit = new Octokit();
-    const result = await octokit.repos.getContent({ owner, repo, path: 'tokenlog.json' });
-    if (result.status !== 200) throw new Error("Couldn't retrieve tokenlog config");
-
-    const content = Buffer.from(result.data.content, 'base64').toString();
-
-    return JSON.parse(content) as RepositorySettings;
-  } catch {
-    console.error("Couldn't retrieve tokenlog config. The file likely doesn't exist at the requested repository.");
+  if (settings) {
+    settings.token = await VotingService.GetTokenInfo(settings.tokenAddress);
   }
+
+  return settings;
 }
 
 function toRepository(source: any): Repository {

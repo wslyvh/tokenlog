@@ -1,41 +1,40 @@
 import { useWeb3React } from '@web3-react/core';
+import { useRepositoryContext } from 'context/RepoContext';
 import React, { useEffect, useState } from 'react';
 import VotingService from 'services/VotingService';
 import { Issue } from 'types/Issue';
 import { Vote } from 'types/Vote';
 
 interface VotingCardProps {
-  organization: string;
-  repository: string;
   issue: Issue;
 }
 
 export function VotingCard(props: VotingCardProps) {
-  const context = useWeb3React();
+  const web3Context = useWeb3React();
+  const repoContext = useRepositoryContext();
   const [signer, setSigner] = useState<any>();
   const [priority, setPriority] = useState(props.issue.voteCount);
   const [amount, setAmount] = useState(0);
 
   useEffect(() => {
     async function asyncEffect() {
-      const signer = context.library?.getSigner();
-      if (context.account && signer) {
+      const signer = web3Context.library?.getSigner();
+      if (web3Context.account && signer) {
         setSigner(signer);
       }
     }
 
     asyncEffect();
-  }, [context.account, context.library]);
+  }, [web3Context.account, web3Context.library]);
 
   async function castVote(votes: number) {
-    // check if Signer is available
     // check if user has right tokens / allowed to vote
-
     // cost to vote = (nr of votes).pow(2)
+
     if (signer) {
       const signingMessage = {
-        org: props.organization,
-        repo: props.repository,
+        org: repoContext.repository?.owner.name,
+        repo: repoContext.repository?.name,
         number: props.issue.number,
         amount: votes,
         timestamp: new Date(),
@@ -46,7 +45,7 @@ export function VotingCard(props: VotingCardProps) {
       if (result) {
         const vote = {
           ...signingMessage,
-          address: context.account,
+          address: web3Context.account,
           signature: result,
         } as Vote;
 

@@ -1,3 +1,5 @@
+import { Token } from './Token';
+
 export enum Method {
   STANDARD = 'Standard voting',
   QUADRATIC = 'Quadratic voting',
@@ -9,4 +11,5 @@ export interface RepositorySettings {
   repo: string;
   tokenAddress: string;
   labels: Array<string>;
+  token?: Token;
 }
