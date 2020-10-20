@@ -1,5 +1,5 @@
 import { Context, APIGatewayEvent } from 'aws-lambda';
-import VotingService from 'services/VotingService';
+import VoteRepository from 'data/VoteRepository';
 import { Vote } from 'types/Vote';
 
 export async function handler(event: APIGatewayEvent, context: Context) {
@@ -12,7 +12,8 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   const body = event.body ? (JSON.parse(event.body) as Vote) : undefined;
   if (!body) return { statusCode: 400, body: 'Bad Request' };
 
-  const data = await VotingService.CreateVote(body);
+  const repository = new VoteRepository();
+  const data = await repository.CreateVote(body);
 
   return {
     statusCode: 200,

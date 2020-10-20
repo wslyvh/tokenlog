@@ -26,7 +26,7 @@ export function IssueList(props: IssueListProps) {
       <h4>Open issues</h4>
       <div>
         {issues.map((i: Issue) => {
-          return <IssueCard key={i.id} issue={i} />;
+          return <IssueCard organization={props.organization} repository={props.repository} key={i.id} issue={i} />;
         })}
       </div>
     </div>

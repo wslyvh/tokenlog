@@ -25,4 +25,5 @@ export interface Issue {
   updated: Date;
   url: string;
   commentsCount: number;
+  voteCount: number;
 }

@@ -5,6 +5,8 @@ import { Issue, IssueState, IssueType } from 'types/Issue';
 import { Label } from 'types/Label';
 import { RepositorySettings } from 'types/RepositorySettings';
 import CompoundConfig from 'config/compound-finance.json';
+import VotingService from './VotingService';
+import { Vote } from 'types/Vote';
 
 export default {
   GetRepositories,
@@ -51,15 +53,21 @@ async function GetRepositoryIssues(
   const result = await octokit.issues.listForRepo({ owner, repo, state, labels, per_page: limit, page });
   if (result.status !== 200) throw new Error("Couldn't retrieve repository issues");
 
-  return Array.from(result.data).map((i) => toIssue(i));
+  const votes = await VotingService.GetVotes(owner, repo);
+
+  return Array.from(result.data)
+    .map((i) => toIssue(i, votes))
+    .sort((a, b) => b.voteCount - a.voteCount);
 }
 
-async function GetIssue(owner: string, repo: string, number: number): Promise<Issue> {
+async function GetIssue(owner: string, repo: string, number: number, includeVotes: boolean = false): Promise<Issue> {
   const octokit = new Octokit();
   const result = await octokit.issues.get({ owner, repo, issue_number: number });
   if (result.status !== 200) throw new Error("Couldn't retrieve issue");
 
-  return toIssue(result.data);
+  const votes = await VotingService.GetVotes(owner, repo, number);
+
+  return toIssue(result.data, votes);
 }
 
 async function GetRepositorySettings(owner: string, repo: string): Promise<RepositorySettings | undefined> {
@@ -106,7 +114,7 @@ function toOwner(source: any): Owner {
   } as Owner;
 }
 
-function toIssue(source: any): Issue {
+function toIssue(source: any, votes: Array<Vote>): Issue {
   return {
     id: source.id,
     number: source.number,
@@ -120,6 +128,7 @@ function toIssue(source: any): Issue {
     updated: new Date(source.updated_at),
     url: source.html_url,
     commentsCount: source.comments,
+    voteCount: votes.filter((i) => i.number === source.number).reduce((a, b) => a + b.amount, 0) ?? 0,
   } as Issue;
 }
 

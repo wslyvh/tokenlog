@@ -1,20 +1,10 @@
 import axios from 'axios';
-import mongoose from 'mongoose';
 import { AppConfig } from 'config/App';
 import { ethers } from 'ethers';
 import { Token } from 'types/Token';
 import { Vote } from 'types/Vote';
 import { ERC20_READ } from 'utils/abi';
 import { isValidAddress } from 'utils/web3';
-import VoteModel from 'data/models/VoteModel';
-import { DbConfig } from 'config/Db';
-
-const dbOptions = {
-  useNewUrlParser: true,
-  useFindAndModify: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-};
 
 export default {
   GetTokenInfo,
@@ -58,25 +48,24 @@ async function GetTokenBalance(tokenAddress: string, address: string): Promise<n
 
 async function CreateVote(vote: Vote): Promise<Vote | undefined> {
   try {
-    await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+    const result = await axios.post(`/.netlify/functions/vote?org=${vote.org}&repo=${vote.repo}`, vote);
+    if (result.status !== 200) throw new Error("Couldn't POST vote");
 
-    return await VoteModel.create(vote);
-  } catch (ex) {
-    console.error(ex);
-  } finally {
-    await mongoose.disconnect();
+    return result.data;
+  } catch {
+    console.error("Couldn't POST vote");
   }
 }
 
-async function GetVotes(org: string, repo: string): Promise<Array<Vote>> {
+async function GetVotes(org: string, repo: string, number?: number): Promise<Array<Vote>> {
   try {
-    await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+    let filter = number ? `&issue=${number}` : '';
+    const result = await axios.get(`/.netlify/functions/votes?org=${org}&repo=${repo}${filter}`);
+    if (result.status !== 200) throw new Error("Couldn't get votes");
 
-    return await VoteModel.find({ org: org, repo: repo });
-  } catch (ex) {
-    console.error(ex);
-  } finally {
-    await mongoose.disconnect();
+    return result.data;
+  } catch {
+    console.error("Couldn't get votes");
   }
 
   return [];
