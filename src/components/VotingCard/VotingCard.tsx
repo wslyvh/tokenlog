@@ -13,8 +13,9 @@ export function VotingCard(props: VotingCardProps) {
   const web3Context = useWeb3React();
   const repoContext = useRepositoryContext();
   const [signer, setSigner] = useState<any>();
-  const [priority, setPriority] = useState(props.issue.voteCount);
-  const [amount, setAmount] = useState(0);
+  const [voteCount, setVoteCount] = useState(props.issue.voteCount);
+  const [votingAmount, setVotingAmount] = useState(0);
+  const [balance, setBalance] = useState(0);
 
   useEffect(() => {
     async function asyncEffect() {
@@ -27,10 +28,21 @@ export function VotingCard(props: VotingCardProps) {
     asyncEffect();
   }, [web3Context.account, web3Context.library]);
 
-  async function castVote(votes: number) {
-    // check if user has right tokens / allowed to vote
-    // cost to vote = (nr of votes).pow(2)
+  useEffect(() => {
+    async function asyncEffect() {
+      if (repoContext.settings?.token?.address && web3Context.account) {
+        const balance = await VotingService.GetTokenBalance(repoContext.settings.token.address, web3Context.account);
 
+        if (balance) {
+          setBalance(balance);
+        }
+      }
+    }
+
+    asyncEffect();
+  }, [repoContext.settings, web3Context.account]);
+
+  async function castVote(votes: number) {
     if (signer) {
       const signingMessage = {
         org: repoContext.repository?.owner.name,
@@ -50,12 +62,31 @@ export function VotingCard(props: VotingCardProps) {
         } as Vote;
 
         await VotingService.CreateVote(vote);
-        setPriority(priority + votes);
+        setVoteCount(voteCount + votes);
       }
     } else {
       console.error('No signer available. Need to login first');
     }
   }
+
+  const renderVotingInput =
+    balance === 0 ? (
+      <span className="italic">You don't have any voting power.</span>
+    ) : (
+      <>
+        <p>With how many tokens would you like to vote? </p>
+        <input
+          type="range"
+          className="custom-range"
+          min="0"
+          max={balance}
+          step={balance / 10}
+          id="voteAmount"
+          value={votingAmount}
+          onChange={(e) => setVotingAmount(Number(e.target.value))}
+        />
+      </>
+    );
 
   return (
     <div className="border rounded">
@@ -88,24 +119,15 @@ export function VotingCard(props: VotingCardProps) {
               </div>
               <div className="modal-body">
                 <div className="form-group">
-                  <p>With how many tokens would you like to vote? </p>
-                  <input
-                    type="range"
-                    className="custom-range"
-                    min="1"
-                    max="10"
-                    id="voteAmount"
-                    value={amount}
-                    onChange={(e) => setAmount(Number(e.target.value))}
-                  />
-                  <small className="float-right">{amount}</small>
+                  {renderVotingInput}
+                  <small className="float-right">{votingAmount}</small>
                 </div>
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">
                   Close
                 </button>
-                <button type="button" className="btn btn-primary" onClick={() => castVote(amount)}>
+                <button type="button" className="btn btn-primary" onClick={() => castVote(votingAmount)}>
                   Vote
                 </button>
               </div>
@@ -113,7 +135,7 @@ export function VotingCard(props: VotingCardProps) {
           </div>
         </div>
       </div>
-      {priority}
+      {voteCount}
     </div>
   );
 }
