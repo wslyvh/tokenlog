@@ -1,18 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { AccountInfo } from './AccountInfo';
 import { useWeb3React } from '@web3-react/core';
 import { Injected } from 'utils/web3';
 
 export const AccountControl = () => {
   const context = useWeb3React();
-
-  const connectWeb3 = useCallback(async () => {
-    try {
-      await context.activate(Injected, undefined, true);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [context]);
 
   useEffect(() => {
     async function asyncEffect() {
@@ -24,7 +16,16 @@ export const AccountControl = () => {
     }
 
     asyncEffect();
-  }, [connectWeb3, context]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function connectWeb3() {
+    try {
+      await context.activate(Injected, undefined, true);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   if (context.account) {
     return <AccountInfo address={context.account} />;
