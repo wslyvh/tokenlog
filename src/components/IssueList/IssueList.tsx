@@ -28,7 +28,18 @@ export function IssueList() {
 
   return (
     <div className="mt-3">
-      <h4>Open issues <a href={`https://github.com/${context.org}/${context.repo}/issues/new`} className="float-right btn btn-outline-secondary btn-sm" role="button">New issue</a></h4>
+      <h4>
+        Open issues{' '}
+        <a
+          href={`https://github.com/${context.org}/${context.repo}/issues/new`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="float-right btn btn-outline-secondary btn-sm"
+          role="button"
+        >
+          New issue
+        </a>
+      </h4>
       <div>
         {data.loading ? (
           <Loader />
