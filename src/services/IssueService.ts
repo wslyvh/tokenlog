@@ -1,12 +1,12 @@
 import { Octokit } from '@octokit/rest';
 import { Repository } from 'types/Repository';
 import { Owner } from 'types/Owner';
-import { Issue, IssueState, IssueType } from 'types/Issue';
 import { Label } from 'types/Label';
-import { RepositorySettings } from 'types/RepositorySettings';
-import CompoundConfig from 'config/compound-finance.json';
-import VotingService from './VotingService';
 import { Vote } from 'types/Vote';
+import { Issue, IssueState, IssueType } from 'types/Issue';
+import { RepositorySettings } from 'types/RepositorySettings';
+import VotingService from './VotingService';
+import RepoConfigs from 'config/repo-configs.json';
 
 export default {
   GetRepositories,
@@ -71,10 +71,9 @@ async function GetIssue(owner: string, repo: string, number: number, includeVote
 }
 
 async function GetRepositorySettings(owner: string, repo: string): Promise<RepositorySettings | undefined> {
-  let settings: RepositorySettings | undefined = undefined;
-  if (owner === 'compound-finance' && repo === 'compound-protocol') {
-    settings = CompoundConfig;
-  } else {
+  let settings = RepoConfigs.find((i) => i.org === owner && i.repo === repo) as RepositorySettings;
+
+  if (!settings) {
     try {
       const octokit = new Octokit();
       const result = await octokit.repos.getContent({ owner, repo, path: 'tokenlog.json' });

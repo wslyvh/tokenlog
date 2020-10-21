@@ -1,0 +1,25 @@
+[{
+    "org": "compound-finance",
+    "repo": "compound-protocol",
+    "tokenAddress": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+    "labels": []
+},
+{
+    "org": "gnosis",
+    "repo": "safe-react",
+    "tokenAddress": "0x6810e776880c02933d47db1b9fc05908e5386b96",
+    "labels": ["Enhancement ✨", "Feature 👑"]
+},
+{
+    "org": "ethereum",
+    "repo": "EIPs",
+    "tokenAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "labels": []
+},
+{
+    "org": "ethereum",
+    "repo": "ethereum-org-website",
+    "tokenAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "labels": ["Status: Help Wanted", "Type: Bounty", "Type: Feature"]
+}
+]
