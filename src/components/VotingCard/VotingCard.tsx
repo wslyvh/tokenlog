@@ -89,7 +89,8 @@ export function VotingCard(props: VotingCardProps) {
     );
 
   return (
-    <div className="border rounded">
+    <>
+      <div className="counter-card border rounded clearfix">
       <div>
         <span
           className="fas fa-angle-up stretched-link"
@@ -97,6 +98,9 @@ export function VotingCard(props: VotingCardProps) {
           data-toggle="modal"
           data-target={`#${props.issue.number}`}
         ></span>
+        </div>
+        {voteCount}
+      </div>
 
         <div
           className="modal fade"
@@ -134,8 +138,6 @@ export function VotingCard(props: VotingCardProps) {
             </div>
           </div>
         </div>
-      </div>
-      {voteCount}
-    </div>
+    </>
   );
 }
