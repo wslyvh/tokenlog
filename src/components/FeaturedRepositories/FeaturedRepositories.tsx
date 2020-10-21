@@ -21,12 +21,6 @@ const projects = [
     imageUrl: 'https://avatars1.githubusercontent.com/u/24954468',
     link: '/gnosis/safe-react',
   },
-  // {
-  //   title: 'Tokenlog',
-  //   description: 'Token-weighted Backlogs',
-  //   imageUrl: 'https://tokenlog.xyz/icon.png',
-  //   link: '/wslyvh/tokenlog',
-  // },
 ];
 
 export function FeaturedRepositories() {
@@ -38,7 +32,12 @@ export function FeaturedRepositories() {
             <>
               <div key={i.title} className="card text-center">
                 <div className="text-center pt-3">
-                  <img src={i.imageUrl} className="card-img-top" alt={i.title} style={{ maxWidth: maxWidth }} />
+                  <img
+                    src={i.imageUrl}
+                    className="card-img-top rounded-lg"
+                    alt={i.title}
+                    style={{ maxWidth: maxWidth }}
+                  />
                 </div>
                 <div className="card-body">
                   <h5 className="card-title">

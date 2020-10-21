@@ -1,4 +1,5 @@
 import { IconTag } from 'components/IconTag';
+import { LabelBadges } from 'components/LabelBadges';
 import { VotingCard } from 'components/VotingCard';
 import React from 'react';
 import { Issue } from 'types/Issue';
@@ -16,7 +17,7 @@ export function IssueCard(props: IssueCardProps) {
           <VotingCard issue={props.issue} />
         </div>
         <div className="col-md-10">
-          <div className="card-body">
+          <div className="card-body p-4">
             <span className="card-title">
               {props.issue.title}
               <small className="text-muted mr-2 float-right">
@@ -25,7 +26,10 @@ export function IssueCard(props: IssueCardProps) {
                 </a>
               </small>
             </span>
-            <ul className="list-inline small text-muted mt-2">
+
+            <LabelBadges labels={props.issue.labels} />
+
+            <ul className="list-inline small text-muted mt-3 mb-0">
               <li className="list-inline-item pr-2">
                 <IconTag icon={'fas fa-chevron-up'} text={props.issue.votes.length.toString() + ' votes'} />
               </li>

@@ -46,11 +46,22 @@ async function GetRepositoryIssues(
   repo: string,
   state: IssueState = IssueState.OPEN,
   labels: string = '',
-  limit: number = 20,
-  page: number = 1
+  limit: number = 25,
+  page: number = 1,
+  sort: 'updated' | 'created' | 'comments' | undefined = 'updated',
+  direction: 'asc' | 'desc' | undefined = 'desc'
 ): Promise<Array<Issue>> {
   const octokit = new Octokit();
-  const result = await octokit.issues.listForRepo({ owner, repo, state, labels, per_page: limit, page });
+  const result = await octokit.issues.listForRepo({
+    owner,
+    repo,
+    state,
+    labels,
+    per_page: limit,
+    page,
+    sort,
+    direction,
+  });
   if (result.status !== 200) throw new Error("Couldn't retrieve repository issues");
 
   const votes = await VotingService.GetVotes(owner, repo);

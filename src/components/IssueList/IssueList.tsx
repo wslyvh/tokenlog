@@ -3,7 +3,7 @@ import { Loader } from 'components/Loader';
 import { useRepositoryContext } from 'context/RepoContext';
 import React, { useEffect, useState } from 'react';
 import IssueService from 'services/IssueService';
-import { Issue } from 'types/Issue';
+import { Issue, IssueState } from 'types/Issue';
 
 const issueData = {
   loading: true,
@@ -16,12 +16,17 @@ export function IssueList() {
 
   useEffect(() => {
     async function asyncEffect() {
-      const data = await IssueService.GetRepositoryIssues(context.org, context.repo);
-      setData({ loading: false, issues: data });
+      const issues = await IssueService.GetRepositoryIssues(
+        context.org,
+        context.repo,
+        IssueState.OPEN,
+        context.settings?.labels.join()
+      );
+      setData({ loading: false, issues: issues });
     }
 
     asyncEffect();
-  }, [context.org, context.repo]);
+  }, [context.org, context.repo, context.settings]);
 
   return (
     <div className="mt-3">

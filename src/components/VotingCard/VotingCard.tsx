@@ -91,53 +91,53 @@ export function VotingCard(props: VotingCardProps) {
   return (
     <>
       <div className="counter-card border rounded clearfix">
-      <div>
-        <span
-          className="fas fa-angle-up stretched-link"
-          role="button"
-          data-toggle="modal"
-          data-target={`#${props.issue.number}`}
-        ></span>
+        <div>
+          <span
+            className="fas fa-angle-up stretched-link"
+            role="button"
+            data-toggle="modal"
+            data-target={`#${props.issue.number}`}
+          ></span>
         </div>
         {voteCount}
       </div>
 
-        <div
-          className="modal fade"
-          id={`${props.issue.number}`}
-          tabIndex={-1}
-          aria-labelledby={`${props.issue.number}Label`}
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id={`${props.issue.number}Label`}>
-                  <small>
-                    #{props.issue.number} {props.issue.title}
-                  </small>
-                </h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+      <div
+        className="modal fade"
+        id={`${props.issue.number}`}
+        tabIndex={-1}
+        aria-labelledby={`${props.issue.number}Label`}
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id={`${props.issue.number}Label`}>
+                <small>
+                  #{props.issue.number} {props.issue.title}
+                </small>
+              </h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="form-group">
+                {renderVotingInput}
+                <small className="float-right">{votingAmount}</small>
               </div>
-              <div className="modal-body">
-                <div className="form-group">
-                  {renderVotingInput}
-                  <small className="float-right">{votingAmount}</small>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                  Close
-                </button>
-                <button type="button" className="btn btn-primary" onClick={() => castVote(votingAmount)}>
-                  Vote
-                </button>
-              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                Close
+              </button>
+              <button type="button" className="btn btn-primary" onClick={() => castVote(votingAmount)}>
+                Vote
+              </button>
             </div>
           </div>
         </div>
+      </div>
     </>
   );
 }
