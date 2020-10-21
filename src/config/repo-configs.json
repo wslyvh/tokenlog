@@ -21,5 +21,11 @@
     "repo": "ethereum-org-website",
     "tokenAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
     "labels": ["Type: Feature"]
+},
+{
+    "org": "MetaMask",
+    "repo": "metamask-extension",
+    "tokenAddress": "0x4057950247e4ec8dc7fe399ec19ea43e80b931c8",
+    "labels": [""]
 }
 ]
