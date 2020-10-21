@@ -7,6 +7,7 @@ export default function Home() {
       <div>
         <h2>Token-weighted backlog(s)</h2>
       </div>
+
       <div>
         <strong>Featured Repositories</strong>
         <FeaturedRepositories />

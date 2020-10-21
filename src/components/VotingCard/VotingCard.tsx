@@ -1,8 +1,10 @@
 import { useWeb3React } from '@web3-react/core';
+import { VoteCounter } from 'components/VoteCounter';
 import { useRepositoryContext } from 'context/RepoContext';
 import React, { useEffect, useState } from 'react';
 import VotingService from 'services/VotingService';
 import { Issue } from 'types/Issue';
+import { VotingMethod } from 'types/RepositorySettings';
 import { Vote } from 'types/Vote';
 
 interface VotingCardProps {
@@ -75,16 +77,9 @@ export function VotingCard(props: VotingCardProps) {
     ) : (
       <>
         <p>With how many tokens would you like to vote? </p>
-        <input
-          type="range"
-          className="custom-range"
-          min="0"
-          max={balance}
-          step={balance / 10}
-          id="voteAmount"
-          value={votingAmount}
-          onChange={(e) => setVotingAmount(Number(e.target.value))}
-        />
+        <div className="text-center">
+          <VoteCounter type={VotingMethod.QUADRATIC} step={1} max={balance} onChange={setVotingAmount} />
+        </div>
       </>
     );
 
@@ -122,16 +117,18 @@ export function VotingCard(props: VotingCardProps) {
               </button>
             </div>
             <div className="modal-body">
-              <div className="form-group">
-                {renderVotingInput}
-                <small className="float-right">{votingAmount}</small>
-              </div>
+              <div className="form-group">{renderVotingInput}</div>
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-dismiss="modal">
                 Close
               </button>
-              <button type="button" className="btn btn-primary" onClick={() => castVote(votingAmount)}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => castVote(votingAmount)}
+                disabled={votingAmount === 0}
+              >
                 Vote
               </button>
             </div>

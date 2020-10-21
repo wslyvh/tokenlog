@@ -1,6 +1,6 @@
 import { Token } from './Token';
 
-export enum Method {
+export enum VotingMethod {
   STANDARD = 'Standard voting',
   QUADRATIC = 'Quadratic voting',
   STAKING = 'Staking',
