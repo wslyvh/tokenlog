@@ -1,5 +1,6 @@
 import { Label } from './Label';
 import { Owner } from './Owner';
+import { Vote } from './Vote';
 
 export enum IssueState {
   ALL = 'all',
@@ -25,5 +26,6 @@ export interface Issue {
   updated: Date;
   url: string;
   commentsCount: number;
+  votes: Array<Vote>;
   voteCount: number;
 }

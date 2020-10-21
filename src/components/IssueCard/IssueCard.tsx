@@ -1,3 +1,4 @@
+import { IconTag } from 'components/IconTag';
 import { VotingCard } from 'components/VotingCard';
 import React from 'react';
 import { Issue } from 'types/Issue';
@@ -24,9 +25,17 @@ export function IssueCard(props: IssueCardProps) {
                 </a>
               </small>
             </span>
-            <p>
-              <small className="text-muted">Last updated {TimeFromNow(props.issue.updated)}</small>
-            </p>
+            <ul className="list-inline small text-muted mt-2">
+              <li className="list-inline-item pr-2">
+                <IconTag icon={'fas fa-chevron-up'} text={props.issue.votes.length.toString() + ' votes'} />
+              </li>
+              <li className="list-inline-item pr-1">
+                <IconTag icon={'far fa-comments'} text={props.issue.commentsCount.toString() + ' comments'} />
+              </li>
+              <li className="list-inline-item">
+                <IconTag icon={'fas fa-history'} text={TimeFromNow(props.issue.updated)} />
+              </li>
+            </ul>
           </div>
         </div>
       </div>

@@ -16,20 +16,17 @@ export function IssueList() {
 
   useEffect(() => {
     async function asyncEffect() {
-      if (context.repository?.owner?.name && context.repository.name) {
-        const data = await IssueService.GetRepositoryIssues(context.repository?.owner?.name, context.repository.name);
-
-        setData({ loading: false, issues: data });
-      }
+      const data = await IssueService.GetRepositoryIssues(context.org, context.repo);
+      setData({ loading: false, issues: data });
     }
 
     asyncEffect();
-  }, [context.repository]);
+  }, [context.org, context.repo]);
 
   return (
     <div className="mt-3">
       <h4>
-        Open issues{' '}
+        Open issues
         <a
           href={`https://github.com/${context.org}/${context.repo}/issues/new`}
           target="_blank"

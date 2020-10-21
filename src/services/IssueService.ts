@@ -133,6 +133,7 @@ function toIssue(source: any, votes: Array<Vote>): Issue {
     updated: new Date(source.updated_at),
     url: source.html_url,
     commentsCount: source.comments,
+    votes: votes.filter((i) => i.number === source.number),
     voteCount: votes.filter((i) => i.number === source.number).reduce((a, b) => a + b.amount, 0) ?? 0,
   } as Issue;
 }
