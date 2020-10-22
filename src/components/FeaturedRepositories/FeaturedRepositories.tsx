@@ -5,7 +5,7 @@ const maxWidth = 80;
 const projects = [
   {
     title: 'Ethereum/EIPs',
-    description: 'Ethereum Improvement Proposal',
+    description: 'The Ethereum Improvement Proposal repository',
     imageUrl: 'https://avatars1.githubusercontent.com/u/6250754',
     link: '/ethereum/EIPs',
   },
@@ -17,27 +17,33 @@ const projects = [
   },
   {
     title: 'Gnosis Safe Multisig',
-    description: 'Store digital assets on Ethereum',
+    description: 'The most trusted platform to store digital assets on Ethereum',
     imageUrl: 'https://avatars1.githubusercontent.com/u/24954468',
     link: '/gnosis/safe-react',
   },
   {
     title: 'Pocket Core',
-    description: 'Official Pocket Network Protocol',
+    description: 'Official implementation of the Pocket Network Protocol',
     imageUrl: 'https://avatars0.githubusercontent.com/u/33689860',
     link: '/pokt-network/pocket-core',
   },
   {
     title: 'yearn-finance',
-    description: 'DeFi made simple - Yearn smart contracts',
+    description: 'DeFi made simple',
     imageUrl: 'https://avatars1.githubusercontent.com/u/60162948',
     link: '/iearn-finance/yearn-protocol',
   },
   {
     title: 'tBTC',
     description: 'Trustlessly tokenized Bitcoin on Ethereum',
-    imageUrl: 'https://avatars0.githubusercontent.com/u/30537626?s=200&v=4',
+    imageUrl: 'https://avatars0.githubusercontent.com/u/30537626',
     link: '/keep-network/tbtc',
+  },
+  {
+    title: 'Tokenlog',
+    description: 'Token-weighted backlogs',
+    imageUrl: 'https://tokenlog.xyz/icon.png',
+    link: '/wslyvh/tokenlog',
   },
 ];
 
