@@ -10,13 +10,13 @@ export default function Home() {
           <span role="img" aria-label="Tokenlog">
             🗳️
           </span>{' '}
-          Tokenlog is a governance tool that allows token holders to help prioritise Github issues.
+          Tokenlog is a governance tool to create token-weighted backlogs.
         </p>
         <hr className="my-4" />
         <p>
-          Instead of one-off governance proposals, token holders can continously help and prioritize your backlog. It
-          uses a quadratic voting mechanism, where token holders can allocate votes to express the degree of their
-          preferences, rather than just the direction of their preferences.
+          A token-weighted backlog allows projects to continuously gather feedback from their token holders in order to
+          help plan and prioritise their work. Through Quadratic Voting token holders can allocate votes to express
+          items that matter rather than just a direction of their preference.
         </p>
         <p className="mb-1">
           Access any Github repository at <code>tokenlog.xyz/&lt;org&gt;/&lt;repo&gt;</code> or read more{' '}
