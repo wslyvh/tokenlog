@@ -14,3 +14,19 @@ export function isValidAddress(address: string) {
     return false;
   }
 }
+export function GetNetworkName(chainId: number): string {
+  switch (chainId) {
+    case 1:
+      return 'homestead';
+    case 3:
+      return 'ropsten';
+    case 4:
+      return 'rinkeby';
+    case 5:
+      return 'goerli';
+    case 42:
+      return 'kovan';
+  }
+
+  return 'homestead';
+}

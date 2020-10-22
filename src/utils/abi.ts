@@ -4,4 +4,5 @@ export const ERC20_READ = [
   'function symbol() view returns (string)',
   'function totalSupply() view returns (uint256)',
   'function decimals() view returns (uint8)',
+  'function getCurrentVotes(address account) view returns (uint96)',
 ];

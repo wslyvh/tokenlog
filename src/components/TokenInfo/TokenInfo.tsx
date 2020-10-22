@@ -13,7 +13,11 @@ export function TokenInfo() {
   useEffect(() => {
     async function asyncEffect() {
       if (repoContext.settings?.token?.address && web3Context.account) {
-        const balance = await VotingService.GetTokenBalance(repoContext.settings.token.address, web3Context.account);
+        const balance = await VotingService.GetTokenBalance(
+          repoContext.settings.token.address,
+          web3Context.account,
+          web3Context.chainId
+        );
 
         if (balance) {
           setBalance(balance);
@@ -22,7 +26,7 @@ export function TokenInfo() {
     }
 
     asyncEffect();
-  }, [repoContext.settings, web3Context.account]);
+  }, [repoContext.settings, web3Context.account, web3Context.chainId]);
 
   const renderSettingsLink = (
     <IconLink
@@ -37,8 +41,16 @@ export function TokenInfo() {
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">Configure</h5>
-          <h6 className="card-subtitle my-1 text-muted">&nbsp;</h6>
-          <p className="card-text text-truncate">This repository is not configured yet</p>
+          <h6 className="card-subtitle my-1 text-muted">
+            {repoContext.settings?.tokenAddress && (
+              <a href={`https://etherscan.io/token/${repoContext.settings.tokenAddress}`}>
+                {ShortenAddress(repoContext.settings.tokenAddress, 12)}
+              </a>
+            )}
+          </h6>
+          <p className="card-text text-truncate">
+            <i>This repo is not configured yet..</i>
+          </p>
           {renderSettingsLink}
         </div>
       </div>
@@ -48,7 +60,7 @@ export function TokenInfo() {
   const renderBalance = balance ? (
     balance.toFixed(2) + ' votes (' + Percentage(balance, repoContext.settings.token.totalSupply) + '%)'
   ) : (
-    <small>No voting power</small>
+    <i>No voting power</i>
   );
 
   return (

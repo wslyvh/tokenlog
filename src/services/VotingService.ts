@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { Token } from 'types/Token';
 import { Vote } from 'types/Vote';
 import { ERC20_READ } from 'utils/abi';
-import { isValidAddress } from 'utils/web3';
+import { GetNetworkName, isValidAddress } from 'utils/web3';
 
 export default {
   GetTokenInfo,
@@ -12,32 +12,53 @@ export default {
   GetVotes,
 };
 
-async function GetTokenInfo(address: string): Promise<Token | undefined> {
+async function GetTokenInfo(address: string, chainId?: number): Promise<Token | undefined> {
   if (!isValidAddress(address)) return;
 
-  try {
-    const result = await axios.get(`/.netlify/functions/token?address=${address}`);
-    if (result.status !== 200) throw new Error("Couldn't retrieve token info");
+  const provider = ethers.getDefaultProvider(GetNetworkName(chainId ?? 1));
+  const erc20 = new ethers.Contract(address, ERC20_READ, provider);
 
-    return result.data;
+  try {
+    const name = await erc20.name();
+    const symbol = await erc20.symbol();
+    const decimals = await erc20.decimals();
+    const totalSupply = await erc20.totalSupply();
+    const formattedSupply = parseFloat(ethers.utils.formatUnits(totalSupply, decimals));
+
+    return {
+      address: address,
+      name: name,
+      symbol: symbol,
+      totalSupply: formattedSupply,
+      decimals: decimals,
+    } as Token;
   } catch {
     console.error("Couldn't retrieve token info");
   }
 }
 
-async function GetTokenBalance(tokenAddress: string, address: string): Promise<number | undefined> {
+async function GetTokenBalance(tokenAddress: string, address: string, chainId?: number): Promise<number | undefined> {
   if (!isValidAddress(tokenAddress)) return;
   if (!isValidAddress(address)) return;
 
-  const provider = ethers.getDefaultProvider();
+  const provider = ethers.getDefaultProvider(GetNetworkName(chainId ?? 1));
   const erc20 = new ethers.Contract(tokenAddress, ERC20_READ, provider);
+
+  let delegatedVotes = 0;
+  try {
+    const decimals = await erc20.decimals();
+    const votes = await erc20.getCurrentVotes('0xac5720d6ee2d7872b88914c9c5fa9bf38e72faf6');
+    delegatedVotes = parseFloat(ethers.utils.formatUnits(votes, decimals));
+  } catch (ex) {
+    console.log("Couldn't retrieve delegated votes. Not applicable to all ERC20 token's");
+  }
 
   try {
     const decimals = await erc20.decimals();
     const balance = await erc20.balanceOf(address);
     const etherUnit = ethers.utils.formatUnits(balance, decimals);
 
-    return parseFloat(etherUnit);
+    return parseFloat(etherUnit) + delegatedVotes;
   } catch {
     console.error("Couldn't retrieve token balance");
   }

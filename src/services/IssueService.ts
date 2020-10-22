@@ -90,7 +90,11 @@ async function GetIssue(owner: string, repo: string, number: number, includeVote
   return toIssue(result.data, votes);
 }
 
-async function GetRepositorySettings(owner: string, repo: string): Promise<RepositorySettings | undefined> {
+async function GetRepositorySettings(
+  owner: string,
+  repo: string,
+  chainId?: number
+): Promise<RepositorySettings | undefined> {
   let settings = RepoConfigs.find((i) => i.org === owner && i.repo === repo) as RepositorySettings;
 
   if (!settings) {
@@ -107,7 +111,7 @@ async function GetRepositorySettings(owner: string, repo: string): Promise<Repos
   }
 
   if (settings) {
-    settings.token = await VotingService.GetTokenInfo(settings.tokenAddress);
+    settings.token = await VotingService.GetTokenInfo(settings.tokenAddress, chainId);
   }
 
   return settings;

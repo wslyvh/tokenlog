@@ -33,7 +33,11 @@ export function VotingCard(props: VotingCardProps) {
   useEffect(() => {
     async function asyncEffect() {
       if (repoContext.settings?.token?.address && web3Context.account) {
-        const balance = await VotingService.GetTokenBalance(repoContext.settings.token.address, web3Context.account);
+        const balance = await VotingService.GetTokenBalance(
+          repoContext.settings.token.address,
+          web3Context.account,
+          web3Context.chainId
+        );
 
         if (balance) {
           setBalance(balance);
@@ -42,7 +46,7 @@ export function VotingCard(props: VotingCardProps) {
     }
 
     asyncEffect();
-  }, [repoContext.settings, web3Context.account]);
+  }, [repoContext.settings, web3Context.account, web3Context.chainId]);
 
   async function castVote(votes: number) {
     if (signer) {

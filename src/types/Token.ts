@@ -4,8 +4,8 @@ export interface Token {
   symbol: string;
   totalSupply: number;
   decimals: number;
-  holdersCount: number;
-  image: string;
-  description: string;
-  website: string;
+  holdersCount?: number;
+  image?: string;
+  description?: string;
+  website?: string;
 }

@@ -66,6 +66,8 @@ export function LanguageColor(type: string): string {
       return '#012456';
     case 'YAML':
       return '#cb171e';
+    case 'Vue':
+      return '#2c3e50';
   }
 
   return '#ccc';
