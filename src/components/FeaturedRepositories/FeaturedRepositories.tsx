@@ -29,26 +29,24 @@ export function FeaturedRepositories() {
       <div className="card-deck">
         {projects.map((i) => {
           return (
-            <>
-              <div key={i.title} className="card text-center">
-                <div className="text-center pt-3">
-                  <img
-                    src={i.imageUrl}
-                    className="card-img-top rounded-lg"
-                    alt={i.title}
-                    style={{ maxWidth: maxWidth }}
-                  />
-                </div>
-                <div className="card-body">
-                  <span className="card-title">
-                    <Link to={i.link} className="text-secondary stretched-link mb-4">
-                      {i.title}
-                    </Link>
-                  </span>
-                  <p className="card-text mt-3">{i.description}</p>
-                </div>
+            <div key={i.title} className="card text-center">
+              <div className="text-center pt-3">
+                <img
+                  src={i.imageUrl}
+                  className="card-img-top rounded-lg"
+                  alt={i.title}
+                  style={{ maxWidth: maxWidth }}
+                />
               </div>
-            </>
+              <div className="card-body">
+                <span className="card-title">
+                  <Link to={i.link} className="text-secondary stretched-link mb-4">
+                    {i.title}
+                  </Link>
+                </span>
+                <p className="card-text mt-3">{i.description}</p>
+              </div>
+            </div>
           );
         })}
       </div>
