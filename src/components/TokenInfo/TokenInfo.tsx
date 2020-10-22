@@ -39,7 +39,9 @@ export function TokenInfo() {
     repoContext.votingPower?.totalPower.toFixed(2) +
     ' VP (' +
     Percentage(repoContext.votingPower?.totalPower ?? 0, repoContext.settings.token.totalSupply) +
-    '%) ' + repoContext.votingPower?.available.toFixed(2) + ' available'
+    '%) ' +
+    repoContext.votingPower?.available.toFixed(2) +
+    ' available'
   ) : (
     <i>No voting power</i>
   );
