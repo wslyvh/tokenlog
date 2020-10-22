@@ -7,30 +7,31 @@ export const Injected = new InjectedConnector({
 });
 
 export async function GetProvider(chainId?: number): Promise<BaseProvider> {
-  switch (chainId) {
-    case 1:
-      return new ethers.providers.JsonRpcProvider(
-        'https://eth-mainnet.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
-      );
-    case 3:
-      return new ethers.providers.JsonRpcProvider(
-        'https://eth-ropsten.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
-      );
-    case 4:
-      return new ethers.providers.JsonRpcProvider(
-        'https://eth-rinkeby.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
-      );
-    case 5:
-      return new ethers.providers.JsonRpcProvider(
-        'https://eth-goerli.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
-      );
-    case 42:
-      return new ethers.providers.JsonRpcProvider('https://poa-kovan.gateway.pokt.network/v1/5f9180e3b90218002e9cea69');
-    default:
-      return new ethers.providers.JsonRpcProvider(
-        'https://eth-mainnet.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
-      );
-  }
+  return ethers.getDefaultProvider(GetNetworkName(chainId ?? 1));
+  // switch (chainId) {
+  //   case 1:
+  //     return new ethers.providers.JsonRpcProvider(
+  //       'https://eth-mainnet.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
+  //     );
+  //   case 3:
+  //     return new ethers.providers.JsonRpcProvider(
+  //       'https://eth-ropsten.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
+  //     );
+  //   case 4:
+  //     return new ethers.providers.JsonRpcProvider(
+  //       'https://eth-rinkeby.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
+  //     );
+  //   case 5:
+  //     return new ethers.providers.JsonRpcProvider(
+  //       'https://eth-goerli.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
+  //     );
+  //   case 42:
+  //     return new ethers.providers.JsonRpcProvider('https://poa-kovan.gateway.pokt.network/v1/5f9180e3b90218002e9cea69');
+  //   default:
+  //     return new ethers.providers.JsonRpcProvider(
+  //       'https://eth-mainnet.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
+  //     );
+  // }
 }
 
 export function isValidAddress(address: string) {
