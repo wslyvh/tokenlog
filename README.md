@@ -1,44 +1,56 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d3885dcb-8c9e-4e1a-88ad-29658cd376f0/deploy-status)](https://app.netlify.com/sites/tokenlog/deploys)
+[![Build Status](https://travis-ci.org/wslyvh/tokenlog.svg?branch=master)](https://travis-ci.org/wslyvh/tokenlog)
+[![codecov](https://codecov.io/gh/wslyvh/tokenlog/branch/master/graph/badge.svg?token=LTQZY64K6X)](undefined)
 
-## Available Scripts
 
-In the project directory, you can run:
+<img src="https://tokenlog.xyz/icon.png" alt="ETH Gas.watch" width="50"/> 
 
-### `yarn start`
+# Token-weighted Backlogs
+Tokenlog is a governance tool that allows token holders to help vote and prioritise issues. Instead of one-off proposals, token holders can continously help and prioritize your backlog.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Links
+- Website https://tokenlog.xyz/
+- Backlog https://tokenlog.xyz/wslyvh/tokenlog
+- Issues https://github.com/wslyvh/tokenlog/issues
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Documentation
 
-### `yarn test`
+Tokenlog works on any Github repository and follows Github's relative paths, e.g. `tokenlog.xyz/<org>/<repo>`. To allow voting, see the following Config section.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Config
 
-### `yarn build`
+Tokenlog tries to pull a configuration directly from your repository. This proofs ownership of the repo and doesn't require any curation or management. Just upload a `tokenlog.json` config to the root of your repository.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Example
+```
+{
+    "org": "wslyvh",
+    "repo": "tokenlog",
+    "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
+    "labels": ["enhancement"]
+}
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- `tokenAddress` is the token that people are allowed to vote with
+- `labels` is an optional list of Github labels that allows you to filter onwhich issues token holders can vote on 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+## Contributing
+Contributions are always welcome, no matter how large or small. If you've found a bug, have a suggestion, feature request or any other feedback, post them at https://github.com/wslyvh/tokenlog/issues/new
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+If you want to contribute to the codebase, open up an issue or pull-request so we can discuss on the best way to do so. 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If you want to help with our backlog, check out https://tokenlog.xyz/wslyvh/tokenlog
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Development 
+`yarn start` or `npm run start`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Runs the app in the development mode. By default, it runs at [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+`yarn test` or `npm run test`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Launches the test runner in the interactive watch mode.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+`yarn build` or `npm run build`
+
+Builds the app for production to the build folder.

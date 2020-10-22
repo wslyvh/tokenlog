@@ -48,7 +48,7 @@ export function FeaturedRepositories() {
         .sort((a, b) => (a.title < b.title ? -1 : 1))
         .map((i) => {
           return (
-            <div key={i.title} className="card mb-2">
+            <div key={i.title} className="card mb-2 featured-card">
               <div className="row no-gutters">
                 <div className="col-md-2 counter-card">
                   <img

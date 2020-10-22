@@ -4,6 +4,7 @@ import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Web3Provider } from 'ethers/providers';
 import { Web3ReactProvider } from '@web3-react/core';
+import { Footer } from 'components/Footer';
 
 const Home = lazy(() => import('pages/Home'));
 const Organization = lazy(() => import('pages/Organization'));
@@ -42,6 +43,8 @@ export function Default() {
               </Switch>
             </div>
           </Suspense>
+            
+          <Footer />
         </Web3ReactProvider>
       </BrowserRouter>
     </div>

@@ -17,6 +17,16 @@ body {
   margin-top: 20px;
 }
 
+.featured-card { 
+  transform: translateY(0px);
+  transition: .5s;
+}
+
+.featured-card:hover {
+  transform: translateY(-3px);
+  transition: .5s;
+}
+
 .counter {
   margin: auto;
   padding: 10px;

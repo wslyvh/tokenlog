@@ -1,0 +1,21 @@
+sudo: false
+language: node_js
+node_js:
+- '8'
+branches:
+  only:
+  - master
+cache:
+  directories:
+  - node_modules
+before_install:
+- yarn upgrade
+install:
+- yarn install
+- yarn global add codecov
+script:
+- yarn lint
+- yarn format
+- yarn test
+after_success:
+  - codecov
