@@ -35,8 +35,11 @@ export function TokenInfo() {
     );
   }
 
-  const renderBalance = repoContext.userBalance ? (
-    repoContext.userBalance.toFixed(2) + ' votes (' + Percentage(repoContext.userBalance, repoContext.settings.token.totalSupply) + '%)'
+  const renderBalance = repoContext.votingPower ? (
+    repoContext.votingPower?.totalPower.toFixed(2) +
+    ' VP (' +
+    Percentage(repoContext.votingPower?.totalPower ?? 0, repoContext.settings.token.totalSupply) +
+    '%) ' + repoContext.votingPower?.available.toFixed(2) + ' available'
   ) : (
     <i>No voting power</i>
   );

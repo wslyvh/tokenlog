@@ -13,7 +13,6 @@ export default {
   GetRepository,
   GetRepositoryLabels,
   GetRepositoryIssues,
-  GetIssue,
   GetRepositorySettings,
 };
 
@@ -78,16 +77,6 @@ async function GetRepositoryIssues(
   return Array.from(result.data)
     .map((i) => toIssue(i, votes))
     .sort((a, b) => b.voteCount - a.voteCount);
-}
-
-async function GetIssue(owner: string, repo: string, number: number, includeVotes: boolean = false): Promise<Issue> {
-  const octokit = new Octokit();
-  const result = await octokit.issues.get({ owner, repo, issue_number: number });
-  if (result.status !== 200) throw new Error("Couldn't retrieve issue");
-
-  const votes = await VotingService.GetVotes(owner, repo, number);
-
-  return toIssue(result.data, votes);
 }
 
 async function GetRepositorySettings(

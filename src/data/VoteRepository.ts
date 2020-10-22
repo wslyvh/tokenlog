@@ -36,6 +36,24 @@ class VoteRepository {
 
     return [];
   }
+
+  async GetUserVotes(org: string, repo: string, address: string): Promise<number> {
+    try {
+      await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+      const result = await VoteModel.aggregate([
+        { $match: { org: org, repo: repo, address: address } },
+        { $group: { _id: null, cost: { $sum: '$cost' } } },
+      ]);
+
+      return result.length > 0 ? result[0].cost : 0;
+    } catch (ex) {
+      console.error(ex);
+    } finally {
+      await mongoose.disconnect();
+    }
+
+    return 0;
+  }
 }
 
 export default VoteRepository;

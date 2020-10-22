@@ -1,13 +1,14 @@
 import { createContext, useContext } from 'react';
 import { Repository } from 'types/Repository';
 import { RepositorySettings } from 'types/RepositorySettings';
+import { VotingPower } from 'types/VotingPower';
 
 export const DefaultRepoContext = {
   org: '',
   repo: '',
   repository: undefined,
   settings: undefined,
-  userBalance: 0,
+  votingPower: undefined,
   setContext: () => {},
 };
 
@@ -16,7 +17,7 @@ export interface IRepositoryContext {
   repo: string;
   repository: Repository | undefined;
   settings: RepositorySettings | undefined;
-  userBalance: number;
+  votingPower: VotingPower | undefined;
 }
 
 export interface RepoContextType {
@@ -24,7 +25,7 @@ export interface RepoContextType {
   repo: string;
   repository: Repository | undefined;
   settings: RepositorySettings | undefined;
-  userBalance: number;
+  votingPower: VotingPower | undefined;
   setContext: (context: IRepositoryContext) => void;
 }
 

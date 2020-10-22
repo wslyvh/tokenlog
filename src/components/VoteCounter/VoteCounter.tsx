@@ -6,7 +6,7 @@ interface VoteCounterProps {
   type: VotingMethod;
   step: number;
   max: number;
-  onChange: (value: number) => void;
+  onChange: (value: number[]) => void;
 }
 
 function getQuadraticCost(value: number): number {
@@ -47,7 +47,7 @@ export function VoteCounter(props: VoteCounterProps) {
     setCost(cost);
     setError(error);
 
-    props.onChange(votes);
+    props.onChange([votes, cost]);
   }
 
   if (props.type === VotingMethod.STANDARD) {

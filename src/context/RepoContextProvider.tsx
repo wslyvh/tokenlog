@@ -4,6 +4,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import IssueService from 'services/IssueService';
 import VotingService from 'services/VotingService';
+import { VotingPower } from 'types/VotingPower';
 import { DefaultRepoContext, IRepositoryContext, RepoContext } from './RepoContext';
 
 export const RepoContextProvider = ({ children }: { children: ReactNode }) => {
@@ -17,10 +18,18 @@ export const RepoContextProvider = ({ children }: { children: ReactNode }) => {
       const repository = await IssueService.GetRepository(org, repo);
       const settings = await IssueService.GetRepositorySettings(org, repo, web3Context.chainId);
 
-      let userBalance = 0;
+      let votingPower: VotingPower | undefined = undefined;
       if (web3Context.account && settings?.tokenAddress) {
-        userBalance =
-          (await VotingService.GetTokenBalance(settings.tokenAddress, web3Context.account, web3Context.chainId)) ?? 0;
+        const totalPower =
+          (await VotingService.GetVotingPower(settings.tokenAddress, web3Context.account, web3Context.chainId)) ?? 0;
+        const userVotes = (await VotingService.GetUserVotes(org, repo, web3Context.account)) ?? 0;
+
+        votingPower = {
+          tokenAddress: settings.tokenAddress,
+          totalPower: totalPower,
+          voted: userVotes,
+          available: totalPower - userVotes,
+        };
       }
 
       setContext({
@@ -28,7 +37,7 @@ export const RepoContextProvider = ({ children }: { children: ReactNode }) => {
         repo: repo,
         repository: repository,
         settings: settings,
-        userBalance: userBalance,
+        votingPower: votingPower,
       });
       setLoading(false);
     }
@@ -51,7 +60,7 @@ export const RepoContextProvider = ({ children }: { children: ReactNode }) => {
         repo: repo,
         repository: context.repository,
         settings: context.settings,
-        userBalance: context.userBalance,
+        votingPower: context.votingPower,
         setContext: setContext,
       }}
     >

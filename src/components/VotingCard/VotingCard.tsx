@@ -16,7 +16,7 @@ export function VotingCard(props: VotingCardProps) {
   const repoContext = useRepositoryContext();
   const [signer, setSigner] = useState<any>();
   const [voteCount, setVoteCount] = useState(props.issue.voteCount);
-  const [votingAmount, setVotingAmount] = useState(0);
+  const [votingAmount, setVotingAmount] = useState([0, 0]);
 
   useEffect(() => {
     async function asyncEffect() {
@@ -29,13 +29,15 @@ export function VotingCard(props: VotingCardProps) {
     asyncEffect();
   }, [web3Context.account, web3Context.library]);
 
-  async function castVote(votes: number) {
+  async function castVote(votes: number[]) {
     if (signer) {
       const signingMessage = {
         org: repoContext.repository?.owner.name,
         repo: repoContext.repository?.name,
         number: props.issue.number,
-        amount: votes,
+        amount: votes[0],
+        cost: votes[1],
+        tokenAddress: repoContext.settings?.tokenAddress,
         timestamp: new Date(),
       };
 
@@ -49,7 +51,7 @@ export function VotingCard(props: VotingCardProps) {
         } as Vote;
 
         await VotingService.CreateVote(vote);
-        setVoteCount(voteCount + votes);
+        setVoteCount(voteCount + votes[0]);
       }
     } else {
       console.error('No signer available. Need to login first');
@@ -57,8 +59,8 @@ export function VotingCard(props: VotingCardProps) {
   }
 
   const renderVotingInput =
-    repoContext.userBalance === 0 ? (
-      <span className="italic">You don't have any voting power.</span>
+    repoContext.votingPower?.available === 0 ? (
+      <span className="italic">You don't have any voting power left.</span>
     ) : (
       <>
         <p>With how many tokens would you like to vote? </p>
@@ -66,7 +68,7 @@ export function VotingCard(props: VotingCardProps) {
           <VoteCounter
             type={VotingMethod.QUADRATIC}
             step={1}
-            max={repoContext.userBalance}
+            max={repoContext.votingPower?.available ?? 0}
             onChange={setVotingAmount}
           />
         </div>
@@ -117,7 +119,7 @@ export function VotingCard(props: VotingCardProps) {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => castVote(votingAmount)}
-                disabled={votingAmount === 0}
+                disabled={votingAmount[0] === 0}
               >
                 Vote
               </button>

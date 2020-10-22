@@ -7,8 +7,10 @@ const voteSchema: Schema = new Schema({
   org: { type: String, required: true },
   repo: { type: String, required: true },
   number: { type: Number, required: true },
+  tokenAddress: { type: String, required: true },
   address: { type: String, required: true },
   amount: { type: Number, required: true },
+  cost: { type: Number, required: true },
   signature: { type: String, required: true },
   timestamp: { type: Date, required: true },
 });
