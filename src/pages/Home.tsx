@@ -15,8 +15,8 @@ export default function Home() {
         <hr className="my-4" />
         <p>
           A token-weighted backlog allows projects to continuously gather feedback from their token holders in order to
-          help plan and prioritise their work. Through Quadratic Voting token holders can allocate votes to express
-          items that matter rather than just a direction of their preference.
+          help plan and prioritise their work. Through quadratic voting token holders can allocate votes to express which
+          items matter to them rather than just a direction of their preference.
         </p>
         <p className="mb-1">
           Access any Github repository at <code>tokenlog.xyz/&lt;org&gt;/&lt;repo&gt;</code> or read more{' '}
