@@ -3,7 +3,7 @@ import { LabelBadges } from 'components/LabelBadges';
 import { VotingCard } from 'components/VotingCard';
 import React from 'react';
 import { Issue } from 'types/Issue';
-import { TimeFromNow } from 'utils/format';
+import { IssueColor, TimeFromNow } from 'utils/format';
 
 interface IssueCardProps {
   issue: Issue;
@@ -11,7 +11,7 @@ interface IssueCardProps {
 
 export function IssueCard(props: IssueCardProps) {
   return (
-    <div className={'card mb-3 issue-card ' + props.issue.type}>
+    <div className={'card mb-3 bordered-card'} style={{ borderRightColor: IssueColor(props.issue.type) }}>
       <div className="row no-gutters">
         <div className="col-md-2 counter">
           <VotingCard issue={props.issue} />

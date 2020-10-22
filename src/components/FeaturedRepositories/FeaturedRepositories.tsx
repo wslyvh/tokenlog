@@ -40,13 +40,12 @@ export function FeaturedRepositories() {
                   />
                 </div>
                 <div className="card-body">
-                  <h5 className="card-title">
-                    <Link to={i.link} className="stretched-link">
-                      <small className="text-muted">{i.title}</small>
+                  <span className="card-title">
+                    <Link to={i.link} className="text-secondary stretched-link mb-4">
+                      {i.title}
                     </Link>
-                  </h5>
-                  <p className="card-text">{i.description}</p>
-                  <p className="card-text"></p>
+                  </span>
+                  <p className="card-text mt-3">{i.description}</p>
                 </div>
               </div>
             </>

@@ -30,15 +30,11 @@ body {
   transform: rotate(0);
 }
 
-.issue-card {
+.bordered-card {
   border-right-width: 5px;
   border-right-style: solid;
 }
 
-.issue {
-  border-right-color: #28a745;
-}
-
-.pr {
-  border-right-color: #6f42c1;
+.smaller { 
+  font-size: 1.17rem;
 }

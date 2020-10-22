@@ -1,5 +1,5 @@
 import { Octokit } from '@octokit/rest';
-import { Repository } from 'types/Repository';
+import { Repository, RepositoryType } from 'types/Repository';
 import { Owner } from 'types/Owner';
 import { Label } from 'types/Label';
 import { Vote } from 'types/Vote';
@@ -17,12 +17,21 @@ export default {
   GetRepositorySettings,
 };
 
-async function GetRepositories(owner: string): Promise<Array<Repository>> {
+async function GetRepositories(
+  owner: string,
+  type: RepositoryType = RepositoryType.PUBLIC,
+  limit: number = 25,
+  page: number = 1,
+  sort: 'created' | 'updated' | 'pushed' | 'full_name' | undefined = 'updated',
+  direction: 'asc' | 'desc' | undefined = 'desc'
+): Promise<Array<Repository>> {
   const octokit = new Octokit();
-  const result = await octokit.repos.listForOrg({ org: owner, type: 'public' });
+  const result = await octokit.repos.listForOrg({ org: owner, type, per_page: limit, page, sort, direction });
   if (result.status !== 200) throw new Error("Couldn't retrieve public repositories");
 
-  return Array.from(result.data).map((i) => toRepository(i));
+  return Array.from(result.data)
+    .map((i) => toRepository(i))
+    .sort((a, b) => b.stargazersCount - a.stargazersCount);
 }
 
 async function GetRepository(owner: string, repo: string): Promise<Repository> {
@@ -110,7 +119,11 @@ function toRepository(source: any): Repository {
     name: source.name,
     fullName: source.full_name,
     description: source.description,
+    language: source.language,
+    archived: source.archived,
     owner: toOwner(source.owner),
+    created: new Date(source.created_at),
+    updated: new Date(source.updated_at),
     url: source.html_url,
     homepage: source.homepage,
     stargazersCount: source.stargazers_count,

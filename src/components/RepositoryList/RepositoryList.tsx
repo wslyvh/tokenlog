@@ -1,32 +1,29 @@
+import { RepositoryCard } from 'components/RepositoryCard';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import IssueService from 'services/IssueService';
 import { Repository } from 'types/Repository';
 
-interface RepositoryOverviewProps {
+interface RepositoryListProps {
   organization: string;
 }
 
-export function RepositoryOverview(props: RepositoryOverviewProps) {
+export function RepositoryList(props: RepositoryListProps) {
   const [repositories, setRepositories] = useState<Array<Repository>>([]);
 
   useEffect(() => {
-    async function getRepository() {
+    async function asyncEffect() {
       const data = await IssueService.GetRepositories(props.organization);
 
       setRepositories(data);
     }
-    getRepository();
+
+    asyncEffect();
   }, [props.organization]);
 
   return (
     <div className="list-group">
       {repositories.map((i: Repository) => {
-        return (
-          <Link key={i.id} to={'/' + i.fullName} className="list-group-item list-group-item-action">
-            {i.name}
-          </Link>
-        );
+        return <RepositoryCard key={i.id} repository={i} />;
       })}
     </div>
   );
