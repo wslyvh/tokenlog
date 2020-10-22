@@ -6,7 +6,15 @@
 <img src="https://tokenlog.xyz/icon.png" alt="ETH Gas.watch" width="50"/> 
 
 # Token-weighted Backlogs
-Tokenlog is a governance tool that allows token holders to help vote and prioritise Github issues. Instead of one-off proposals, token holders can continously help and prioritize your backlog. Tokenlog offers to vote either in as 1-token, 1-vote, or through quadratic voting. Quadratic voting is a collective decision-making procedure where individuals allocate votes to express the degree of their preferences, rather than just the direction of their preferences. More details at [ETH Gas Station](https://ethgasstation.info/blog/quadratic-funding-in-a-nutshell/)
+
+Tokenlog is a governance tool to create token-weighted backlogs
+
+It allows projects to continuously gather feedback from their token holders in order to help plan and prioritize their work.​ It allows token holders to actively signal which items matter to them rather than just vote on single proposals.
+
+> A better way for projects to collaborate with their biggest supporters.
+
+## Summary 
+Tokenlog works on any Github repository and leaves your current workflow in place. Voting is either by a 1-token, 1-vote, or as by default through quadratic voting. Quadratic voting is a collective decision-making procedure where individuals allocate votes to express the degree of their preferences, rather than just the direction of their preferences. More details at [ETH Gas Station](https://ethgasstation.info/blog/quadratic-funding-in-a-nutshell/)
 
 ## Links
 - Website https://tokenlog.xyz/
@@ -14,11 +22,9 @@ Tokenlog is a governance tool that allows token holders to help vote and priorit
 - All Issues https://github.com/wslyvh/tokenlog/issues
 
 ## Documentation
-
 Tokenlog works on any Github repository and follows Github's relative paths, e.g. `tokenlog.xyz/<org>/<repo>`. To allow voting, see the following Config section. 
 
 ## Config
-
 Tokenlog tries to pull a configuration directly from your repository. This proofs ownership of the repo and doesn't require any curation or management. Just upload a `tokenlog.json` config to the root of your repository.
 
 Example
