@@ -1,32 +1,10 @@
-import { useWeb3React } from '@web3-react/core';
 import { IconLink } from 'components/IconLink';
 import { useRepositoryContext } from 'context/RepoContext';
-import React, { useEffect, useState } from 'react';
-import VotingService from 'services/VotingService';
+import React from 'react';
 import { Percentage, ShortenAddress } from 'utils/format';
 
 export function TokenInfo() {
-  const web3Context = useWeb3React();
   const repoContext = useRepositoryContext();
-  const [balance, setBalance] = useState<number>();
-
-  useEffect(() => {
-    async function asyncEffect() {
-      if (repoContext.settings?.token?.address && web3Context.account) {
-        const balance = await VotingService.GetTokenBalance(
-          repoContext.settings.token.address,
-          web3Context.account,
-          web3Context.chainId
-        );
-
-        if (balance) {
-          setBalance(balance);
-        }
-      }
-    }
-
-    asyncEffect();
-  }, [repoContext.settings, web3Context.account, web3Context.chainId]);
 
   const renderSettingsLink = (
     <IconLink
@@ -57,8 +35,8 @@ export function TokenInfo() {
     );
   }
 
-  const renderBalance = balance ? (
-    balance.toFixed(2) + ' votes (' + Percentage(balance, repoContext.settings.token.totalSupply) + '%)'
+  const renderBalance = repoContext.userBalance ? (
+    repoContext.userBalance.toFixed(2) + ' votes (' + Percentage(repoContext.userBalance, repoContext.settings.token.totalSupply) + '%)'
   ) : (
     <i>No voting power</i>
   );

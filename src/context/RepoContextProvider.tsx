@@ -3,6 +3,7 @@ import { Loader } from 'components/Loader';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import IssueService from 'services/IssueService';
+import VotingService from 'services/VotingService';
 import { DefaultRepoContext, IRepositoryContext, RepoContext } from './RepoContext';
 
 export const RepoContextProvider = ({ children }: { children: ReactNode }) => {
@@ -16,17 +17,24 @@ export const RepoContextProvider = ({ children }: { children: ReactNode }) => {
       const repository = await IssueService.GetRepository(org, repo);
       const settings = await IssueService.GetRepositorySettings(org, repo, web3Context.chainId);
 
+      let userBalance = 0;
+      if (web3Context.account && settings?.tokenAddress) {
+        userBalance =
+          (await VotingService.GetTokenBalance(settings.tokenAddress, web3Context.account, web3Context.chainId)) ?? 0;
+      }
+
       setContext({
         org: org,
         repo: repo,
         repository: repository,
         settings: settings,
+        userBalance: userBalance,
       });
       setLoading(false);
     }
 
     asyncEffect();
-  }, [org, repo, web3Context.chainId]);
+  }, [org, repo, web3Context.chainId, web3Context.account]);
 
   if (loading) {
     return (
@@ -43,6 +51,7 @@ export const RepoContextProvider = ({ children }: { children: ReactNode }) => {
         repo: repo,
         repository: context.repository,
         settings: context.settings,
+        userBalance: context.userBalance,
         setContext: setContext,
       }}
     >

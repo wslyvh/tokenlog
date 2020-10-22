@@ -17,7 +17,6 @@ export function VotingCard(props: VotingCardProps) {
   const [signer, setSigner] = useState<any>();
   const [voteCount, setVoteCount] = useState(props.issue.voteCount);
   const [votingAmount, setVotingAmount] = useState(0);
-  const [balance, setBalance] = useState(0);
 
   useEffect(() => {
     async function asyncEffect() {
@@ -29,24 +28,6 @@ export function VotingCard(props: VotingCardProps) {
 
     asyncEffect();
   }, [web3Context.account, web3Context.library]);
-
-  useEffect(() => {
-    async function asyncEffect() {
-      if (repoContext.settings?.token?.address && web3Context.account) {
-        const balance = await VotingService.GetTokenBalance(
-          repoContext.settings.token.address,
-          web3Context.account,
-          web3Context.chainId
-        );
-
-        if (balance) {
-          setBalance(balance);
-        }
-      }
-    }
-
-    asyncEffect();
-  }, [repoContext.settings, web3Context.account, web3Context.chainId]);
 
   async function castVote(votes: number) {
     if (signer) {
@@ -76,20 +57,25 @@ export function VotingCard(props: VotingCardProps) {
   }
 
   const renderVotingInput =
-    balance === 0 ? (
+    repoContext.userBalance === 0 ? (
       <span className="italic">You don't have any voting power.</span>
     ) : (
       <>
         <p>With how many tokens would you like to vote? </p>
         <div className="text-center">
-          <VoteCounter type={VotingMethod.QUADRATIC} step={1} max={balance} onChange={setVotingAmount} />
+          <VoteCounter
+            type={VotingMethod.QUADRATIC}
+            step={1}
+            max={repoContext.userBalance}
+            onChange={setVotingAmount}
+          />
         </div>
       </>
     );
 
   return (
     <>
-      <div className="counter-card border rounded clearfix">
+      <div className="counter-card border rounded">
         <div>
           <span
             className="fas fa-angle-up stretched-link"

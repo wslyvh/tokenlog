@@ -49,8 +49,8 @@ async function GetTokenBalance(tokenAddress: string, address: string, chainId?: 
     const decimals = await erc20.decimals();
     const votes = await erc20.getCurrentVotes('0xac5720d6ee2d7872b88914c9c5fa9bf38e72faf6');
     delegatedVotes = parseFloat(ethers.utils.formatUnits(votes, decimals));
-  } catch (ex) {
-    console.log("Couldn't retrieve delegated votes. Not applicable to all ERC20 token's");
+  } catch {
+    // Ignore error: Delegated votes are not applicable to all ERC20 token's
   }
 
   try {

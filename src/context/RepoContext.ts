@@ -7,6 +7,7 @@ export const DefaultRepoContext = {
   repo: '',
   repository: undefined,
   settings: undefined,
+  userBalance: 0,
   setContext: () => {},
 };
 
@@ -15,6 +16,7 @@ export interface IRepositoryContext {
   repo: string;
   repository: Repository | undefined;
   settings: RepositorySettings | undefined;
+  userBalance: number;
 }
 
 export interface RepoContextType {
@@ -22,6 +24,7 @@ export interface RepoContextType {
   repo: string;
   repository: Repository | undefined;
   settings: RepositorySettings | undefined;
+  userBalance: number;
   setContext: (context: IRepositoryContext) => void;
 }
 
