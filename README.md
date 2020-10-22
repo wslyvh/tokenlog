@@ -6,16 +6,16 @@
 <img src="https://tokenlog.xyz/icon.png" alt="ETH Gas.watch" width="50"/> 
 
 # Token-weighted Backlogs
-Tokenlog is a governance tool that allows token holders to help vote and prioritise issues. Instead of one-off proposals, token holders can continously help and prioritize your backlog.
+Tokenlog is a governance tool that allows token holders to help vote and prioritise Github issues. Instead of one-off proposals, token holders can continously help and prioritize your backlog. Tokenlog offers to vote either in as 1-token, 1-vote, or through quadratic voting. Quadratic voting is a collective decision-making procedure where individuals allocate votes to express the degree of their preferences, rather than just the direction of their preferences. More details at [ETH Gas Station](https://ethgasstation.info/blog/quadratic-funding-in-a-nutshell/)
 
 ## Links
 - Website https://tokenlog.xyz/
 - Backlog https://tokenlog.xyz/wslyvh/tokenlog
-- Issues https://github.com/wslyvh/tokenlog/issues
+- All Issues https://github.com/wslyvh/tokenlog/issues
 
 ## Documentation
 
-Tokenlog works on any Github repository and follows Github's relative paths, e.g. `tokenlog.xyz/<org>/<repo>`. To allow voting, see the following Config section.
+Tokenlog works on any Github repository and follows Github's relative paths, e.g. `tokenlog.xyz/<org>/<repo>`. To allow voting, see the following Config section. 
 
 ## Config
 
