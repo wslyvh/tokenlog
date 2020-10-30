@@ -17,17 +17,23 @@ export function VotingCard(props: VotingCardProps) {
   const [signer, setSigner] = useState<any>();
   const [voteCount, setVoteCount] = useState(props.issue.voteCount);
   const [votingAmount, setVotingAmount] = useState([0, 0]);
+  const [costAndVotes, setCostAndVotes] = useState([0, 0]);
 
   useEffect(() => {
     async function asyncEffect() {
       const signer = web3Context.library?.getSigner();
       if (web3Context.account && signer) {
         setSigner(signer);
+
+        const previousVotes = props.issue.votes.filter((i) => i.address === web3Context.account);
+        const cost = previousVotes.reduce((a, b) => a + b.cost, 0);
+        const votes = previousVotes.reduce((a, b) => a + b.amount, 0);
+        setCostAndVotes([cost, votes]);
       }
     }
 
     asyncEffect();
-  }, [web3Context.account, web3Context.library]);
+  }, [web3Context.account, web3Context.library, props.issue]);
 
   async function castVote(votes: number[]) {
     if (signer) {
@@ -60,15 +66,21 @@ export function VotingCard(props: VotingCardProps) {
 
   const renderVotingInput =
     repoContext.votingPower?.available === 0 ? (
-      <span className="italic">You don't have any voting power left.</span>
+      <span className="italic">You don't have any voting power available.</span>
     ) : (
       <>
         <p>With how many tokens would you like to vote? </p>
+        <p>
+          You already have {costAndVotes[1]} votes on this issue and a total of{' '}
+          {repoContext.votingPower?.available?.toFixed(2)} remaining.
+        </p>
         <div className="text-center">
           <VoteCounter
             type={VotingMethod.QUADRATIC}
             step={1}
             max={repoContext.votingPower?.available ?? 0}
+            currentCost={costAndVotes[0]}
+            currentVotes={costAndVotes[1]}
             onChange={setVotingAmount}
           />
         </div>

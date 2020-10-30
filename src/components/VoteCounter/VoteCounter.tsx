@@ -1,11 +1,13 @@
 import { Alert } from 'components/Alert';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { VotingMethod } from 'types/RepositorySettings';
 
 interface VoteCounterProps {
   type: VotingMethod;
   step: number;
   max: number;
+  currentCost: number;
+  currentVotes: number;
   onChange: (value: number[]) => void;
 }
 
@@ -18,28 +20,41 @@ export function VoteCounter(props: VoteCounterProps) {
   const [cost, setCost] = useState(getQuadraticCost(props.step));
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    if (props.type === VotingMethod.QUADRATIC) {
+      const qc = getQuadraticCost(props.currentVotes + props.step);
+      const totalQc = qc - props.currentCost;
+
+      setCost(totalQc);
+    }
+  }, [props]);
+
   async function voteUp() {
     const votes = numberOfVotes + props.step;
-    const qc = getQuadraticCost(votes);
+    const totalVotes = numberOfVotes + props.step + props.currentVotes;
+    const qc = getQuadraticCost(totalVotes);
+    const totalQc = qc - props.currentCost;
 
-    if (qc >= props.max) {
+    if (totalQc >= props.max) {
       setError(`Can't vote more than ${props.max}`);
       return;
     }
 
-    setValues(votes, qc, '');
+    setValues(votes, totalQc, '');
   }
 
   async function voteDown() {
     const votes = numberOfVotes - props.step;
-    const qc = getQuadraticCost(votes);
+    const totalVotes = numberOfVotes - props.step + props.currentVotes;
+    const qc = getQuadraticCost(totalVotes);
+    const totalQc = qc - props.currentCost;
 
     if (votes < props.step) {
       setError(`Can't vote less than ${props.step}`);
       return;
     }
 
-    setValues(votes, qc, '');
+    setValues(votes, totalQc, '');
   }
 
   async function setValues(votes: number, cost: number, error: string) {

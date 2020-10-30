@@ -31,10 +31,10 @@ export function IssueCard(props: IssueCardProps) {
 
             <ul className="list-inline small text-muted mt-3 mb-0">
               <li className="list-inline-item pr-2">
-                <IconTag icon={'fas fa-chevron-up'} text={props.issue.votes.length.toString() + ' votes'} />
+                <IconTag icon={'fas fa-chevron-up'} text={props.issue.voteCount + ' votes'} />
               </li>
               <li className="list-inline-item pr-1">
-                <IconTag icon={'far fa-comments'} text={props.issue.commentsCount.toString() + ' comments'} />
+                <IconTag icon={'far fa-comments'} text={props.issue.commentsCount + ' comments'} />
               </li>
               <li className="list-inline-item">
                 <IconTag icon={'fas fa-history'} text={TimeFromNow(props.issue.updated)} />

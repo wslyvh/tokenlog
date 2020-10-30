@@ -42,7 +42,6 @@ describe('voting service, token info', function () {
 });
 
 describe('voting service, votes', function () {
-
   it('should cast a new vote at wslyvh/tokenlog', async function () {
     const actual = {
       org: 'wslyvh',
@@ -58,8 +57,8 @@ describe('voting service, votes', function () {
 
     const response = {
       status: 200,
-      data: actual
-    }
+      data: actual,
+    };
 
     jest.spyOn(axios, 'post').mockImplementationOnce(() => Promise.resolve(response));
 
@@ -86,7 +85,7 @@ describe('voting service, votes', function () {
       timestamp: new Date(),
     } as Vote;
 
-    jest.spyOn(axios, 'get').mockImplementationOnce(() => Promise.resolve({ status: 200, data: [ actual ] }));
+    jest.spyOn(axios, 'get').mockImplementationOnce(() => Promise.resolve({ status: 200, data: [actual] }));
 
     let result = await VotingService.GetVotes(org, repo);
 
