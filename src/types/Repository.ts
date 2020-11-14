@@ -22,3 +22,8 @@ export interface Repository {
   forksCount: number;
   openIssueCount: number;
 }
+
+export interface OrgRepo { 
+  org: string;
+  repo: string;
+}

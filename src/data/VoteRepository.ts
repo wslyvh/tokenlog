@@ -1,5 +1,6 @@
 import { DbConfig } from 'config/Db';
 import mongoose from 'mongoose';
+import { OrgRepo } from 'types/Repository';
 import { Vote } from 'types/Vote';
 import VoteModel from './models/VoteModel';
 
@@ -53,6 +54,24 @@ class VoteRepository {
     }
 
     return 0;
+  }
+
+  async GetReposWithVotes(): Promise<Array<OrgRepo>> {
+    try {
+      await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+
+      const aggr = await VoteModel.aggregate([
+        { $group: { _id : { org: "$org", repo: "$repo" }}}, 
+      ])
+
+      return aggr.map(i => { return { org: i._id.org, repo: i._id.repo }});
+    } catch (ex) {
+      console.error(ex);
+    } finally {
+      await mongoose.disconnect();
+    }
+
+    return [];
   }
 }
 
