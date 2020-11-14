@@ -29,3 +29,9 @@ export interface Issue {
   votes: Array<Vote>;
   voteCount: number;
 }
+
+export interface OrgRepoIssue {
+  org: string;
+  repo: string;
+  number: number;
+}

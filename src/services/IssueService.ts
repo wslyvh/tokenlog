@@ -14,6 +14,7 @@ export default {
   GetRepositoryLabels,
   GetRepositoryIssues,
   GetRepositorySettings,
+  GetIssue,
 };
 
 async function GetRepositories(
@@ -104,6 +105,14 @@ async function GetRepositorySettings(
   }
 
   return settings;
+}
+
+async function GetIssue(owner: string, repo: string, number: number): Promise<Issue | undefined> {
+  const octokit = new Octokit();
+  const result = await octokit.issues.get({ owner, repo, issue_number: number });
+  if (result.status !== 200) throw new Error("Couldn't retrieve repository info");
+
+  return toIssue(result.data, []);
 }
 
 function toRepository(source: any): Repository {

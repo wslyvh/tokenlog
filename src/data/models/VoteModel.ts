@@ -13,6 +13,7 @@ const voteSchema: Schema = new Schema({
   cost: { type: Number, required: true },
   signature: { type: String, required: true },
   timestamp: { type: Date, required: true },
+  closed: { type: Boolean, required: false, default: false },
 });
 
 export default model<VoteModel>('Vote', voteSchema);

@@ -23,7 +23,7 @@ export interface Repository {
   openIssueCount: number;
 }
 
-export interface OrgRepo { 
+export interface OrgRepo {
   org: string;
   repo: string;
 }
