@@ -2,6 +2,7 @@ import { Context, APIGatewayEvent } from 'aws-lambda';
 import VoteRepository from 'data/VoteRepository';
 import IssueService from 'services/IssueService';
 import { IssueState } from 'types/Issue';
+require('encoding');
 
 export async function handler(event: APIGatewayEvent, context: Context) {
   if (event.httpMethod !== 'GET') return { statusCode: 405, body: 'Method Not Allowed' };
