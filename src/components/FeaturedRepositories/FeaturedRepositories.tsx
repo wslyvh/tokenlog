@@ -40,6 +40,12 @@ const projects = [
     link: '/keep-network/tbtc',
   },
   {
+    title: 'The Commons Stack',
+    description: 'Realigning Incentives to Support Public Goods',
+    imageUrl: 'https://avatars2.githubusercontent.com/u/48513475',
+    link: '/commons-stack/iteration0',
+  },
+  {
     title: 'Tokenlog',
     description: 'Token-weighted backlogs',
     imageUrl: 'https://tokenlog.xyz/icon.png',

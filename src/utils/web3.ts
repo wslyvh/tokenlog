@@ -3,11 +3,17 @@ import { ethers } from 'ethers';
 import { BaseProvider } from 'ethers/providers';
 
 export const Injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42],
+  supportedChainIds: [1, 3, 4, 5, 42, 100],
 });
 
 export async function GetProvider(chainId?: number): Promise<BaseProvider> {
-  return ethers.getDefaultProvider(GetNetworkName(chainId ?? 1));
+  switch (chainId) {
+    case 100:
+      return new ethers.providers.JsonRpcProvider('https://rpc.xdaichain.com/');
+
+    default:
+      return ethers.getDefaultProvider(GetNetworkName(chainId ?? 1));
+  }
 
   // switch (chainId) {
   //   case 1:
@@ -27,6 +33,8 @@ export async function GetProvider(chainId?: number): Promise<BaseProvider> {
   //       'https://eth-goerli.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
   //     );
   //   case 42:
+  //     return new ethers.providers.JsonRpcProvider('https://poa-kovan.gateway.pokt.network/v1/5f9180e3b90218002e9cea69');
+  //   case 100:
   //     return new ethers.providers.JsonRpcProvider('https://poa-kovan.gateway.pokt.network/v1/5f9180e3b90218002e9cea69');
   //   default:
   //     return new ethers.providers.JsonRpcProvider(
