@@ -48,3 +48,9 @@ body {
 .smaller { 
   font-size: 1.17rem;
 }
+
+.beta-banner { 
+  margin: 0 auto;
+  text-align: center;
+  padding: 5px;
+}
