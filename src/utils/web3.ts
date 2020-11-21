@@ -64,7 +64,26 @@ export function GetNetworkName(chainId: number): string {
       return 'goerli';
     case 42:
       return 'kovan';
+    case 100:
+      return 'xdai';
   }
 
   return 'homestead';
+}
+
+export function GetNetworkColor(network: string): string {
+  switch (network) {
+    case 'ropsten':
+      return 'danger';
+    case 'kovan':
+      return 'primary';
+    case 'rinkeby':
+      return 'warning';
+    case 'goerli':
+      return 'dark';
+    case 'xdai':
+      return 'light';
+  }
+
+  return 'info';
 }
