@@ -1,9 +1,12 @@
+import { useWeb3React } from '@web3-react/core';
 import { useRepositoryContext } from 'context/RepoContext';
 import React from 'react';
 import { Percentage, ShortenAddress } from 'utils/format';
+import { GetEtherscanLink } from 'utils/web3';
 
 export function TokenInfo() {
   const repoContext = useRepositoryContext();
+  const web3Context = useWeb3React();
 
   const renderModal = (
     <>
@@ -69,7 +72,7 @@ export function TokenInfo() {
           <h5 className="card-title">Configure</h5>
           <h6 className="card-subtitle my-1 text-muted">
             {repoContext.settings?.tokenAddress && (
-              <a href={`https://etherscan.io/token/${repoContext.settings.tokenAddress}`}>
+              <a href={GetEtherscanLink(repoContext.settings.tokenAddress, web3Context.chainId || 1, "token")}>
                 {ShortenAddress(repoContext.settings.tokenAddress, 12)}
               </a>
             )}
@@ -104,7 +107,7 @@ export function TokenInfo() {
           {repoContext.settings.token.name} ({repoContext.settings.token.symbol})
         </h5>
         <h6 className="card-subtitle my-1 text-muted">
-          <a href={`https://etherscan.io/token/${repoContext.settings.token.address}`}>
+          <a href={GetEtherscanLink(repoContext.settings.tokenAddress, web3Context.chainId || 1, "token")}>
             {ShortenAddress(repoContext.settings.token.address, 12)}
           </a>
         </h6>
