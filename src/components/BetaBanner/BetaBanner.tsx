@@ -6,7 +6,7 @@ export const BetaBanner = () => {
       <span role="img" aria-label="beta" className="mr-2">
         🧪
       </span>
-      Beta version. Join <a href="https://github.com/wslyvh/tokenlog">Github</a> to contribute.
+      Beta version. Join us at <a href="https://github.com/wslyvh/tokenlog">Github</a> to contribute.
     </div>
   );
 };
