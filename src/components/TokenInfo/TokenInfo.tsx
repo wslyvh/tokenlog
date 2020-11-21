@@ -1,4 +1,3 @@
-import { IconLink } from 'components/IconLink';
 import { useRepositoryContext } from 'context/RepoContext';
 import React from 'react';
 import { Percentage, ShortenAddress } from 'utils/format';
@@ -6,12 +5,61 @@ import { Percentage, ShortenAddress } from 'utils/format';
 export function TokenInfo() {
   const repoContext = useRepositoryContext();
 
-  const renderSettingsLink = (
-    <IconLink
-      url={`/${repoContext.repository?.owner.name}/${repoContext.repository?.name}/settings`}
-      icon="fas fa-cog"
-      linkClass={'card-link'}
-    />
+  const renderModal = (
+    <>
+      <div
+        className="modal fade"
+        id="repo-config-info"
+        tabIndex={-1}
+        aria-labelledby="repo-config-info-label"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="repo-config-info-label">
+                Repository Settings
+              </h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <h3>Settings</h3>
+              <p>
+                Tokenlog tries to pull a configuration directly from the repository. If it's not configured yet, upload
+                a <code>tokenlog.json</code> config to the root of your repository. For more details, check out{' '}
+                <a href="https://github.com/wslyvh/tokenlog">Github</a>.
+              </p>
+              <h3>Selected network</h3>
+              <p>
+                If your repository is configured, but not running on mainnet then make sure to check your network
+                settings. You can switch to a different network by using Metamask, or any Web3-enabled browser.
+              </p>
+              <p>
+                <strong>Supported networks:</strong> mainnet, ropsten, rinkeby, kovan, goerli &amp; xdai
+              </p>
+              <h3>Voting Power</h3>
+              <p>
+                Holders of the configured token can use their stake to signal which items are important to them. Your
+                voting power is based on your % vs. the total supply.
+              </p>
+              <h3>Voting</h3>
+              <p>
+                Voting is done either on a 1-token 1-vote principle, or through{' '}
+                <a href="https://ethgasstation.info/blog/quadratic-funding-in-a-nutshell/">quadratic voting</a>. With
+                quadratic voting the cost of additional votes increases as more votes are cast.
+              </p>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 
   if (!repoContext.settings?.token) {
@@ -29,7 +77,10 @@ export function TokenInfo() {
           <p className="card-text text-truncate">
             <i>This repo is not configured yet..</i>
           </p>
-          {renderSettingsLink}
+          <span role="button" className="card-link" data-toggle="modal" data-target={`#repo-config-info`}>
+            <span className="fas fa-info-circle"></span>
+          </span>
+          {renderModal}
         </div>
       </div>
     );
@@ -58,7 +109,11 @@ export function TokenInfo() {
           </a>
         </h6>
         <p className="card-text text-truncate">{renderBalance}</p>
-        {renderSettingsLink}
+
+        <span role="button" className="card-link" data-toggle="modal" data-target={`#repo-config-info`}>
+          <span className="fas fa-info-circle"></span>
+        </span>
+        {renderModal}
       </div>
     </div>
   );
