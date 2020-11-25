@@ -72,7 +72,7 @@ export function TokenInfo() {
           <h5 className="card-title">Configure</h5>
           <h6 className="card-subtitle my-1 text-muted">
             {repoContext.settings?.tokenAddress && (
-              <a href={GetEtherscanLink(repoContext.settings.tokenAddress, web3Context.chainId || 1, "token")}>
+              <a href={GetEtherscanLink(repoContext.settings.tokenAddress, web3Context.chainId || 1, 'token')}>
                 {ShortenAddress(repoContext.settings.tokenAddress, 12)}
               </a>
             )}
@@ -107,7 +107,7 @@ export function TokenInfo() {
           {repoContext.settings.token.name} ({repoContext.settings.token.symbol})
         </h5>
         <h6 className="card-subtitle my-1 text-muted">
-          <a href={GetEtherscanLink(repoContext.settings.tokenAddress, web3Context.chainId || 1, "token")}>
+          <a href={GetEtherscanLink(repoContext.settings.tokenAddress, web3Context.chainId || 1, 'token')}>
             {ShortenAddress(repoContext.settings.token.address, 12)}
           </a>
         </h6>

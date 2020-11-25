@@ -88,20 +88,20 @@ export function GetNetworkColor(network: string): string {
   return 'info';
 }
 
-export function GetEtherscanLink(address: string, chainId: number, type: "address" | "token" = 'address'): string { 
+export function GetEtherscanLink(address: string, chainId: number, type: 'address' | 'token' = 'address'): string {
   switch (chainId) {
     case 3:
-      return `https://ropsten.etherscan.io/${type}/${address}`
+      return `https://ropsten.etherscan.io/${type}/${address}`;
     case 4:
-      return `https://rinkeby.etherscan.io/${type}/${address}`
+      return `https://rinkeby.etherscan.io/${type}/${address}`;
     case 5:
-      return `https://goerli.etherscan.io/${type}/${address}`
+      return `https://goerli.etherscan.io/${type}/${address}`;
     case 42:
-      return `https://kovan.etherscan.io/${type}/${address}`
+      return `https://kovan.etherscan.io/${type}/${address}`;
     case 100:
-      if (type === 'token') return `https://blockscout.com/poa/xdai/tokens/${address}`
-      if (type === 'address') return `https://blockscout.com/poa/xdai/address/${address}`
+      if (type === 'token') return `https://blockscout.com/poa/xdai/tokens/${address}`;
+      if (type === 'address') return `https://blockscout.com/poa/xdai/address/${address}`;
   }
 
-  return `https://www.etherscan.io/${type}/${address}`
+  return `https://www.etherscan.io/${type}/${address}`;
 }

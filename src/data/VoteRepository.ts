@@ -20,10 +20,10 @@ class VoteRepository {
   }
 
   public async Connect(): Promise<void> {
-    if (!this.connected) { 
+    if (!this.connected) {
       await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
       this.connected = true;
-    } 
+    }
   }
 
   async CreateVote(vote: Vote): Promise<Vote | undefined> {
@@ -33,7 +33,7 @@ class VoteRepository {
       return await VoteModel.create(vote);
     } catch (ex) {
       console.error(ex);
-    } 
+    }
   }
 
   async CloseVote(org: string, repo: string, number: number): Promise<void> {
@@ -46,7 +46,7 @@ class VoteRepository {
       await VoteModel.findOneAndUpdate(filter, update, { new: true });
     } catch (ex) {
       console.error(ex);
-    } 
+    }
   }
 
   async GetVotes(org: string, repo: string): Promise<Array<Vote>> {
@@ -56,7 +56,7 @@ class VoteRepository {
       return await VoteModel.find({ org: org, repo: repo });
     } catch (ex) {
       console.error(ex);
-    } 
+    }
 
     return [];
   }
@@ -73,7 +73,7 @@ class VoteRepository {
       return result.length > 0 ? result[0].cost : 0;
     } catch (ex) {
       console.error(ex);
-    } 
+    }
 
     return 0;
   }
@@ -108,7 +108,7 @@ class VoteRepository {
       });
     } catch (ex) {
       console.error(ex);
-    } 
+    }
 
     return [];
   }

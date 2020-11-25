@@ -10,7 +10,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   const repo = event.queryStringParameters?.repo ?? '';
   const address = event.queryStringParameters?.address ?? '';
   if (!org || !repo || !address) return { statusCode: 400, body: 'Bad Request' };
-  
+
   context.callbackWaitsForEmptyEventLoop = false;
   const data = await repository.GetUserVotes(org, repo, address);
 
