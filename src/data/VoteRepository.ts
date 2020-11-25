@@ -13,21 +13,32 @@ const dbOptions = {
 };
 
 class VoteRepository {
+  private connected: boolean;
+
+  constructor() {
+    this.connected = false;
+  }
+
+  public async Connect(): Promise<void> {
+    if (!this.connected) { 
+      await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+      this.connected = true;
+    } 
+  }
+
   async CreateVote(vote: Vote): Promise<Vote | undefined> {
     try {
-      await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+      await this.Connect();
 
       return await VoteModel.create(vote);
     } catch (ex) {
       console.error(ex);
-    } finally {
-      await mongoose.disconnect();
-    }
+    } 
   }
 
   async CloseVote(org: string, repo: string, number: number): Promise<void> {
     try {
-      await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+      await this.Connect();
 
       const filter = { org: org, repo: repo, number: number };
       const update = { closed: true };
@@ -35,28 +46,25 @@ class VoteRepository {
       await VoteModel.findOneAndUpdate(filter, update, { new: true });
     } catch (ex) {
       console.error(ex);
-    } finally {
-      await mongoose.disconnect();
-    }
+    } 
   }
 
   async GetVotes(org: string, repo: string): Promise<Array<Vote>> {
     try {
-      await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+      await this.Connect();
 
       return await VoteModel.find({ org: org, repo: repo });
     } catch (ex) {
       console.error(ex);
-    } finally {
-      await mongoose.disconnect();
-    }
+    } 
 
     return [];
   }
 
   async GetUserVotes(org: string, repo: string, address: string): Promise<number> {
     try {
-      await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+      await this.Connect();
+
       const result = await VoteModel.aggregate([
         { $match: { org: org, repo: repo, address: address } },
         { $group: { _id: null, cost: { $sum: '$cost' } } },
@@ -65,16 +73,14 @@ class VoteRepository {
       return result.length > 0 ? result[0].cost : 0;
     } catch (ex) {
       console.error(ex);
-    } finally {
-      await mongoose.disconnect();
-    }
+    } 
 
     return 0;
   }
 
   async GetReposWithVotes(): Promise<Array<OrgRepo>> {
     try {
-      await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+      await this.Connect();
 
       const aggr = await VoteModel.aggregate([{ $group: { _id: { org: '$org', repo: '$repo' } } }]);
 
@@ -83,8 +89,6 @@ class VoteRepository {
       });
     } catch (ex) {
       console.error(ex);
-    } finally {
-      await mongoose.disconnect();
     }
 
     return [];
@@ -92,7 +96,7 @@ class VoteRepository {
 
   async GetRepoIssuesWithVotes(): Promise<Array<OrgRepoIssue>> {
     try {
-      await mongoose.connect(DbConfig.DB_CONNECTIONSTRING, dbOptions);
+      await this.Connect();
 
       const open = await VoteModel.aggregate([
         { $match: { closed: { $ne: true } } },
@@ -104,9 +108,7 @@ class VoteRepository {
       });
     } catch (ex) {
       console.error(ex);
-    } finally {
-      await mongoose.disconnect();
-    }
+    } 
 
     return [];
   }

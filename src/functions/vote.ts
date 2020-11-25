@@ -2,6 +2,8 @@ import { Context, APIGatewayEvent } from 'aws-lambda';
 import VoteRepository from 'data/VoteRepository';
 import { Vote } from 'types/Vote';
 
+const repository = new VoteRepository();
+
 export async function handler(event: APIGatewayEvent, context: Context) {
   if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
 
@@ -12,7 +14,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   const body = event.body ? (JSON.parse(event.body) as Vote) : undefined;
   if (!body) return { statusCode: 400, body: 'Bad Request' };
 
-  const repository = new VoteRepository();
+  context.callbackWaitsForEmptyEventLoop = false;
   const data = await repository.CreateVote(body);
 
   return {
