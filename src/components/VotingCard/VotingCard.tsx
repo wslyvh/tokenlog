@@ -76,7 +76,7 @@ export function VotingCard(props: VotingCardProps) {
         </p>
         <div className="text-center">
           <VoteCounter
-            type={VotingMethod.QUADRATIC}
+            type={VotingMethod.STANDARD}
             step={1}
             max={repoContext.votingPower?.available ?? 0}
             currentCost={costAndVotes[0]}

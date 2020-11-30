@@ -3,7 +3,6 @@ import { Token } from './Token';
 export enum VotingMethod {
   STANDARD = 'Standard voting',
   QUADRATIC = 'Quadratic voting',
-  STAKING = 'Staking',
 }
 
 export interface RepositorySettings {
