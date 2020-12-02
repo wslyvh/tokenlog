@@ -58,6 +58,19 @@ export function VotingCard(props: VotingCardProps) {
 
         await VotingService.CreateVote(vote);
         setVoteCount(voteCount + votes[0]);
+        if (repoContext.votingPower) { 
+          const vp = repoContext.votingPower;
+          vp.voted = repoContext.votingPower.voted + vote.cost
+          vp.available = repoContext.votingPower.available - vote.cost;
+          
+          repoContext.setContext({
+            org: repoContext.org,
+            repo: repoContext.repo,
+            repository: repoContext.repository,
+            settings: repoContext.settings,
+            votingPower: vp,
+          });
+        }
       }
     } else {
       console.error('No signer available. Need to login first');
