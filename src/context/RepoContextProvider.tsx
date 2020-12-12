@@ -21,7 +21,11 @@ export const RepoContextProvider = ({ children }: { children: ReactNode }) => {
       let votingPower: VotingPower | undefined = undefined;
       if (web3Context.account && settings?.tokenAddress) {
         const totalPower =
-          (await VotingService.GetVotingPower(settings.tokenAddress, web3Context.account, web3Context.chainId)) ?? 0;
+          (await VotingService.GetVotingPower(
+            settings.tokenAddress,
+            web3Context.account,
+            web3Context.chainId || settings.chainId
+          )) ?? 0;
         const userVotes = (await VotingService.GetUserVotes(org, repo, web3Context.account)) ?? 0;
 
         votingPower = {

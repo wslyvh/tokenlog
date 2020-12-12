@@ -2,7 +2,8 @@
     "org": "compound-finance",
     "repo": "compound-protocol",
     "tokenAddress": "0xc00e94cb662c3520282e6f5717214004a7f26888",
-    "labels": []
+    "labels": [],
+    "votingMethod": "QUADRATIC"
 },
 {
     "org": "gnosis",
@@ -26,36 +27,39 @@
     "org": "MetaMask",
     "repo": "metamask-extension",
     "tokenAddress": "0x4057950247e4ec8dc7fe399ec19ea43e80b931c8",
-    "labels": [""]
+    "labels": []
 },
 {
     "org": "keep-network",
     "repo": "tbtc",
     "tokenAddress": "0x8dAEBADE922dF735c38C80C7eBD708Af50815fAa",
-    "labels": [""]
+    "labels": []
 },
 {
     "org": "iearn-finance",
     "repo": "yearn-protocol",
     "tokenAddress": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
-    "labels": [""]
+    "labels": []
 },
 {
     "org": "iearn-finance",
     "repo": "iearn-finance",
     "tokenAddress": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
-    "labels": [""]
+    "labels": []
 },
 {
     "org": "pokt-network",
     "repo": "pocket-core",
     "tokenAddress": "0xeC3F753eF805C3b321287214AC2813453bE269A7",
-    "labels": [""]
+    "labels": [],
+    "chainId": 4
 },
 {
     "org": "commons-stack",
     "repo": "iteration0",
     "tokenAddress": "0xc4fbE68522ba81a28879763C3eE33e08b13c499E",
-    "labels": ["For Contributors"]
+    "labels": ["For Contributors"],
+    "votingMethod": "STANDARD",
+    "chainId": 100
 }
 ]

@@ -8,7 +8,9 @@ export enum VotingMethod {
 export interface RepositorySettings {
   org: string;
   repo: string;
-  tokenAddress: string;
   labels: Array<string>;
+  tokenAddress: string;
   token?: Token;
+  votingMethod?: VotingMethod;
+  chainId?: number;
 }

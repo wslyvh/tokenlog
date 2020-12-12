@@ -101,7 +101,7 @@ async function GetRepositorySettings(
   }
 
   if (settings) {
-    settings.token = await VotingService.GetTokenInfo(settings.tokenAddress, chainId);
+    settings.token = await VotingService.GetTokenInfo(settings.tokenAddress, chainId || settings.chainId);
   }
 
   return settings;

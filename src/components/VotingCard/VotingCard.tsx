@@ -18,6 +18,7 @@ export function VotingCard(props: VotingCardProps) {
   const [voteCount, setVoteCount] = useState(props.issue.voteCount);
   const [votingAmount, setVotingAmount] = useState([0, 0]);
   const [costAndVotes, setCostAndVotes] = useState([0, 0]);
+  const votingMethod = repoContext.settings?.votingMethod || VotingMethod.STANDARD;
 
   useEffect(() => {
     async function asyncEffect() {
@@ -58,11 +59,11 @@ export function VotingCard(props: VotingCardProps) {
 
         await VotingService.CreateVote(vote);
         setVoteCount(voteCount + votes[0]);
-        if (repoContext.votingPower) { 
+        if (repoContext.votingPower) {
           const vp = repoContext.votingPower;
-          vp.voted = repoContext.votingPower.voted + vote.cost
+          vp.voted = repoContext.votingPower.voted + vote.cost;
           vp.available = repoContext.votingPower.available - vote.cost;
-          
+
           repoContext.setContext({
             org: repoContext.org,
             repo: repoContext.repo,
@@ -89,7 +90,7 @@ export function VotingCard(props: VotingCardProps) {
         </p>
         <div className="text-center">
           <VoteCounter
-            type={VotingMethod.STANDARD}
+            type={votingMethod}
             step={1}
             max={repoContext.votingPower?.available ?? 0}
             currentCost={costAndVotes[0]}

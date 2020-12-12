@@ -35,7 +35,7 @@ export async function GetProvider(chainId?: number): Promise<BaseProvider> {
   //   case 42:
   //     return new ethers.providers.JsonRpcProvider('https://poa-kovan.gateway.pokt.network/v1/5f9180e3b90218002e9cea69');
   //   case 100:
-  //     return new ethers.providers.JsonRpcProvider('https://poa-kovan.gateway.pokt.network/v1/5f9180e3b90218002e9cea69');
+  //     return new ethers.providers.JsonRpcProvider('https://rpc.xdaichain.com/');
   //   default:
   //     return new ethers.providers.JsonRpcProvider(
   //       'https://eth-mainnet.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'

@@ -1,12 +1,15 @@
 import { useWeb3React } from '@web3-react/core';
+import { NetworkBadge } from 'components/NetworkBadge';
 import { useRepositoryContext } from 'context/RepoContext';
 import React from 'react';
 import { Percentage, ShortenAddress } from 'utils/format';
-import { GetEtherscanLink } from 'utils/web3';
+import { GetEtherscanLink, GetNetworkName } from 'utils/web3';
 
 export function TokenInfo() {
   const repoContext = useRepositoryContext();
   const web3Context = useWeb3React();
+
+  const chainId = web3Context.chainId || repoContext.settings?.chainId || 1;
 
   const renderModal = (
     <>
@@ -72,7 +75,7 @@ export function TokenInfo() {
           <h5 className="card-title">Configure</h5>
           <h6 className="card-subtitle my-1 text-muted">
             {repoContext.settings?.tokenAddress && (
-              <a href={GetEtherscanLink(repoContext.settings.tokenAddress, web3Context.chainId || 1, 'token')}>
+              <a href={GetEtherscanLink(repoContext.settings.tokenAddress, chainId, 'token')}>
                 {ShortenAddress(repoContext.settings.tokenAddress, 12)}
               </a>
             )}
@@ -107,11 +110,12 @@ export function TokenInfo() {
           {repoContext.settings.token.name} ({repoContext.settings.token.symbol})
         </h5>
         <h6 className="card-subtitle my-1 text-muted">
-          <a href={GetEtherscanLink(repoContext.settings.tokenAddress, web3Context.chainId || 1, 'token')}>
+          <a href={GetEtherscanLink(repoContext.settings.tokenAddress, chainId, 'token')}>
             {ShortenAddress(repoContext.settings.token.address, 12)}
           </a>
         </h6>
         <p className="card-text text-truncate">{renderBalance}</p>
+        <NetworkBadge chainId={chainId} networkName={GetNetworkName(chainId)} />
 
         <span role="button" className="card-link" data-toggle="modal" data-target={`#repo-config-info`}>
           <span className="fas fa-info-circle"></span>
