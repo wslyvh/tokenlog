@@ -6,7 +6,7 @@ import { Vote } from 'types/Vote';
 import { Issue, IssueState, IssueType } from 'types/Issue';
 import { RepositorySettings } from 'types/RepositorySettings';
 import VotingService from './VotingService';
-import RepoConfigs from 'config/repo-configs.json';
+import axios from 'axios';
 
 export default {
   GetRepositories,
@@ -85,26 +85,14 @@ async function GetRepositorySettings(
   repo: string,
   chainId?: number
 ): Promise<RepositorySettings | undefined> {
-  let settings = RepoConfigs.find((i) => i.org === owner && i.repo === repo) as RepositorySettings;
+  try {
+    const result = await axios.get(`/.netlify/functions/settings?owner=${owner}&repo=${repo}&chainId=${chainId}`);
+    if (result.status !== 200) throw new Error("Couldn't get repository settings");
 
-  if (!settings) {
-    try {
-      const octokit = new Octokit();
-      const result = await octokit.repos.getContent({ owner, repo, path: 'tokenlog.json' });
-      if (result.status !== 200) throw new Error("Couldn't retrieve tokenlog config");
-
-      const content = Buffer.from(result.data.content, 'base64').toString();
-      settings = JSON.parse(content) as RepositorySettings;
-    } catch {
-      console.error("Couldn't retrieve tokenlog config. The file likely doesn't exist at the requested repository.");
-    }
+    return result.data;
+  } catch {
+    console.error("Couldn't get repository settings", owner, repo, chainId);
   }
-
-  if (settings) {
-    settings.token = await VotingService.GetTokenInfo(settings.tokenAddress, chainId || settings.chainId);
-  }
-
-  return settings;
 }
 
 async function GetIssue(owner: string, repo: string, number: number): Promise<Issue | undefined> {
