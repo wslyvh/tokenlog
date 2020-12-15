@@ -1,62 +1,13 @@
-import { Router, Request, Response} from "express";
+import { Router } from "express";
+import { BacklogController } from "server/controllers/BacklogController";
 
 export const register = (router: Router) => {
-    router.get("/org", (req: Request, res: Response) => {
-        console.log("GET /org");
-
-        const data = 'Ok'
-        res.status(200).send(data);
-    });
-
-    router.get("/org/:org", (req: Request, res: Response) => {
-        console.log("GET /org", req.params.org);
-
-        const data = {
-            org: req.params.org,
-        }
-        res.status(200).send(data);
-    });
-
-    router.get("/org/:org/:repo", (req: Request, res: Response) => {
-        console.log("GET /org/repo", req.params.org, req.params.repo);
-
-        const data = {
-            org: req.params.org,
-            repo: req.params.repo
-        }
-        res.status(200).send(data);
-    });
-
-    router.get("/org/:org/:repo/settings", (req: Request, res: Response) => {
-        console.log("GET /org/repo/settings", req.params.org, req.params.repo);
-
-        const data = {
-            org: req.params.org,
-            repo: req.params.repo,
-            settings: {}
-        }
-        res.status(200).send(data);
-    });
-
-    router.get("/org/:org/:repo/issues", (req: Request, res: Response) => {
-        console.log("GET /org/repo/issues", req.params.org, req.params.repo);
-
-        const data = {
-            org: req.params.org,
-            repo: req.params.repo,
-            issues: []
-        }
-        res.status(200).send(data);
-    });
-
-    router.get("/org/:org/:repo/votes", (req: Request, res: Response) => {
-        console.log("GET /org/repo/votes", req.params.org, req.params.repo);
-
-        const data = {
-            org: req.params.org,
-            repo: req.params.repo,
-            votes: []
-        }
-        res.status(200).send(data);
-    });
+    const controller = new BacklogController();
+    
+    router.get("/owner", controller.GetOwners);
+    router.get("/owner/:id", controller.GetOwner); 
+    router.get("/owner/:id/:backlog", controller.GetBacklog); 
+    router.get("/owner/:id/:backlog/settings", controller.GetBacklogSettings);
+    router.get("/owner/:id/:backlog/items", controller.GetBacklogItems);
+    router.get("/owner/:id/:backlog/votes", controller.GetBacklogVotes);
 };
