@@ -9,27 +9,27 @@ const repositorySettings: any = {};
 export async function handler(event: APIGatewayEvent, context: Context) {
   if (event.httpMethod !== 'GET') return { statusCode: 405, body: 'Method Not Allowed' };
   context.callbackWaitsForEmptyEventLoop = false;
-  
+
   const owner = event.queryStringParameters?.owner ?? '';
   const repo = event.queryStringParameters?.repo ?? '';
   if (!owner || !repo) return { statusCode: 400, body: 'Bad Request' };
 
   let chainId = 1;
-  if (event.queryStringParameters?.chainId && !isNaN(Number(event.queryStringParameters?.chainId))) { 
+  if (event.queryStringParameters?.chainId && !isNaN(Number(event.queryStringParameters?.chainId))) {
     chainId = Number(event.queryStringParameters?.chainId);
   }
 
   const cacheKey = `repoSettings::${owner}-${repo}`;
-  console.log("GET RepositorySettings", owner, repo);
-  
+  console.log('GET RepositorySettings', owner, repo);
+
   if (repositorySettings[cacheKey]) {
-    console.log("RETURN Cached settings");
+    console.log('RETURN Cached settings');
     return {
-        statusCode: 200,
-        headers: {
+      statusCode: 200,
+      headers: {
         'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(repositorySettings[cacheKey]),
+      },
+      body: JSON.stringify(repositorySettings[cacheKey]),
     };
   }
 
@@ -49,12 +49,12 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 
   if (settings) {
     const chain = settings.chainId || chainId;
-    console.log("GET TokenInfo", settings.tokenAddress, chain)
+    console.log('GET TokenInfo', settings.tokenAddress, chain);
     settings.token = await VotingService.GetTokenInfo(settings.tokenAddress, chain);
   }
 
   repositorySettings[cacheKey] = settings;
-  console.log("CACHE RepositorySettings", cacheKey, repositorySettings[cacheKey]);
+  console.log('CACHE RepositorySettings', cacheKey, repositorySettings[cacheKey]);
   return {
     statusCode: 200,
     headers: {

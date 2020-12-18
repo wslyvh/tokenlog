@@ -1,3 +1,4 @@
+import { SEO } from 'components/common/seo';
 import { IconLink } from 'components/IconLink';
 import { RepositoryList } from 'components/RepositoryList';
 import React from 'react';
@@ -9,6 +10,8 @@ export default function Repository() {
   return (
     <>
       <div>
+        <SEO />
+
         <h2 className="mb-3">
           <small>{org}</small>
           <small className="smaller float-right pt-2 pr-2">
