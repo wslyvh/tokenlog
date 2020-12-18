@@ -6,6 +6,7 @@ import { Web3Provider } from 'ethers/providers';
 import { Web3ReactProvider } from '@web3-react/core';
 import { Footer } from 'components/Footer';
 import { BetaBanner } from 'components/BetaBanner';
+import { SEO } from 'components/common/seo';
 
 const Home = lazy(() => import('pages/Home'));
 const Organization = lazy(() => import('pages/Organization'));
@@ -21,6 +22,7 @@ function getWeb3Provider(provider: any): Web3Provider {
 export function Default() {
   return (
     <div>
+      <SEO />
       <BetaBanner />
       <BrowserRouter>
         <Web3ReactProvider getLibrary={getWeb3Provider}>
