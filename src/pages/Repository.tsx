@@ -1,4 +1,3 @@
-import { SEO } from 'components/common/seo';
 import { IssueList } from 'components/IssueList';
 import { RepositoryInfo } from 'components/RepositoryInfo';
 import { TokenInfo } from 'components/TokenInfo';
@@ -10,8 +9,6 @@ export default function Repository() {
     <>
       <div>
         <RepoContextProvider>
-          <SEO />
-
           <div className="card-deck">
             <RepositoryInfo />
             <TokenInfo />
