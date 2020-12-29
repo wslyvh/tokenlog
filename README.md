@@ -22,7 +22,7 @@ Tokenlog works on any Github repository and leaves your current workflow in plac
 - All Issues https://github.com/wslyvh/tokenlog/issues
 
 ## Documentation
-Tokenlog works on any Github repository and follows Github's relative paths, e.g. `tokenlog.xyz/<org>/<repo>`. To allow voting, see the following Config section. 
+Tokenlog works on any Github repository and follows Github's relative paths, e.g. `tokenlog.xyz/<org>/<repo>`. To allow voting, see the following Config section. Once voted on an issue, these votes will remain 'fixed' until the issue is resolved. When an issue is closed, all votes on it will be 'released' and available to use for voting on other issues. 
 
 ## Config
 Tokenlog tries to pull a configuration directly from your repository. This proofs ownership of the repo and doesn't require any curation or management. Just upload a `tokenlog.json` config to the root of your repository.
