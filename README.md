@@ -27,19 +27,39 @@ Tokenlog works on any Github repository and follows Github's relative paths, e.g
 ## Config
 Tokenlog tries to pull a configuration directly from your repository. This proofs ownership of the repo and doesn't require any curation or management. Just upload a `tokenlog.json` config to the root of your repository.
 
-Example
+Minimum configuration
 ```
 {
     "org": "wslyvh",
     "repo": "tokenlog",
     "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
-    "labels": ["enhancement"]
+}
+```
+
+Advanced configuration
+```
+{
+    "org": "commons-stack",
+    "repo": "iteration0",
+    "tokenAddress": "0xc4fbE68522ba81a28879763C3eE33e08b13c499E",
+    "labels": ["For Contributors"],
+    "votingMethod": "STANDARD",
+    "chainId": 100,
 }
 ```
 
 - `tokenAddress` is the token that people are allowed to vote with
-- `labels` is an optional list of Github labels that allows you to filter onwhich issues token holders can vote on 
-
+- `labels` is an optional list of Github labels that allows you to (&&-) filter on which issues token holders can vote on 
+- `votingMethod` is an optional option to select voting method. Default is **STANDARD**. Can be one of:
+    - `STANDARD` for 1-token, 1-vote voting 
+    - `QUADRATIC` for quadratic voting
+- `chainId` is an optional id of the network the token is deployed. Default is **1** (Mainnet). Can be one of:
+    - `1` - Mainnet
+    - `3` - Ropsten
+    - `4` - Rinkeby
+    - `5` - Kovan
+    - `42` - Goerli
+    - `100` - xDAI
 
 ## Contributing
 Contributions are always welcome, no matter how large or small. If you've found a bug, have a suggestion, feature request or any other feedback, post them at https://github.com/wslyvh/tokenlog/issues/new
