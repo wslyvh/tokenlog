@@ -32,7 +32,7 @@ Minimum configuration
 {
     "org": "wslyvh",
     "repo": "tokenlog",
-    "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
+    "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f"
 }
 ```
 
@@ -44,7 +44,7 @@ Advanced configuration
     "tokenAddress": "0xc4fbE68522ba81a28879763C3eE33e08b13c499E",
     "labels": ["For Contributors"],
     "votingMethod": "STANDARD",
-    "chainId": 100,
+    "chainId": 100
 }
 ```
 
