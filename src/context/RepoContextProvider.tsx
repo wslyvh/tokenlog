@@ -8,7 +8,7 @@ import { VotingPower } from 'types/VotingPower';
 import { DefaultRepoContext, IRepositoryContext, RepoContext } from './RepoContext';
 
 export const RepoContextProvider = ({ children }: { children: ReactNode }) => {
-  const { org, repo } = useParams();
+  const { org, repo }: any = useParams();
   const [context, setContext] = useState<IRepositoryContext>(DefaultRepoContext);
   const [loading, setLoading] = useState(true);
   const web3Context = useWeb3React();
