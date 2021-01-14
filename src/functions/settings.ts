@@ -3,6 +3,7 @@ import { Context, APIGatewayEvent } from 'aws-lambda';
 import { RepositorySettings } from 'types/RepositorySettings';
 import RepoConfigs from 'config/repo-configs.json';
 import VotingService from 'services/VotingService';
+import { Token } from 'types/Token';
 
 const repositorySettings: any = {};
 
@@ -37,7 +38,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   if (!settings) {
     try {
       const octokit = new Octokit();
-      const result: any = await octokit.repos.getContent({ owner, repo, path: 'tokenlog.json' });      
+      const result: any = await octokit.repos.getContent({ owner, repo, path: 'tokenlog.json' });
       if (result.status !== 200) throw new Error("Couldn't retrieve tokenlog config");
 
       const content = Buffer.from(result.data.content, 'base64').toString();
@@ -49,8 +50,23 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 
   if (settings) {
     const chain = settings.chainId || chainId;
-    console.log('GET TokenInfo', settings.tokenAddress, chain);
-    settings.token = await VotingService.GetTokenInfo(settings.tokenAddress, chain);
+    if (settings.tokenAddress) {
+      console.log('GET TokenInfo', settings.tokenAddress, chain);
+      settings.token = await VotingService.GetTokenInfo(settings.tokenAddress, chain);
+    } else if (settings.tokenAddresses) {
+      const tokens = new Array<Token>();
+
+      for (let index = 0; index < settings.tokenAddresses.length; index++) {
+        const address = settings.tokenAddresses[index];
+        console.log('GET TokenInfo', address, chain);
+        const token = await VotingService.GetTokenInfo(address, chain);
+        if (token) {
+          tokens.push(token);
+        }
+      }
+
+      settings.tokens = tokens;
+    }
   }
 
   repositorySettings[cacheKey] = settings;

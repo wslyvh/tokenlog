@@ -9,7 +9,9 @@ export interface RepositorySettings {
   org: string;
   repo: string;
   labels: Array<string>;
+  tokenAddresses?: Array<string>;
   tokenAddress: string;
+  tokens?: Array<Token>;
   token?: Token;
   votingMethod?: VotingMethod;
   chainId?: number;
