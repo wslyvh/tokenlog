@@ -57,7 +57,7 @@
 {
     "org": "commons-stack",
     "repo": "iteration0",
-    "tokenAddresses": ["0xc4fbE68522ba81a28879763C3eE33e08b13c499E", "0xDf6FF92bfDC1e8bE45177DC1f4845d391D3ad8fD"],
+    "tokenAddresses": ["0xc4fbE68522ba81a28879763C3eE33e08b13c499E", "0xdf2c3c8764a92eb43d2eea0a4c2d77c2306b0835"],
     "labels": ["For Contributors"],
     "votingMethod": "STANDARD",
     "chainId": 100,
