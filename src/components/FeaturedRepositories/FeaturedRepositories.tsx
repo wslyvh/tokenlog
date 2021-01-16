@@ -51,6 +51,12 @@ const projects = [
     imageUrl: 'https://tokenlog.xyz/icon.png',
     link: '/wslyvh/tokenlog',
   },
+  {
+    title: 'HausDAO',
+    description: 'Community governance of the DAOhaus ecosystem',
+    imageUrl: 'https://avatars3.githubusercontent.com/u/69052185',
+    link: '/HausDAO/pokemol-web',
+  },
 ];
 
 export function FeaturedRepositories() {
