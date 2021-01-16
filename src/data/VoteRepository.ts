@@ -43,7 +43,7 @@ class VoteRepository {
       const filter = { org: org, repo: repo, number: number };
       const update = { closed: true };
 
-      await VoteModel.findOneAndUpdate(filter, update, { new: true });
+      await VoteModel.updateMany(filter, update);
     } catch (ex) {
       console.error(ex);
     }
