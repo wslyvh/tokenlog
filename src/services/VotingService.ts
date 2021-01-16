@@ -19,10 +19,18 @@ async function GetTokenInfo(address: string, chainId?: number): Promise<Token | 
   const provider = await GetProvider(chainId);
   const erc20 = new ethers.Contract(address, ERC20_READ, provider);
 
+  // Check decimals seperately as it's not in the ERC721 standard.
+  let decimals = 0;
+  try { 
+    decimals = await erc20.decimals();
+  }
+  catch(e) { 
+    console.log("Couldn't fetch token decimals. Potential ERC721?");
+  }
+
   try {
     const name = await erc20.name();
     const symbol = await erc20.symbol();
-    const decimals = await erc20.decimals();
     const totalSupply = await erc20.totalSupply();
     const formattedSupply = parseFloat(ethers.utils.formatUnits(totalSupply, decimals));
 
