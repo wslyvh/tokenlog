@@ -100,11 +100,11 @@ export function TokenInfo() {
         </>
       );
     } else if (repoContext.settings?.tokens) {
-      return repoContext.settings.tokens.map(i => i.symbol).join(' | ');
+      return repoContext.settings.tokens.map((i) => i.symbol).join(' | ');
     }
   };
 
-  const renderTokenLink = () => { 
+  const renderTokenLink = () => {
     if (repoContext.settings?.token) {
       return (
         <a href={GetEtherscanLink(repoContext.settings.tokenAddress, chainId, 'token')}>
@@ -112,15 +112,15 @@ export function TokenInfo() {
         </a>
       );
     } else if (repoContext.settings?.tokens) {
-      return repoContext.settings.tokens.map(i => {
+      return repoContext.settings.tokens.map((i) => {
         return (
-          <a className='mr-2' key={i.address} href={GetEtherscanLink(i.address, chainId, 'token')}>
+          <a className="mr-2" key={i.address} href={GetEtherscanLink(i.address, chainId, 'token')}>
             {ShortenAddress(i.address, 4)}
           </a>
-        )
-      })
+        );
+      });
     }
-  }
+  };
 
   const renderBalance = () => {
     if (repoContext.votingPower && repoContext.settings?.token) {
@@ -147,9 +147,7 @@ export function TokenInfo() {
     <div className="card">
       <div className="card-body">
         <h5 className="card-title">{renderTokenName()}</h5>
-        <h6 className="card-subtitle my-1 text-muted">
-          {renderTokenLink()}
-        </h6>
+        <h6 className="card-subtitle my-1 text-muted">{renderTokenLink()}</h6>
         <p className="card-text text-truncate">{renderBalance()}</p>
         <NetworkBadge chainId={chainId} networkName={GetNetworkName(chainId)} />
 
