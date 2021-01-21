@@ -19,10 +19,18 @@ async function GetTokenInfo(address: string, chainId?: number): Promise<Token | 
   const provider = await GetProvider(chainId);
   const erc20 = new ethers.Contract(address, ERC20_READ, provider);
 
+  // Check decimals seperately as it's not in the ERC721 standard.
+  let decimals = 0;
+  try { 
+    decimals = await erc20.decimals();
+  }
+  catch(e) { 
+    console.log("Couldn't fetch token decimals. Potential ERC721?");
+  }
+
   try {
     const name = await erc20.name();
     const symbol = await erc20.symbol();
-    const decimals = await erc20.decimals();
     const totalSupply = await erc20.totalSupply();
     const formattedSupply = parseFloat(ethers.utils.formatUnits(totalSupply, decimals));
 
@@ -45,9 +53,16 @@ async function GetVotingPower(tokenAddress: string, address: string, chainId?: n
   const provider = await GetProvider(chainId);
   const erc20 = new ethers.Contract(tokenAddress, ERC20_READ, provider);
 
+  let decimals = 0;
+  try { 
+    decimals = await erc20.decimals();
+  }
+  catch(e) { 
+    // Ignore error: decimals are fetched seperately as it's not in the ERC721 standard.
+  }
+
   let delegatedVotes = 0;
   try {
-    const decimals = await erc20.decimals();
     const votes = await erc20.getCurrentVotes(address);
     delegatedVotes = parseFloat(ethers.utils.formatUnits(votes, decimals));
   } catch {
@@ -55,7 +70,6 @@ async function GetVotingPower(tokenAddress: string, address: string, chainId?: n
   }
 
   try {
-    const decimals = await erc20.decimals();
     const balance = await erc20.balanceOf(address);
     const etherUnit = ethers.utils.formatUnits(balance, decimals);
 
