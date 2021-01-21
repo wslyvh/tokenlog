@@ -123,22 +123,18 @@ export function TokenInfo() {
   };
 
   const renderBalance = () => {
-    if (repoContext.votingPower && repoContext.settings?.token) {
-      console.log('GET VOTING POWER');
+    if (repoContext.votingPower) {
       return (
         <>
           {repoContext.votingPower?.totalPower.toFixed(2) +
             ' VP (' +
-            Percentage(repoContext.votingPower?.totalPower ?? 0, repoContext.settings.token.totalSupply) +
+            Percentage(repoContext.votingPower?.totalPower ?? 0, repoContext.votingPower?.totalSupply) +
             '%) ' +
             repoContext.votingPower?.available.toFixed(2) +
             ' available'}
         </>
       );
-    } else if (repoContext.votingPower && repoContext.settings?.tokens) {
-      console.log('GET VOTING POWER FROM MULTIPLE TOKENS');
     } else {
-      console.log('NO VOTING POWER');
       return <i>No voting power</i>;
     }
   };

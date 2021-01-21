@@ -4,6 +4,7 @@ import { RepositorySettings } from 'types/RepositorySettings';
 import RepoConfigs from 'config/repo-configs.json';
 import VotingService from 'services/VotingService';
 import { Token } from 'types/Token';
+import { AppConfig } from 'config/App';
 
 const repositorySettings: any = {};
 
@@ -37,7 +38,9 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   let settings = RepoConfigs.find((i) => i.org === owner && i.repo === repo) as RepositorySettings;
   if (!settings) {
     try {
-      const octokit = new Octokit();
+      const octokit = new Octokit({
+        auth: AppConfig.GITHUB_ACCESS_TOKEN,
+      });
       const result: any = await octokit.repos.getContent({ owner, repo, path: 'tokenlog.json' });
       if (result.status !== 200) throw new Error("Couldn't retrieve tokenlog config");
 

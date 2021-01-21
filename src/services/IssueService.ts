@@ -7,6 +7,7 @@ import { Issue, IssueState, IssueType } from 'types/Issue';
 import { RepositorySettings } from 'types/RepositorySettings';
 import VotingService from './VotingService';
 import axios from 'axios';
+import { AppConfig } from 'config/App';
 
 export default {
   GetRepositories,
@@ -96,7 +97,9 @@ async function GetRepositorySettings(
 }
 
 async function GetIssue(owner: string, repo: string, number: number): Promise<Issue | undefined> {
-  const octokit = new Octokit();
+  const octokit = new Octokit({
+    auth: AppConfig.GITHUB_ACCESS_TOKEN,
+  });
   const result = await octokit.issues.get({ owner, repo, issue_number: number });
   if (result.status !== 200) throw new Error("Couldn't retrieve repository info");
 
