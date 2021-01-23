@@ -1,16 +1,12 @@
-import { Backlog } from './Backlog';
 import { Token } from './Token';
 
 export enum VotingMethod {
-  STANDARD = 'Standard voting',
-  QUADRATIC = 'Quadratic voting',
+  STANDARD,
+  QUADRATIC
 }
 
 export interface BacklogSettings {
-  backlog: Backlog;
-  labels: Array<string>;
-  token: Token;
   votingMethod: VotingMethod;
-  chainId?: number;
-  imageUrl?: string;
+  tokens: Array<Token>;
+  labels: Array<string>;
 }

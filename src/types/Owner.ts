@@ -6,10 +6,10 @@ export enum OwnerType {
 }
 
 export interface Owner {
-  id: number;
+  id: string;
   name: string;
   type: OwnerType;
   url: string;
   avatarUrl: string;
-  repositories?: Array<Repository>
+  repositories: Array<Repository>
 }

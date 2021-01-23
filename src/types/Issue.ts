@@ -17,7 +17,7 @@ export interface Issue {
   id: number;
   number: number;
   title: string;
-  description: string;
+  body: string;
   state: IssueState;
   type: IssueType;
   labels: Array<Label>;
@@ -25,6 +25,7 @@ export interface Issue {
   created: Date;
   updated: Date;
   url: string;
+  comments: Array<string>;
   commentsCount: number;
   votes: Array<Vote>;
   voteCount: number;
