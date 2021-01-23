@@ -8,9 +8,7 @@ import { Footer } from 'components/Footer';
 import { BetaBanner } from 'components/BetaBanner';
 
 const Home = lazy(() => import('pages/Home'));
-const Organization = lazy(() => import('pages/Organization'));
 const Repository = lazy(() => import('pages/Repository'));
-const Settings = lazy(() => import('pages/Settings'));
 
 function getWeb3Provider(provider: any): Web3Provider {
   const web3Provider = new Web3Provider(provider);
@@ -32,14 +30,8 @@ export function Default() {
                 <Route exact path="/">
                   <Home />
                 </Route>
-                <Route exact path="/:org">
-                  <Organization />
-                </Route>
                 <Route exact path="/:org/:repo">
                   <Repository />
-                </Route>
-                <Route exact path="/:org/:repo/settings">
-                  <Settings />
                 </Route>
                 <Redirect to="/" />
               </Switch>
