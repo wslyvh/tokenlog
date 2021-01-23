@@ -62,5 +62,11 @@
     "votingMethod": "STANDARD",
     "chainId": 100,
     "imageUrl": "https://avatars2.githubusercontent.com/u/48513475"
+},
+{
+    "org": "wslyvh",
+    "repo": "tokenlog",
+    "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
+    "labels": ["enhancement"]
 }
 ]
