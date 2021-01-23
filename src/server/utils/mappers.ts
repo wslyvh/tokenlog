@@ -1,6 +1,6 @@
 import { Backlog } from "types/Backlog";
+import { BacklogItem, ItemType } from "types/BacklogItem";
 import { BacklogSettings, VotingMethod } from "types/BacklogSettings";
-import { Issue } from "types/Issue";
 import { Label } from "types/Label";
 import { Owner, OwnerType } from "types/Owner";
 
@@ -13,9 +13,9 @@ export function ToBacklog(data: any): Backlog {
         url: data.url,
         ownerName: data.owner.login,
         owner: ToOwner(data.owner),
-        settings: JSON.parse(data.settings.data),
+        settings: JSON.parse(data.settings.data) as BacklogSettings,
         labels: data.labels.nodes.map((label: any) => ToLabel(label)),
-        issues: []
+        items: data.issues ? data.issues.nodes.map((issue: any) => ToItem(issue)) : []
     }
 }
 
@@ -39,11 +39,24 @@ export function ToLabel(data: any): Label {
     }
 }
 
-// export function ToIssue(data: any): Issue { 
-//     return { 
-
-//     }
-// }
+export function ToItem(source: any): BacklogItem { 
+    return { 
+        id: source.id,
+        number: source.number,
+        title: source.title,
+        body: source.body,
+        state: source.state,
+        type: source.url?.includes('issues') ? ItemType.ISSUE : ItemType.PR,
+        created: new Date(source.createdAt),
+        updated: new Date(source.updatedAt),
+        closed: new Date(source.closedAt),
+        url: source.url,
+        labels: Array.from(source.labels).map((i) => ToLabel(i)),
+        commentsCount: source.comments.totalCount,
+        votes: [],
+        voteCount: 0
+    }
+}
 
 export function ToSettings(data: any): BacklogSettings { 
     return {

@@ -1,29 +1,29 @@
 import { Label } from './Label';
-import { Owner } from './Owner';
 import { Vote } from './Vote';
 
 export enum ItemState {
-  OPEN = 'open',
-  CLOSED = 'closed',
+  OPEN,
+  CLOSED,
 }
 
 export enum ItemType {
-  ISSUE = 'issue',
-  PR = 'pr',
+  ISSUE,
+  PR,
 }
 
 export interface BacklogItem {
   id: number;
   number: number;
   title: string;
-  description: string;
+  body: string;
   state: ItemState;
   type: ItemType;
-  labels: Array<Label>;
-  assignees: Array<Owner>;
   created: Date;
   updated: Date;
+  closed: Date;
   url: string;
+  labels: Array<Label>;
+  commentsCount: number;
   votes: Array<Vote>;
   voteCount: number;
 }

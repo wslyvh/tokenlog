@@ -9,7 +9,6 @@ export const register = (router: Router) => {
     router.get("/github", controller.GetBacklogs.bind(controller));
     router.get("/github/:owner", controller.GetOwner.bind(controller));
     router.get("/github/:owner/:repo", controller.GetBacklog.bind(controller));
-    router.get("/github/:owner/:repo/settings", controller.GetBacklogSettings.bind(controller));
     router.get("/github/:owner/:repo/items", controller.GetBacklogItems.bind(controller));
     router.get("/github/:owner/:repo/votes", controller.GetBacklogVotes.bind(controller));
 };

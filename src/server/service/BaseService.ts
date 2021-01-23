@@ -1,4 +1,3 @@
-import { ServiceResponse } from "server/ServiceResponse";
 import mongoose from 'mongoose';
 import { SERVER_CONFIG } from "server/utils/config";
 import { DB_OPTIONS } from "server/utils/db";
@@ -10,10 +9,6 @@ export class BaseService {
         console.log("Init BaseService");
 
         this.connected = false;
-    }
-
-    protected BadRequest<T>(): ServiceResponse<T> {
-        return { code: 400, message: 'Bad Request', data: undefined }
     }
 
     protected async Connect(): Promise<void> {

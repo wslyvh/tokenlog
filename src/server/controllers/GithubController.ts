@@ -1,16 +1,11 @@
 import { Request, Response } from "express";
 import { BacklogService } from "server/service/BacklogService";
-import { BaseController } from "./BaseController";
 
-
-export class GithubController extends BaseController { 
+export class GithubController { 
 
     private service: BacklogService;
     
     constructor(backlogService: BacklogService) {
-        super();
-
-        console.log("Init GithubController");
         this.service = backlogService;
     }
 
@@ -18,9 +13,9 @@ export class GithubController extends BaseController {
         try {
             const data = await this.service.GetBacklogs();
 
-            res.status(data.code).send(data);
+            res.status(200).send({ code: 200, message: '', data: data });
         } catch (e) {
-            res.status(500).send(this.InternalServerError);
+            res.status(500).send({ code: 500, message: `Unable to get backlogs` });
         }
     }
 
@@ -28,9 +23,9 @@ export class GithubController extends BaseController {
         try {
             const data = await this.service.GetOwner(req.params.owner);
             
-            res.status(data.code).send(data);
+            res.status(200).send({ code: 200, message: '', data: data });
         } catch (e) {
-            res.status(500).send(this.InternalServerError);
+            res.status(500).send({ code: 500, message: `Unable to get owner ${req.params.owner}` });
         }
     }
 
@@ -38,19 +33,9 @@ export class GithubController extends BaseController {
         try {
             const data = await this.service.GetBacklog(req.params.owner, req.params.repo);
             
-            res.status(data.code).send(data);
+            res.status(200).send({ code: 200, message: '', data: data });
         } catch (e) {
-            res.status(500).send(this.InternalServerError);
-        }
-    }
-
-    public async GetBacklogSettings(req: Request, res: Response) {
-        try {
-            const data = await this.service.GetBacklogSettings(req.params.owner, req.params.repo);
-            
-            res.status(data.code).send(data);
-        } catch (e) {
-            res.status(500).send(this.InternalServerError);
+            res.status(500).send({ code: 500, message: `Unable to get backlog ${req.params.owner}/${req.params.repo}` });
         }
     }
 
@@ -58,9 +43,9 @@ export class GithubController extends BaseController {
         try {
             const data = await this.service.GetBacklogItems(req.params.owner, req.params.repo);
             
-            res.status(data.code).send(data);
+            res.status(200).send({ code: 200, message: '', data: data });
         } catch (e) {
-            res.status(500).send(this.InternalServerError);
+            res.status(500).send({ code: 500, message: `Unable to get backlog items ${req.params.owner}/${req.params.repo}` });
         }
     }
 
@@ -68,9 +53,9 @@ export class GithubController extends BaseController {
         try {
             const data = await this.service.GetBacklogVotes(req.params.owner, req.params.repo);
             
-            res.status(data.code).send(data);
+            res.status(200).send({ code: 200, message: '', data: data });
         } catch (e) {
-            res.status(500).send(this.InternalServerError);
+            res.status(500).send({ code: 500, message: `Unable to get backlog votes ${req.params.owner}/${req.params.repo}` });
         }
     }
 }

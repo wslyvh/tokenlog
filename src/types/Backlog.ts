@@ -1,5 +1,5 @@
+import { BacklogItem } from "./BacklogItem";
 import { BacklogSettings } from "./BacklogSettings";
-import { Issue } from "./Issue";
 import { Label } from "./Label";
 import { Owner } from "./Owner";
 
@@ -13,5 +13,5 @@ export interface Backlog {
   owner?: Owner;
   settings?: BacklogSettings;
   labels: Array<Label>;
-  issues: Array<Issue>;
+  items: Array<BacklogItem>;
 }

@@ -24,24 +24,6 @@ export const GET_REPOSITORY = `query GetRepository($owner: String!, $repo: Strin
                 data: text
             }
         }
-        issues(states: OPEN, first: ${DEFAULT_LIMIT}, orderBy: {field: CREATED_AT, direction: DESC}) {
-            totalCount
-            nodes {
-                id
-                number
-                title
-                state
-                createdAt
-                updatedAt
-                labels(first: ${MAX_LIMIT}) {
-                    nodes {
-                        name
-                        description
-                        color
-                    }
-                }
-            }
-        }
         labels(first: ${MAX_LIMIT}) {
             nodes {
                 id
@@ -52,3 +34,30 @@ export const GET_REPOSITORY = `query GetRepository($owner: String!, $repo: Strin
         }
     }
 }`
+
+
+// issues(states: OPEN, first: ${DEFAULT_LIMIT}, orderBy: {field: CREATED_AT, direction: DESC}) {
+//     totalCount
+//     nodes {
+//         id
+//         number
+//         title
+//         body
+//         state
+//         createdAt
+//         updatedAt
+//         closedAt
+//         url
+//         comments {
+//           totalCount
+//         }
+//         labels(first: ${MAX_LIMIT}) {
+//             nodes {
+//                 id
+//                 name
+//                 description
+//                 color
+//             }
+//         }
+//     }
+// }
