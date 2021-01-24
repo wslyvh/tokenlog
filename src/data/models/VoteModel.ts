@@ -4,8 +4,8 @@ import { Vote } from 'types/Vote';
 interface VoteModel extends Vote, Document {}
 
 const voteSchema: Schema = new Schema({
-  org: { type: String, required: true },
-  repo: { type: String, required: true },
+  org: { type: String, required: true, lowercase: true, trim: true },
+  repo: { type: String, required: true, lowercase: true, trim: true  },
   number: { type: Number, required: true },
   tokenAddress: { type: String, required: true },
   address: { type: String, required: true },

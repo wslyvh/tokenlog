@@ -40,7 +40,7 @@ class VoteRepository {
     try {
       await this.Connect();
 
-      const filter = { org: org, repo: repo, number: number };
+      const filter = { org: org.toLowerCase(), repo: repo.toLowerCase(), number: number };
       const update = { closed: true };
 
       await VoteModel.updateMany(filter, update);
@@ -53,7 +53,7 @@ class VoteRepository {
     try {
       await this.Connect();
 
-      return await VoteModel.find({ org: org, repo: repo });
+      return await VoteModel.find({ org: org.toLowerCase(), repo: repo.toLowerCase() });
     } catch (ex) {
       console.error(ex);
     }
@@ -66,7 +66,7 @@ class VoteRepository {
       await this.Connect();
 
       const result = await VoteModel.aggregate([
-        { $match: { org: org, repo: repo, address: address } },
+        { $match: { org: org.toLowerCase(), repo: repo.toLowerCase(), address: address } },
         { $group: { _id: null, cost: { $sum: '$cost' } } },
       ]);
 
