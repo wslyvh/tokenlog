@@ -12,18 +12,24 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   context.callbackWaitsForEmptyEventLoop = false;
   console.log('RECURRING JOB: Close repository votes');
   const data = await repository.GetRepoIssuesWithVotes();
-  console.log(data.length, 'items with votes');
+  console.log(data.length, '(open) items with votes');
 
   const closed = new Array<OrgRepoIssue>();
   for (let index = 0; index < data.length; index++) {
     const repo = data[index];
-    console.log('Checking issue state on Github. #' + repo.number);
-    const issue = await IssueService.GetIssue(repo.org, repo.repo, repo.number);
+    try {
+      console.log('Checking issue on Github. #' + repo.number, repo.org, repo.repo);
+      const issue = await IssueService.GetIssue(repo.org, repo.repo, repo.number);
 
-    if (issue?.state === IssueState.CLOSED) {
-      console.log('ISSUE CLOSED. Updating votes');
-      await repository.CloseVote(repo.org, repo.repo, repo.number);
-      closed.push(repo);
+      if (issue?.state === IssueState.CLOSED) {
+        console.log('ISSUE CLOSED. Updating votes');
+        await repository.CloseVote(repo.org, repo.repo, repo.number);
+        closed.push(repo);
+      }
+    }
+    catch (e) {
+      console.error(e);
+      console.log('FAILED to close issue. #' + repo.number, repo.org, repo.repo);
     }
   }
 
