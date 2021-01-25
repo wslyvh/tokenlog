@@ -30,9 +30,17 @@ async function GetTokenInfo(address: string, chainId?: number): Promise<Token | 
     console.log("Couldn't fetch token decimals. Potential ERC721?");
   }
 
+  let name = 'n/a';
+  let symbol = '$';
+
   try {
-    const name = await erc20.name();
-    const symbol = await erc20.symbol();
+    name = await erc20.name();
+    symbol = await erc20.symbol();
+  } catch {
+    console.error("Couldn't fetch name & symbol. Potential DAOstack token");
+  }
+
+  try {
     const totalSupply = await erc20.totalSupply();
     const formattedSupply = parseFloat(ethers.utils.formatUnits(totalSupply, decimals));
 
