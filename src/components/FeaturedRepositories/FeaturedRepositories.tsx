@@ -57,6 +57,12 @@ const projects = [
     imageUrl: 'https://avatars1.githubusercontent.com/u/72481541?s=200&v=4',
     link: '/TECommons/coordination',
   },
+  {
+    title: 'HausDAO',
+    description: 'Community governance of the DAOhaus ecosystem',
+    imageUrl: 'https://avatars3.githubusercontent.com/u/69052185',
+    link: '/HausDAO/pokemol-web',
+  },
 ];
 
 export function FeaturedRepositories() {

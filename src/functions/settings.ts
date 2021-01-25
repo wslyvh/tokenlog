@@ -41,7 +41,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
       const octokit = new Octokit({
         auth: AppConfig.GITHUB_ACCESS_TOKEN,
       });
-      const result: any = await octokit.repos.getContent({ owner, repo, path: 'tokenlog.json' });
+      const result: any = await octokit.repos.getContent({ owner, repo, path: 'tokenlog.json' });      
       if (result.status !== 200) throw new Error("Couldn't retrieve tokenlog config");
 
       const content = Buffer.from(result.data.content, 'base64').toString();

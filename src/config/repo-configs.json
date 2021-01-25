@@ -71,5 +71,11 @@
     "votingMethod": "QUADRATIC",
     "chainId": 100,
     "imageUrl": "https://avatars1.githubusercontent.com/u/72481541?s=200&v=4"
+}, 
+{
+    "org": "wslyvh",
+    "repo": "tokenlog",
+    "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
+    "labels": ["enhancement"]
 }
 ]

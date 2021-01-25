@@ -17,12 +17,12 @@ export function IssueList() {
   useEffect(() => {
     async function asyncEffect() {
       if (context.settings) {
-        // TODO: called twice
+        // TODO: called twice?
         const issues = await IssueService.GetRepositoryIssues(
           context.org,
           context.repo,
           IssueState.OPEN,
-          context.settings.labels.join()
+          context.settings.labels?.join()
         );
         setData({ loading: false, issues: issues });
       }
