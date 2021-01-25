@@ -52,6 +52,12 @@ const projects = [
     link: '/wslyvh/tokenlog',
   },
   {
+    title: 'TECommons',
+    description: 'Coordination for all the work across the Token Engineering Commons (TEC)',
+    imageUrl: 'https://avatars1.githubusercontent.com/u/72481541?s=200&v=4',
+    link: '/TECommons/coordination',
+  },
+  {
     title: 'HausDAO',
     description: 'Community governance of the DAOhaus ecosystem',
     imageUrl: 'https://avatars3.githubusercontent.com/u/69052185',

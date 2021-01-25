@@ -44,7 +44,7 @@ export function VotingCard(props: VotingCardProps) {
         number: props.issue.number,
         amount: votes[0],
         cost: votes[1],
-        tokenAddress: repoContext.settings?.tokenAddress,
+        tokenAddress: repoContext.settings?.tokenAddress || repoContext.settings?.tokenAddresses?.join('|'),
         timestamp: new Date(),
       };
 

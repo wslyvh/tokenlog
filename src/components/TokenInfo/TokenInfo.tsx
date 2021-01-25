@@ -68,7 +68,7 @@ export function TokenInfo() {
     </>
   );
 
-  if (!repoContext.settings?.token) {
+  if (!repoContext.settings?.token && !repoContext.settings?.tokens) {
     return (
       <div className="card">
         <div className="card-body">
@@ -92,33 +92,63 @@ export function TokenInfo() {
     );
   }
 
-  const renderBalance = repoContext.votingPower ? (
-    repoContext.votingPower?.totalPower.toFixed(2) +
-    ' VP (' +
-    Percentage(repoContext.votingPower?.totalPower ?? 0, repoContext.settings.token.totalSupply) +
-    '%) ' +
-    repoContext.votingPower?.available.toFixed(2) +
-    ' available'
-  ) : (
-    <i>No voting power</i>
-  );
+  const renderTokenName = () => {
+    if (repoContext.settings?.token) {
+      return (
+        <>
+          {repoContext.settings.token.name} ({repoContext.settings.token.symbol})
+        </>
+      );
+    } else if (repoContext.settings?.tokens) {
+      return repoContext.settings.tokens.map((i) => i.symbol).join(' | ');
+    }
+  };
+
+  const renderTokenLink = () => {
+    if (repoContext.settings?.token) {
+      return (
+        <a href={GetEtherscanLink(repoContext.settings.tokenAddress, chainId, 'token')}>
+          {ShortenAddress(repoContext.settings.token.address, 12)}
+        </a>
+      );
+    } else if (repoContext.settings?.tokens) {
+      return repoContext.settings.tokens.map((i) => {
+        return (
+          <a className="mr-2" key={i.address} href={GetEtherscanLink(i.address, chainId, 'token')}>
+            {ShortenAddress(i.address, 4)}
+          </a>
+        );
+      });
+    }
+  };
+
+  const renderBalance = () => {
+    if (repoContext.votingPower) {
+      return (
+        <>
+          {repoContext.votingPower?.totalPower.toFixed(2) +
+            ' VP (' +
+            Percentage(repoContext.votingPower?.totalPower ?? 0, repoContext.votingPower?.totalSupply) +
+            '%) ' +
+            repoContext.votingPower?.available.toFixed(2) +
+            ' available'}
+        </>
+      );
+    } else {
+      return <i>No voting power</i>;
+    }
+  };
 
   return (
     <div className="card">
       <div className="card-body">
-        <h5 className="card-title">
-          {repoContext.settings.token.name} ({repoContext.settings.token.symbol})
-        </h5>
-        <h6 className="card-subtitle my-1 text-muted">
-          <a href={GetEtherscanLink(repoContext.settings.tokenAddress, chainId, 'token')}>
-            {ShortenAddress(repoContext.settings.token.address, 12)}
-          </a>
-        </h6>
-        <p className="card-text text-truncate">{renderBalance}</p>
+        <h5 className="card-title">{renderTokenName()}</h5>
+        <h6 className="card-subtitle my-1 text-muted">{renderTokenLink()}</h6>
+        <p className="card-text text-truncate">{renderBalance()}</p>
         <NetworkBadge chainId={chainId} networkName={GetNetworkName(chainId)} />
 
         <span role="button" className="card-link" data-toggle="modal" data-target={`#repo-config-info`}>
-          <span className="fas fa-info-circle"></span>
+          <span className="fas fa-question-circle"></span>
         </span>
         {renderModal}
       </div>
