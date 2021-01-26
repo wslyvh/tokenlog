@@ -28,18 +28,6 @@ const projects = [
     link: '/pokt-network/pocket-core',
   },
   {
-    title: 'yearn-finance',
-    description: 'DeFi made simple',
-    imageUrl: 'https://avatars1.githubusercontent.com/u/60162948',
-    link: '/iearn-finance/yearn-protocol',
-  },
-  {
-    title: 'tBTC',
-    description: 'Trustlessly tokenized Bitcoin on Ethereum',
-    imageUrl: 'https://avatars0.githubusercontent.com/u/30537626',
-    link: '/keep-network/tbtc',
-  },
-  {
     title: 'The Commons Stack',
     description: 'Realigning Incentives to Support Public Goods',
     imageUrl: 'https://avatars2.githubusercontent.com/u/48513475',
