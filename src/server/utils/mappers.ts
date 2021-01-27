@@ -1,46 +1,56 @@
-import { Backlog, BacklogItem, BacklogSettings, Label, Owner } from 'types/v2';
+import { Backlog, BacklogItem, BacklogSettings, Label, Owner, VoteSummary } from 'types/v2';
 
-export function ToBacklog(data: any): Backlog {
+export function ToBacklog(source: any): Backlog {
   return {
-    id: data.id,
-    name: data.name,
-    description: data.description,
-    imageUrl: data.owner.avatarUrl,
-    url: data.url,
-    ownerName: data.owner.login,
-    owner: ToOwner(data.owner),
-    settings: data.settings?.data ? (JSON.parse(data.settings.data) as BacklogSettings) : undefined,
-    labels: data.labels?.nodes ? data.labels.nodes.map((label: any) => ToLabel(label)) : [],
-    items: data.issues?.nodes ? data.issues.nodes.map((issue: any) => ToItem(issue)) : [],
+    id: source.id,
+    name: source.name,
+    description: source.description,
+    imageUrl: source.owner.avatarUrl,
+    url: source.url,
+    ownerName: source.owner.login,
+    owner: ToOwner(source.owner),
+    settings: source.settings?.data ? (JSON.parse(source.settings.data) as BacklogSettings) : undefined,
+    labels: source.labels?.nodes ? source.labels.nodes.map((label: any) => ToLabel(label)) : [],
+    items: ToItems(source, []),
   };
 }
 
-export function ToOwner(data: any): Owner {
+export function ToOwner(source: any): Owner {
   return {
-    id: data.orgId ? data.orgId : data.userId,
-    name: data.login,
-    type: data.orgId ? 'ORGANIZATION' : 'USER',
-    url: data.url,
-    avatarUrl: data.avatarUrl,
+    id: source.orgId ? source.orgId : source.userId,
+    name: source.login,
+    type: source.orgId ? 'ORGANIZATION' : 'USER',
+    url: source.url,
+    avatarUrl: source.avatarUrl,
     backlogs: [],
   };
 }
 
-export function ToLabel(data: any): Label {
+export function ToLabel(source: any): Label {
   return {
-    id: data.id,
-    name: data.name,
-    description: data.description,
-    color: data.color,
+    id: source.id,
+    name: source.name,
+    description: source.description,
+    color: source.color,
   };
 }
 
-export function ToItem(source: any): BacklogItem {
+export function ToItems(source: any, votes: Array<VoteSummary>): Array<BacklogItem> { 
+  if (source.issues?.nodes) { 
+    return source.issues.nodes.map((issue: any) => ToItem(issue, votes.find((v) => v.number === issue.number)));
+  }
+  if (source.pullRequests?.nodes) { 
+    return source.pullRequests.nodes.map((pr: any) => ToItem(pr, votes.find((v) => v.number === pr.number)));
+  }
+
+  return []
+}
+
+export function ToItem(source: any, summary: VoteSummary | undefined): BacklogItem {
   return {
     id: source.id,
     number: source.number,
     title: source.title,
-    body: source.body,
     state: source.state,
     type: source.url?.includes('issues') ? 'ISSUE' : 'PR',
     created: new Date(source.createdAt),
@@ -49,7 +59,7 @@ export function ToItem(source: any): BacklogItem {
     url: source.url,
     labels: Array.from(source.labels).map((i) => ToLabel(i)),
     commentsCount: source.comments.totalCount,
+    voteSummary: summary,
     votes: [],
-    voteCount: 0,
   };
 }

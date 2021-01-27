@@ -1,4 +1,3 @@
-const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 100;
 
 const LABELS = `labels(first: ${MAX_LIMIT}) {
@@ -51,28 +50,47 @@ export function GET_REPOSITORY(withLabels: boolean) {
     }`;
 }
 
-// issues(states: OPEN, first: ${DEFAULT_LIMIT}, orderBy: {field: CREATED_AT, direction: DESC}) {
-//     totalCount
-//     nodes {
-//         id
-//         number
-//         title
-//         body
-//         state
-//         createdAt
-//         updatedAt
-//         closedAt
-//         url
-//         comments {
-//           totalCount
-//         }
-//         labels(first: ${MAX_LIMIT}) {
-//             nodes {
-//                 id
-//                 name
-//                 description
-//                 color
-//             }
-//         }
-//     }
-// }
+export function GET_ISSUES(type: 'ISSUE' | 'PR') {
+
+    let getIssues = '';
+    let typeQuery = '';
+    if (type === 'ISSUE') {
+        getIssues = `query GetIssues($owner: String!, $repo: String!, $state: [IssueState!], $sort: IssueOrderField!, $order: OrderDirection!, $size: Int!) {`
+        typeQuery = `issues(first: $size, orderBy: {field: $sort, direction: $order}, states: $state) {`
+    }
+    if (type === 'PR') { 
+        getIssues = `query GetIssues($owner: String!, $repo: String!, $state: [PullRequestState!], $sort: IssueOrderField!, $order: OrderDirection!, $size: Int!) {`
+        typeQuery = `pullRequests(first: $size, orderBy: {field: $sort, direction: $order}, states: $state) {`
+    }
+
+    return `${getIssues}
+        repository(owner: $owner, name: $repo) {
+            id
+            nameWithOwner
+            ${typeQuery}
+                totalCount
+                nodes {
+                    id
+                    number
+                    title
+                    state
+                    createdAt
+                    updatedAt
+                    closedAt
+                    url
+                    comments {
+                    totalCount
+                    }
+                    labels(first: ${MAX_LIMIT}) {
+                        nodes {
+                            id
+                            name
+                            description
+                            color
+                        }
+                    }
+                }
+            }
+        }
+    }`;
+}

@@ -1,3 +1,4 @@
+import { VoteSummary } from '.';
 import { Label } from './Label';
 import { Vote } from './Vote';
 
@@ -5,7 +6,6 @@ export interface BacklogItem {
   id: number;
   number: number;
   title: string;
-  body: string;
   state: 'OPEN' | 'CLOSED';
   type: 'ISSUE' | 'PR';
   created: Date;
@@ -14,6 +14,6 @@ export interface BacklogItem {
   url: string;
   labels: Array<Label>;
   commentsCount: number;
+  voteSummary?: VoteSummary;
   votes: Array<Vote>;
-  voteCount: number;
 }

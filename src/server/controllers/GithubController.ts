@@ -40,7 +40,37 @@ export class GithubController {
 
   public async GetBacklogItems(req: Request, res: Response) {
     try {
-      const data = await this.service.GetBacklogItems(req.params.owner, req.params.repo);
+      let type: 'ISSUE' | 'PR' = 'ISSUE';
+      let state: 'OPEN' | 'CLOSED' | 'MERGED' = 'OPEN';
+      let sort: 'CREATED_AT' | 'UPDATED_AT' | 'COMMENTS' | 'TOP' = 'CREATED_AT';
+      let order: 'ASC' | 'DESC' = 'DESC';
+      let page: number = 1;
+      let size: number = 20;
+
+      const upperType = req.query.type?.toString().toUpperCase();
+      if (upperType === 'ISSUE' || upperType === 'PR') {
+        type = upperType as 'ISSUE' | 'PR';
+      }
+      const upperState = req.query.state?.toString().toUpperCase();
+      if (upperState === 'OPEN' || upperState === 'CLOSED' || upperState === 'MERGED') {
+        state = upperState as 'OPEN' | 'CLOSED' | 'MERGED';
+      }
+      const upperSort = req.query.sort?.toString().toUpperCase();
+      if (upperSort === 'CREATED_AT' || upperSort === 'UPDATED_AT' || upperSort === 'COMMENTS' || upperSort === 'TOP') {
+        sort = upperSort as 'CREATED_AT' | 'UPDATED_AT' | 'COMMENTS' | 'TOP';
+      }
+      const upperOrder = req.query.order?.toString().toUpperCase();
+      if (upperOrder === 'ASC' || upperOrder === 'DESC') {
+        order = upperOrder as 'ASC' | 'DESC';
+      }
+      if (req.query.page && !isNaN(Number(req.query.page))) {
+        page = Number(req.query.page);
+      }
+      if (req.query.size && !isNaN(Number(req.query.size))) {
+        size = Number(req.query.size);
+      }
+
+      const data = await this.service.GetBacklogItems(req.params.owner, req.params.repo, type, state, sort, order, page, size);
 
       res.status(200).send({ code: 200, message: '', data: data });
     } catch (e) {
