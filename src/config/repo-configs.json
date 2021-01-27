@@ -67,7 +67,7 @@
     "org": "TECommons",
     "repo": "coordination",
     "tokenAddresses": ["0xc4fbE68522ba81a28879763C3eE33e08b13c499E", "0xdf2c3c8764a92eb43d2eea0a4c2d77c2306b0835"],
-    "labels": ["TEC Params WG"],
+    "labels": [],
     "votingMethod": "QUADRATIC",
     "chainId": 100
 }, 
@@ -75,7 +75,7 @@
     "org": "TECommons",
     "repo": "Token-Log-Hatch-Params",
     "tokenAddresses": ["0xc4fbE68522ba81a28879763C3eE33e08b13c499E", "0xdf2c3c8764a92eb43d2eea0a4c2d77c2306b0835"],
-    "labels": [],
+    "labels": ["TEC Hatch Params"],
     "votingMethod": "QUADRATIC",
     "chainId": 100
 }, 
