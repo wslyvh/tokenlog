@@ -4,16 +4,15 @@ import { Vote } from 'types/Vote';
 interface VoteModel extends Vote, Document {}
 
 const voteSchema: Schema = new Schema({
-  org: { type: String, required: true },
-  repo: { type: String, required: true },
+  org: { type: String, required: true, lowercase: true, trim: true },
+  repo: { type: String, required: true, lowercase: true, trim: true },
   number: { type: Number, required: true },
-  tokenAddress: { type: String, required: true },
+  state: { type: String, enum: ['OPEN', 'CLOSED'], default: 'OPEN' },
   address: { type: String, required: true },
   amount: { type: Number, required: true },
-  cost: { type: Number, required: true },
   signature: { type: String, required: true },
   timestamp: { type: Date, required: true },
-  closed: { type: Boolean, required: false, default: false },
+  closed: { type: Boolean, required: false, default: false }, // TODO: remove - used state instead
 });
 
 export default model<VoteModel>('Vote', voteSchema);

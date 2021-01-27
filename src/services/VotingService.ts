@@ -21,10 +21,9 @@ async function GetTokenInfo(address: string, chainId?: number): Promise<Token | 
 
   // Check decimals seperately as it's not in the ERC721 standard.
   let decimals = 0;
-  try { 
+  try {
     decimals = await erc20.decimals();
-  }
-  catch(e) { 
+  } catch (e) {
     console.log("Couldn't fetch token decimals. Potential ERC721?");
   }
 
@@ -54,10 +53,9 @@ async function GetVotingPower(tokenAddress: string, address: string, chainId?: n
   const erc20 = new ethers.Contract(tokenAddress, ERC20_READ, provider);
 
   let decimals = 0;
-  try { 
+  try {
     decimals = await erc20.decimals();
-  }
-  catch(e) { 
+  } catch (e) {
     // Ignore error: decimals are fetched seperately as it's not in the ERC721 standard.
   }
 

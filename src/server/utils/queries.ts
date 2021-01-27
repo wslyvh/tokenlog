@@ -1,40 +1,55 @@
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 100;
 
-export const GET_REPOSITORY = `query GetRepository($owner: String!, $repo: String!) {
-    repository(owner: $owner, name: $repo) {
+const LABELS = `labels(first: ${MAX_LIMIT}) {
+    nodes {
         id
         name
-        nameWithOwner
         description
-        url
-        owner {
-            login
-            avatarUrl
-            url
-            ... on Organization {
-              orgId: id
-            }
-            ... on User {
-              userId: id
-            }
-        }
-        settings: object(expression: "master:tokenlog.json") {
-            ... on Blob {
-                data: text
-            }
-        }
-        labels(first: ${MAX_LIMIT}) {
-            nodes {
-                id
-                name
-                description
-                color
-            }
-        }
+        color
     }
-}`
+}`;
+const OWNER = `
+    login
+    avatarUrl
+    url
+    ... on Organization {
+    orgId: id
+    }
+    ... on User {
+    userId: id
+}`;
 
+export function GET_OWNER() {
+  return `query GetOwner($owner: String!) {
+        repositoryOwner(login: $owner) {
+            ${OWNER}
+        }
+    }`;
+}
+
+export function GET_REPOSITORY(withLabels: boolean) {
+  const labels = withLabels ? LABELS : '';
+
+  return `query GetRepository($owner: String!, $repo: String!) {
+        repository(owner: $owner, name: $repo) {
+            id
+            name
+            nameWithOwner
+            description
+            url
+            owner {
+                ${OWNER}
+            }
+            settings: object(expression: "master:tokenlog.json") {
+                ... on Blob {
+                    data: text
+                }
+            }
+            ${labels}
+        }
+    }`;
+}
 
 // issues(states: OPEN, first: ${DEFAULT_LIMIT}, orderBy: {field: CREATED_AT, direction: DESC}) {
 //     totalCount

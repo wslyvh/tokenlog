@@ -1,23 +1,13 @@
 import { Label } from './Label';
 import { Vote } from './Vote';
 
-export enum ItemState {
-  OPEN,
-  CLOSED,
-}
-
-export enum ItemType {
-  ISSUE,
-  PR,
-}
-
 export interface BacklogItem {
   id: number;
   number: number;
   title: string;
   body: string;
-  state: ItemState;
-  type: ItemType;
+  state: 'OPEN' | 'CLOSED';
+  type: 'ISSUE' | 'PR';
   created: Date;
   updated: Date;
   closed: Date;

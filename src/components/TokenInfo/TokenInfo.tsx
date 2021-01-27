@@ -106,9 +106,7 @@ export function TokenInfo() {
   return (
     <div className="card">
       <div className="card-body">
-        <h5 className="card-title">
-          {repoContext.settings.token.symbol}
-        </h5>
+        <h5 className="card-title">{repoContext.settings.token.symbol}</h5>
         <h6 className="card-subtitle my-1 text-muted">
           <a href={GetEtherscanLink(repoContext.settings.tokenAddress, chainId, 'token')}>
             {ShortenAddress(repoContext.settings.token.address, 12)}

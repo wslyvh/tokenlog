@@ -1,4 +1,4 @@
-import { Repository } from "./Repository";
+import { Backlog } from './v2/Backlog';
 
 export enum OwnerType {
   USER = 'User',
@@ -11,5 +11,5 @@ export interface Owner {
   type: OwnerType;
   url: string;
   avatarUrl: string;
-  repositories: Array<Repository>
+  backlogs: Array<Backlog>;
 }

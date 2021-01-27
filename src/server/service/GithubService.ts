@@ -1,74 +1,90 @@
-import { graphqlWithAuth } from "server/utils/graphql";
-import { GET_REPOSITORY } from "server/utils/queries";
-import { ToBacklog } from "server/utils/mappers";
-import { Backlog } from "types/Backlog";
-import { BacklogItem } from "types/BacklogItem";
-import { Vote } from "types/Vote";
-import { BacklogService } from "./BacklogService";
-import { BaseService } from "./BaseService";
-import { Owner } from "types/Owner";
-import VoteModel from "server/models/VoteModel";
+import { graphqlWithAuth } from 'server/utils/graphql';
+import { GET_OWNER, GET_REPOSITORY } from 'server/utils/queries';
+import { ToBacklog, ToOwner } from 'server/utils/mappers';
+import { Backlog, BacklogItem, Owner, Vote } from 'types/v2';
+import { BacklogService } from './BacklogService';
+import { VotingRepository } from 'server/repository/VotingRepository';
 
-export class GithubService extends BaseService implements BacklogService {
+export class GithubService implements BacklogService {
+  private repository: VotingRepository;
 
-    public async GetBacklogs(): Promise<Array<Backlog>> {
-        try {
-            await this.Connect();
+  constructor(repository: VotingRepository) {
+    this.repository = repository;
+  }
 
-            const aggregated = await VoteModel.aggregate([
-                { $group: { 
-                    _id: { org: '$org', repo: '$repo' },
-                    // totalAmount: { $sum: '$amount' },
-                    // count: { $sum: 1 }
-                } }
-            ]);
+  public async GetBacklogs(): Promise<Array<Backlog>> {
+    let backlogs = new Array<Backlog>();
 
-            return aggregated.map((i) => {
-                return {
-                    owner: i._id.org,
-                    id: i._id.repo
-                } as Backlog
-            })
-        } catch (ex) {
-            console.error(ex);
-            
-            throw new Error(`Unable to get repositories`);
-        }
+    try {
+      backlogs = await this.repository.GetBacklogs();
+    } catch (e) {
+      console.log('Unable to get backlogs from repository.');
+      console.error(e);
     }
 
-    public async GetOwner(owner: string): Promise<Owner> {
-        if (!owner) throw new Error("Properties are empty or undefined.");
+    return Promise.all(
+      backlogs.map(async (i) => {
+        return this.GetBacklog(i.ownerName, i.id, false);
+      })
+    );
+  }
 
-        throw new Error("Method not implemented.");
+  public async GetOwner(owner: string): Promise<Owner> {
+    if (!owner) throw new Error('Properties are empty or undefined.');
+
+    try {
+      const response: any = await graphqlWithAuth(GET_OWNER(), {
+        owner: owner,
+      });
+
+      return ToOwner(response.repositoryOwner);
+    } catch (e) {
+      console.error(e);
+
+      throw new Error(`Unable to get repository ${owner}`);
     }
+  }
 
-    public async GetBacklog(owner: string, id: string): Promise<Backlog> {
-        if (!owner || !id) throw new Error("Properties are empty or undefined.");
+  public async GetBacklog(owner: string, id: string, inclFilters: boolean = true): Promise<Backlog> {
+    if (!owner || !id) throw new Error('Properties are empty or undefined.');
 
-        try { 
-            const response: any = await graphqlWithAuth(GET_REPOSITORY, {
-                owner: owner,
-                repo: id
-            });
-            
-            return ToBacklog(response.repository);
-        }
-        catch (e) { 
-            console.error(e);
+    try {
+      const response: any = await graphqlWithAuth(GET_REPOSITORY(inclFilters), {
+        owner: owner,
+        repo: id,
+      });
 
-            throw new Error(`Unable to get repository ${owner}/${id}`);
-        }
+      return ToBacklog(response.repository);
+    } catch (e) {
+      console.error(e);
+
+      throw new Error(`Unable to get repository ${owner}/${id}`);
     }
+  }
 
-    public async GetBacklogItems(owner: string, id: string): Promise<Array<BacklogItem>> {
-        if (!owner || !id) throw new Error("Properties are empty or undefined.");
-        
-        throw new Error("Method not implemented.");
-    }
+  public async GetBacklogItems(owner: string, id: string): Promise<Array<BacklogItem>> {
+    if (!owner || !id) throw new Error('Properties are empty or undefined.');
 
-    public async GetBacklogVotes(owner: string, id: string): Promise<Array<Vote>> {
-        if (!owner || !id) throw new Error("Properties are empty or undefined.");
-        
-        throw new Error("Method not implemented.");
-    }
+    // parallel calls:
+    // 1. Get Issues w/ (filter) from Github API
+    // 2. Get GetBacklogVotesAggregated w/ (filter) from MongoRepository
+    // Promise.all();
+    // return
+
+    throw new Error('Method not implemented.');
+  }
+
+  public async GetBacklogVotes(
+    owner: string,
+    id: string,
+    state?: 'ALL' | 'OPEN' | 'CLOSED',
+    address?: string,
+    numbers?: number[]
+  ): Promise<Array<Vote>> {
+    if (!owner || !id) throw new Error('Properties are empty or undefined.');
+
+    const votes = this.repository.GetBacklogVotes(owner, id, state, address, numbers);
+
+    return votes;
+  }
 }

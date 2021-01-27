@@ -1,7 +1,7 @@
-import { BacklogItem } from "./BacklogItem";
-import { BacklogSettings } from "./BacklogSettings";
-import { Label } from "./Label";
-import { Owner } from "./Owner";
+import { BacklogItem } from './BacklogItem';
+import { BacklogSettings } from './BacklogSettings';
+import { Label } from './Label';
+import { Owner } from './Owner';
 
 export interface Backlog {
   id: string;
