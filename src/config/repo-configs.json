@@ -84,5 +84,11 @@
     "repo": "tokenlog",
     "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
     "labels": ["enhancement"]
+}, 
+{
+    "org": "pie-dao",
+    "repo": "pie-smart-pools",
+    "tokenAddress": "0xad32A8e6220741182940c5aBF610bDE99E737b2D",
+    "labels": []
 }
 ]
