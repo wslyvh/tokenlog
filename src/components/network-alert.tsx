@@ -6,9 +6,10 @@ import { GetNetworkName } from 'utils/web3';
 export const NetworkAlert = () => {
     const web3 = useWeb3React();
     const context = useRepositoryContext();
-    const networkName = GetNetworkName(context.settings?.chainId || 1);
+    const defaultChainId = context.settings?.chainId || 1;
+    const networkName = GetNetworkName(defaultChainId);
 
-    if (!web3.chainId || (web3.chainId === context.settings?.chainId)) {
+    if (!web3.chainId || (web3.chainId === defaultChainId)) {
         return <></>;
     }
 
