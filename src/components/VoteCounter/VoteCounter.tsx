@@ -58,9 +58,16 @@ export function VoteCounter(props: VoteCounterProps) {
   }
 
   async function setValues(votes: number, cost: number, error: string) {
+    if (isNaN(votes) || isNaN(cost)) { 
+      setNumberOfVotes(0);
+      setCost(0);
+      setError('Invalid number');
+    }
+    else { 
     setNumberOfVotes(votes);
     setCost(cost);
     setError(error);
+    }
 
     props.onChange([votes, cost]);
   }
@@ -69,16 +76,11 @@ export function VoteCounter(props: VoteCounterProps) {
     return (
       <>
         <input
-          type="range"
-          className="custom-range"
-          min="0"
-          max={props.max}
-          step={Math.round(props.max / 10)}
+          type="text"
+          className="form-control"
           value={numberOfVotes}
           onChange={(e) => setValues(Number(e.target.value), Number(e.target.value), '')}
         />
-
-        <small className="float-right">{numberOfVotes}</small>
       </>
     );
   }
