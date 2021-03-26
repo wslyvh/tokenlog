@@ -36,7 +36,7 @@ export function IssueList() {
       <h4>
         Open issues
         <a
-          href={`https://github.com/${context.org}/${context.repo}/issues/new`}
+          href={`https://github.com/${context.org}/${context.repo}/issues/new/choose`}
           target="_blank"
           rel="noopener noreferrer"
           className="float-right btn btn-outline-secondary btn-sm"
