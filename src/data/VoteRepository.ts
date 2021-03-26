@@ -66,7 +66,7 @@ class VoteRepository {
       await this.Connect();
 
       const result = await VoteModel.aggregate([
-        { $match: { org: org.toLowerCase(), repo: repo.toLowerCase(), address: address } },
+        { $match: { closed: { $ne: true }, org: org.toLowerCase(), repo: repo.toLowerCase(), address: address } },
         { $group: { _id: null, cost: { $sum: '$cost' } } },
       ]);
 
