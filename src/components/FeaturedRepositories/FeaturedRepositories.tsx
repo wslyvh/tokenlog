@@ -28,10 +28,10 @@ const projects = [
     link: '/pokt-network/pocket-core',
   },
   {
-    title: 'The Commons Stack',
-    description: 'Realigning Incentives to Support Public Goods',
-    imageUrl: 'https://avatars2.githubusercontent.com/u/48513475',
-    link: '/commons-stack/iteration0',
+    title: 'Commons Stack',
+    description: 'We are revisiting the TEC mission, vision and values and proposing new statements using Tokenlog to pick the best ones.',
+    imageUrl: 'https://avatars.githubusercontent.com/u/72481541',
+    link: '/CommonsBuild/TokenLog-SoftGov',
   },
   {
     title: 'Tokenlog',
@@ -40,10 +40,10 @@ const projects = [
     link: '/wslyvh/tokenlog',
   },
   {
-    title: 'TECommons',
+    title: 'Token Engineering Commons (TEC)',
     description: 'Coordination for all the work across the Token Engineering Commons (TEC)',
-    imageUrl: 'https://avatars1.githubusercontent.com/u/72481541?s=200&v=4',
-    link: '/TECommons/coordination',
+    imageUrl: 'https://avatars1.githubusercontent.com/u/72481541',
+    link: '/CommonsBuild/coordination',
   },
   {
     title: 'HausDAO',
