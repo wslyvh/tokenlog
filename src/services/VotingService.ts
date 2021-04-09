@@ -165,6 +165,7 @@ async function GetCombinedVotingPower(
     voted: alreadyUsedVotes,
     available: totalBalance - alreadyUsedVotes,
     totalSupply: totalSupply,
+    tokenBalances: totalVotingPower
   };
 }
 

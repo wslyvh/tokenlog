@@ -3,4 +3,5 @@ export interface VotingPower {
   voted: number;
   available: number;
   totalSupply: number;
+  tokenBalances?: any; // used for multiple tokens to track individual token balances
 }

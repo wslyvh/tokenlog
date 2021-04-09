@@ -123,7 +123,22 @@ export function TokenInfo() {
   };
 
   const renderBalance = () => {
-    if (repoContext.votingPower) {
+    if (repoContext.votingPower && repoContext.votingPower.tokenBalances) {
+      return (
+        <>
+          {repoContext.votingPower.tokenBalances.map((i: any) => {
+            return (
+              <>
+                <span className="mr-2">
+                  {i.balance.toFixed(2)}
+                </span>
+              </>
+            );
+          })}
+          <span>({Percentage(repoContext.votingPower?.totalPower ?? 0, repoContext.votingPower?.totalSupply)}% VP)</span>
+        </>
+      )
+    } else if (repoContext.votingPower) {
       return (
         <>
           {repoContext.votingPower?.totalPower.toFixed(2) +
