@@ -8,4 +8,5 @@ export interface Vote {
   cost: number;
   signature: string;
   timestamp: Date;
+  chainId?: number;
 }

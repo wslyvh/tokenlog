@@ -55,22 +55,25 @@ export function VotingCard(props: VotingCardProps) {
           ...signingMessage,
           address: web3Context.account,
           signature: result,
+          chainId: repoContext.settings?.chainId || 1
         } as Vote;
 
-        await VotingService.CreateVote(vote);
-        setVoteCount(voteCount + votes[0]);
-        if (repoContext.votingPower) {
-          const vp = repoContext.votingPower;
-          vp.voted = repoContext.votingPower.voted + vote.cost;
-          vp.available = repoContext.votingPower.available - vote.cost;
+        const voted = await VotingService.CreateVote(vote);
+        if (voted) {
+          setVoteCount(voteCount + votes[0]);
+          if (repoContext.votingPower) {
+            const vp = repoContext.votingPower;
+            vp.voted = repoContext.votingPower.voted + vote.cost;
+            vp.available = repoContext.votingPower.available - vote.cost;
 
-          repoContext.setContext({
-            org: repoContext.org,
-            repo: repoContext.repo,
-            repository: repoContext.repository,
-            settings: repoContext.settings,
-            votingPower: vp,
-          });
+            repoContext.setContext({
+              org: repoContext.org,
+              repo: repoContext.repo,
+              repository: repoContext.repository,
+              settings: repoContext.settings,
+              votingPower: vp,
+            });
+          }
         }
       }
     } else {

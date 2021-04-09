@@ -21,7 +21,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
     chainId = Number(event.queryStringParameters?.chainId);
   }
 
-  const cacheKey = `repoSettings::${owner}-${repo}`;
+  const cacheKey = `repoSettings::${owner}-${repo}-${chainId}`;
   console.log('GET RepositorySettings', owner, repo);
 
   if (repositorySettings[cacheKey]) {
