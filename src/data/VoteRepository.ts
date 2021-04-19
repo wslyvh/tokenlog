@@ -80,10 +80,12 @@ class VoteRepository {
 
   async GetReposWithVotes(): Promise<Array<OrgRepo>> {
     try {
-      await this.Connect();
+      await this.Connect(); 
 
-      const aggr = await VoteModel.aggregate([{ $group: { _id: { org: '$org', repo: '$repo' } } }]);
-
+      const aggr = await VoteModel.aggregate([
+        { $sort: { timestamp: -1 } },
+        { $group: { _id: { org: '$org', repo: '$repo' } } },
+      ]);
       return aggr.map((i) => {
         return { org: i._id.org, repo: i._id.repo };
       });

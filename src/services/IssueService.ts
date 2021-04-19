@@ -138,7 +138,7 @@ function toIssue(source: any, votes: Array<Vote>): Issue {
     id: source.id,
     number: source.number,
     title: source.title,
-    description: source.body,
+    body: source.body,
     state: source.state,
     type: source.pull_request ? IssueType.PR : IssueType.ISSUE,
     labels: Array.from(source.labels).map((i) => toLabel(i)),

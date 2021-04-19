@@ -1,95 +1,108 @@
-import React from 'react';
+import { Loader } from 'components/Loader';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import IssueService from 'services/IssueService';
+import RepositoryService from 'services/RepositoryService';
+import { OrgRepo, Repository } from 'types/Repository';
 
 const maxWidth = 80;
-const projects = [
+const projects : Array<OrgRepo> = [
   {
-    title: 'Ethereum/EIPs',
-    description: 'The Ethereum Improvement Proposal repository',
-    imageUrl: 'https://avatars1.githubusercontent.com/u/6250754',
-    link: '/ethereum/EIPs',
+    org: 'ethereum',
+    repo: 'EIPs'
   },
   {
-    title: 'Compound Protocol',
-    description: 'The Compound On-Chain Protocol',
-    imageUrl: 'https://avatars1.githubusercontent.com/u/32911405',
-    link: '/compound-finance/compound-protocol',
+    org: 'compound-finance',
+    repo: 'compound-protocol'
   },
   {
-    title: 'Gnosis Safe Multisig',
-    description: 'The most trusted platform to store digital assets on Ethereum',
-    imageUrl: 'https://avatars1.githubusercontent.com/u/24954468',
-    link: '/gnosis/safe-react',
+    org: 'gnosis',
+    repo: 'safe-react'
   },
   {
-    title: 'Pocket Core',
-    description: 'Official implementation of the Pocket Network Protocol',
-    imageUrl: 'https://avatars0.githubusercontent.com/u/33689860',
-    link: '/pokt-network/pocket-core',
+    org: 'pokt-network',
+    repo: 'pocket-core'
   },
   {
-    title: 'yearn-finance',
-    description: 'DeFi made simple',
-    imageUrl: 'https://avatars1.githubusercontent.com/u/60162948',
-    link: '/iearn-finance/yearn-protocol',
+    org: 'iearn-finance',
+    repo: 'yearn-protocol'
   },
   {
-    title: 'tBTC',
-    description: 'Trustlessly tokenized Bitcoin on Ethereum',
-    imageUrl: 'https://avatars0.githubusercontent.com/u/30537626',
-    link: '/keep-network/tbtc',
+    org: 'keep-network',
+    repo: 'tbtc'
   },
   {
-    title: 'The Commons Stack',
-    description: 'Realigning Incentives to Support Public Goods',
-    imageUrl: 'https://avatars2.githubusercontent.com/u/48513475',
-    link: '/commons-stack/iteration0',
+    org: 'commons-stack',
+    repo: 'iteration0'
   },
   {
-    title: 'Tokenlog',
-    description: 'Token-weighted backlogs',
-    imageUrl: 'https://tokenlog.xyz/icon.png',
-    link: '/wslyvh/tokenlog',
+    org: 'wslyvh',
+    repo: 'tokenlog'
   },
   {
-    title: 'HausDAO',
-    description: 'Community governance of the DAOhaus ecosystem',
-    imageUrl: 'https://avatars3.githubusercontent.com/u/69052185',
-    link: '/HausDAO/pokemol-web',
+    org: 'HausDAO',
+    repo: 'pokemol-web'
   },
 ];
 
+const repoData = {
+  loading: true,
+  repos: new Array<Repository>(),
+};
+
+
 export function FeaturedRepositories() {
+  const [data, setData] = useState(repoData);
+  const repos = Array<Repository>();
+
+  useEffect(() => {
+    async function asyncEffect() {
+      const featuredRepos = [...await RepositoryService.GetRepositories(), ...projects].filter(
+        (repo, i, arr) => arr.findIndex(t => t.repo === repo.repo && t.org === repo.org) === i
+      );
+      for (let i = 0; i < featuredRepos.length; i++) {
+        repos.push(await IssueService.GetRepository(featuredRepos[i].org, featuredRepos[i].repo));
+        setData({ loading: false, repos: repos});
+      }
+    }
+    asyncEffect();
+  },[]);
+
   return (
     <div>
-      {projects
-        .sort((a, b) => (a.title < b.title ? -1 : 1))
-        .map((i) => {
-          return (
-            <div key={i.title} className="card mb-2 featured-card">
-              <div className="row no-gutters">
-                <div className="col-md-2 counter-card">
-                  <img
-                    src={i.imageUrl}
-                    className="card-img-top rounded-lg"
-                    alt={i.title}
-                    style={{ maxWidth: maxWidth }}
-                  />
-                </div>
-                <div className="col-md-10">
-                  <div className="card-body">
-                    <span className="card-title">
-                      <Link to={i.link} className="text-secondary stretched-link">
-                        {i.title}
-                      </Link>
-                    </span>
-                    <p className="card-text mt-2">{i.description}</p>
+      {data.loading ? (
+          <Loader />
+        ) : (
+          <>
+            {data.repos
+              .map((i) => {
+                return (
+                  <div key={i.id} className="card mb-2 featured-card">
+                    <div className="row no-gutters">
+                      <div className="col-md-2 counter-card">
+                        <img
+                          src={i.owner.avatarUrl}
+                          className="card-img-top rounded-lg"
+                          alt={i.owner.name}
+                          style={{ maxWidth: maxWidth }}
+                        />
+                      </div>
+                      <div className="col-md-10">
+                        <div className="card-body">
+                          <span className="card-title">
+                            <Link to={i.fullName} className="text-secondary stretched-link">
+                              {i.fullName}
+                            </Link>
+                          </span>
+                          <p className="card-text mt-2">{i.description}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+                );
+              })}
+          </>
+        )}
     </div>
   );
 }
