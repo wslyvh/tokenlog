@@ -12,29 +12,33 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   if (!org || !repo) return { statusCode: 400, body: 'Bad Request' };
 
   let since: number | undefined;
-  if (event.queryStringParameters?.days) { 
-    const days = parseInt(event.queryStringParameters?.days)
-    
+  if (event.queryStringParameters?.days) {
+    const days = parseInt(event.queryStringParameters?.days);
+
     if (!isNaN(days)) {
-      since = moment().subtract(days, "days").valueOf();
+      since = moment().subtract(days, 'days').valueOf();
     }
   }
 
   context.callbackWaitsForEmptyEventLoop = false;
   const data = await repository.GetVotes(org, repo, since);
-  const uniques = Array.from(new Set(data.map(i => i.address)))
-  const items = Array.from(new Set(data.map(i => i.number)))
+  const uniques = Array.from(new Set(data.map((i) => i.address)));
+  const items = Array.from(new Set(data.map((i) => i.number)));
 
-  const amountOfVotesCast = data.length
-  const uniqueVoters = uniques.length
-  const sumOfVotes = data.map(i => i.amount).reduce(function(a, b) {
+  const amountOfVotesCast = data.length;
+  const uniqueVoters = uniques.length;
+  const sumOfVotes = data
+    .map((i) => i.amount)
+    .reduce(function (a, b) {
       return a + b;
-  }, 0);
-  const sumOfVotingPower = data.map(i => i.cost).reduce(function(a, b) { 
+    }, 0);
+  const sumOfVotingPower = data
+    .map((i) => i.cost)
+    .reduce(function (a, b) {
       return a + b;
-  }, 0);
-  const uniqueItems = items.length
-  
+    }, 0);
+  const uniqueItems = items.length;
+
   return {
     statusCode: 200,
     headers: {
@@ -46,8 +50,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
       sumOfVotes,
       sumOfVotingPower,
       uniqueItems,
-      votes: data
+      votes: data,
     }),
   };
 }
-

@@ -22,9 +22,7 @@ export function IssueCard(props: IssueCardProps) {
               <a href={props.issue.url} target="_blank" rel="noopener noreferrer">
                 {props.issue.title}
               </a>
-              <small className="text-muted mr-2 float-right">
-                (#{props.issue.number})
-              </small>
+              <small className="text-muted mr-2 float-right">(#{props.issue.number})</small>
             </span>
 
             <LabelBadges labels={props.issue.labels} />

@@ -55,7 +55,7 @@ export function VotingCard(props: VotingCardProps) {
           ...signingMessage,
           address: web3Context.account,
           signature: result,
-          chainId: repoContext.settings?.chainId || 1
+          chainId: repoContext.settings?.chainId || 1,
         } as Vote;
 
         const voted = await VotingService.CreateVote(vote);

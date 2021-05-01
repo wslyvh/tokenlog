@@ -53,9 +53,9 @@ class VoteRepository {
     try {
       await this.Connect();
 
-      let filter: any = { org: org.toLowerCase(), repo: repo.toLowerCase() }
-      if (since) { 
-        filter.timestamp = { $gte : since }
+      let filter: any = { org: org.toLowerCase(), repo: repo.toLowerCase() };
+      if (since) {
+        filter.timestamp = { $gte: since };
       }
 
       return await VoteModel.find(filter);

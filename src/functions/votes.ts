@@ -12,14 +12,14 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   if (!org || !repo) return { statusCode: 400, body: 'Bad Request' };
 
   let since: number | undefined;
-  if (event.queryStringParameters?.days) { 
-    const days = parseInt(event.queryStringParameters?.days)
-    
+  if (event.queryStringParameters?.days) {
+    const days = parseInt(event.queryStringParameters?.days);
+
     if (!isNaN(days)) {
-      since = moment().subtract(days, "days").valueOf();
+      since = moment().subtract(days, 'days').valueOf();
     }
   }
-  
+
   context.callbackWaitsForEmptyEventLoop = false;
   const data = await repository.GetVotes(org, repo, since);
 

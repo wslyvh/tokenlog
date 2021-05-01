@@ -26,8 +26,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
         await repository.CloseVote(repo.org, repo.repo, repo.number);
         closed.push(repo);
       }
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
       console.log('FAILED to close issue. #' + repo.number, repo.org, repo.repo);
     }
