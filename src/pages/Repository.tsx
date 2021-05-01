@@ -4,11 +4,9 @@ import { RepositoryInfo } from 'components/RepositoryInfo';
 import { TokenInfo } from 'components/TokenInfo';
 import { RepoContextProvider } from 'context/RepoContextProvider';
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function Repository() {
-  const { org, repo } = useParams();
-  
   return (
     <>
       <div>
