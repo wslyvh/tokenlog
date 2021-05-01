@@ -1,4 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
+import { Alert } from 'components/Alert';
+import { AlertProps } from 'components/Alert/Alert';
 import { VoteCounter } from 'components/VoteCounter';
 import { useRepositoryContext } from 'context/RepoContext';
 import React, { useEffect, useState } from 'react';
@@ -18,6 +20,8 @@ export function VotingCard(props: VotingCardProps) {
   const [voteCount, setVoteCount] = useState(props.issue.voteCount);
   const [votingAmount, setVotingAmount] = useState([0, 0]);
   const [costAndVotes, setCostAndVotes] = useState([0, 0]);
+  const [voting, setVoting] = useState(false)
+  const [status, setStatus] = useState<AlertProps>()
   const votingMethod = repoContext.settings?.votingMethod || VotingMethod.STANDARD;
 
   useEffect(() => {
@@ -37,6 +41,8 @@ export function VotingCard(props: VotingCardProps) {
   }, [web3Context.account, web3Context.library, props.issue]);
 
   async function castVote(votes: number[]) {
+    setVoting(true)
+
     if (signer) {
       const signingMessage = {
         org: repoContext.repository?.owner.name,
@@ -48,7 +54,15 @@ export function VotingCard(props: VotingCardProps) {
         timestamp: new Date(),
       };
 
-      const result = await signer.signMessage(JSON.stringify(signingMessage));
+      let result: any;
+      try {
+        result = await signer.signMessage(JSON.stringify(signingMessage));
+        setStatus({ type: 'info', message: 'Casting vote. Please wait..'})
+      }
+      catch (e) {
+        console.log('Signing interrupted. Canceling')
+        setVoting(false)
+      }
 
       if (result) {
         const vote = {
@@ -60,7 +74,8 @@ export function VotingCard(props: VotingCardProps) {
 
         const voted = await VotingService.CreateVote(vote);
         if (voted) {
-          setVoteCount(voteCount + votes[0]);
+          setStatus({ type: 'success', message: 'Thank you for submitting your vote!'})
+
           if (repoContext.votingPower) {
             const vp = repoContext.votingPower;
             vp.voted = repoContext.votingPower.voted + vote.cost;
@@ -73,11 +88,17 @@ export function VotingCard(props: VotingCardProps) {
               settings: repoContext.settings,
               votingPower: vp,
             });
+
+            setVoting(false)
+            setVoteCount(voteCount + votes[0]);
+            setVotingAmount([0,0])
+            setCostAndVotes([0,0])
           }
         }
       }
     } else {
       console.error('No signer available. Need to login first');
+      setVoting(false)
     }
   }
 
@@ -138,6 +159,7 @@ export function VotingCard(props: VotingCardProps) {
               </button>
             </div>
             <div className="modal-body">
+              {status && <Alert type={status.type} message={status.message} />}
               <div className="form-group">{renderVotingInput}</div>
             </div>
             <div className="modal-footer">
@@ -148,7 +170,7 @@ export function VotingCard(props: VotingCardProps) {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => castVote(votingAmount)}
-                disabled={votingAmount[0] === 0}
+                disabled={votingAmount[0] === 0 || voting}
               >
                 Vote
               </button>
