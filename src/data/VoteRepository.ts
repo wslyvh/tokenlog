@@ -49,11 +49,16 @@ class VoteRepository {
     }
   }
 
-  async GetVotes(org: string, repo: string): Promise<Array<Vote>> {
+  async GetVotes(org: string, repo: string, since?: number): Promise<Array<Vote>> {
     try {
       await this.Connect();
 
-      return await VoteModel.find({ org: org.toLowerCase(), repo: repo.toLowerCase() });
+      let filter: any = { org: org.toLowerCase(), repo: repo.toLowerCase() }
+      if (since) { 
+        filter.timestamp = { $gte : since }
+      }
+
+      return await VoteModel.find(filter);
     } catch (ex) {
       console.error(ex);
     }
