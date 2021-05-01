@@ -46,7 +46,7 @@ export default function Stats() {
             <ul>
               <li>Unique voters: {stats.uniqueVoters}</li>
               <li>Amount of votes cast: {stats.amountOfVotesCast}</li>
-              <li>Sum of all votes cast: {stats.sumOfVotes}</li>
+              <li>Sum of all votes: {stats.sumOfVotes}</li>
               <li>Sum of voting power used: {stats.sumOfVotingPower} (Quadratic voting cost)</li>
               <li>Voted on: {stats.uniqueItems} items</li>
             </ul>
