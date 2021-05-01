@@ -60,7 +60,7 @@ export function VotingCard(props: VotingCardProps) {
         setStatus({ type: 'info', message: 'Casting vote. Please wait..'})
       }
       catch (e) {
-        console.log('Signing interrupted. Canceling')
+        setStatus({ type: 'warning', message: 'Signing canceled. Please try again'})
         setVoting(false)
       }
 
@@ -73,6 +73,10 @@ export function VotingCard(props: VotingCardProps) {
         } as Vote;
 
         const voted = await VotingService.CreateVote(vote);
+        if (!voted) { 
+          setStatus({ type: 'danger', message: 'Unable to cast vote. Please check your account and available voting power.'})
+          setVoting(false)
+        }
         if (voted) {
           setStatus({ type: 'success', message: 'Thank you for submitting your vote!'})
 
@@ -97,7 +101,7 @@ export function VotingCard(props: VotingCardProps) {
         }
       }
     } else {
-      console.error('No signer available. Need to login first');
+      setStatus({ type: 'warning', message: 'No signer available. Need to login first'})
       setVoting(false)
     }
   }
