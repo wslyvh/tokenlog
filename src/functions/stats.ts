@@ -22,12 +22,35 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 
   context.callbackWaitsForEmptyEventLoop = false;
   const data = await repository.GetVotes(org, repo, since);
+  const uniques = Array.from(new Set(data.map((i) => i.address)));
+  const items = Array.from(new Set(data.map((i) => i.number)));
+
+  const amountOfVotesCast = data.length;
+  const uniqueVoters = uniques.length;
+  const sumOfVotes = data
+    .map((i) => i.amount)
+    .reduce(function (a, b) {
+      return a + b;
+    }, 0);
+  const sumOfVotingPower = data
+    .map((i) => i.cost)
+    .reduce(function (a, b) {
+      return a + b;
+    }, 0);
+  const uniqueItems = items.length;
 
   return {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      amountOfVotesCast,
+      uniqueVoters,
+      sumOfVotes,
+      sumOfVotingPower,
+      uniqueItems,
+      votes: data,
+    }),
   };
 }

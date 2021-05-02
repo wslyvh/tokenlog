@@ -129,15 +129,15 @@ export function TokenInfo() {
           {repoContext.votingPower.tokenBalances.map((i: any) => {
             return (
               <>
-                <span className="mr-2">
-                  {i.balance.toFixed(2)}
-                </span>
+                <span className="mr-2">{i.balance.toFixed(2)}</span>
               </>
             );
           })}
-          <span>({Percentage(repoContext.votingPower?.totalPower ?? 0, repoContext.votingPower?.totalSupply)}% VP)</span>
+          <span>
+            ({Percentage(repoContext.votingPower?.totalPower ?? 0, repoContext.votingPower?.totalSupply)}% VP)
+          </span>
         </>
-      )
+      );
     } else if (repoContext.votingPower) {
       return (
         <>

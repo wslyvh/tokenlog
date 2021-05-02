@@ -10,6 +10,7 @@ import { BetaBanner } from 'components/BetaBanner';
 const Home = lazy(() => import('pages/Home'));
 const Organization = lazy(() => import('pages/Organization'));
 const Repository = lazy(() => import('pages/Repository'));
+const Stats = lazy(() => import('pages/Stats'));
 const Settings = lazy(() => import('pages/Settings'));
 
 function getWeb3Provider(provider: any): Web3Provider {
@@ -37,6 +38,9 @@ export function Default() {
                 </Route>
                 <Route exact path="/:org/:repo">
                   <Repository />
+                </Route>
+                <Route exact path="/:org/:repo/stats">
+                  <Stats />
                 </Route>
                 <Route exact path="/:org/:repo/settings">
                   <Settings />

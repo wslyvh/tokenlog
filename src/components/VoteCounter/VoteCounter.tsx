@@ -58,15 +58,14 @@ export function VoteCounter(props: VoteCounterProps) {
   }
 
   async function setValues(votes: number, cost: number, error: string) {
-    if (isNaN(votes) || isNaN(cost)) { 
+    if (isNaN(votes) || isNaN(cost)) {
       setNumberOfVotes(0);
       setCost(0);
       setError('Invalid number');
-    }
-    else { 
-    setNumberOfVotes(votes);
-    setCost(cost);
-    setError(error);
+    } else {
+      setNumberOfVotes(votes);
+      setCost(cost);
+      setError(error);
     }
 
     props.onChange([votes, cost]);
