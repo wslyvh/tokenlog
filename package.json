@@ -4,7 +4,7 @@
   "author": "wslyvh",
   "version": "0.1.0",
   "scripts": {
-    "start": "concurrently 'react-scripts start' 'netlify-lambda serve src/functions --config ./webpack.config.js'",
+    "start": "concurrently \"react-scripts start\" \"netlify-lambda serve src/functions --config ./webpack.config.js\"",
     "build": "react-scripts build && netlify-lambda build src/functions --config ./webpack.config.js",
     "test": "react-scripts test --coverage --verbose --detectOpenHandles --forceExit",
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
