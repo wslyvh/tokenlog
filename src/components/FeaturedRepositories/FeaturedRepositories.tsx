@@ -76,7 +76,7 @@ export function FeaturedRepositories() {
                           <span className="card-title">
                             <Link to={i.fullName} className="text-secondary stretched-link">
                               {i.fullName}
-                            </Link>
+                            </Link> 
                           </span>
                           <p className="card-text mt-2">{i.description}</p>
                         </div>
@@ -86,9 +86,9 @@ export function FeaturedRepositories() {
                   );
               })}
               {hasMoreRepos ? (
-                <button type="button"  className="btn btn-light" disabled={loading} onClick={handleMoreRepos}>Load more</button>
+                <button type="button"  className="btn btn-light" disabled={loading} onClick={handleMoreRepos}>Show more</button>
               ) : (
-                <button type="button"  className="btn btn-light" disabled={!hasMoreRepos} >No more to load</button>
+                <button type="button"  className="btn btn-light" disabled={!hasMoreRepos} >No more to show</button>
               )}
               
           </>
