@@ -19,8 +19,7 @@ export function FeaturedRepositories() {
 
   useEffect(() => {
     async function asyncEffect() {
-      const x = await RepositoryService.GetRepositories();
-      setFeaturedRepos(x);
+      setFeaturedRepos(await RepositoryService.GetRepositories());
     }
     asyncEffect();
   },[]);
