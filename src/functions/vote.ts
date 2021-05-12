@@ -18,20 +18,25 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 
   context.callbackWaitsForEmptyEventLoop = false;
 
-  let vp: VotingPower | undefined = undefined
+  let vp: VotingPower | undefined = undefined;
   if (body.tokenAddress.includes('|')) {
-    vp = await VotingService.GetCombinedVotingPower(body.tokenAddress.split('|').map(i => {
-      return { 
-        address: i,
-        name: i,
-        symbol: '',
-        totalSupply: -1,
-        decimals: -1
-      }
-    }), body.org, body.repo, body.address, body.chainId)
+    vp = await VotingService.GetCombinedVotingPower(
+      body.tokenAddress.split('|').map((i) => {
+        return {
+          address: i,
+          name: i,
+          symbol: '',
+          totalSupply: -1,
+          decimals: -1,
+        };
+      }),
+      body.org,
+      body.repo,
+      body.address,
+      body.chainId
+    );
   } else {
-    vp = await VotingService.GetVotingPower(body.tokenAddress, 
-      body.org, body.repo, body.address, body.chainId)
+    vp = await VotingService.GetVotingPower(body.tokenAddress, body.org, body.repo, body.address, body.chainId);
   }
 
   if (!vp) {
@@ -39,20 +44,20 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   }
 
   // VotingPower will not include already casted votes, due to bad design in the services/REST calls
-  console.log('Getting already cast user votes')
+  console.log('Getting already cast user votes');
   const alreadyUsedVotes = await repository.GetUserVotes(body.org, body.repo, body.address);
   vp = {
     totalPower: vp.totalPower,
     voted: alreadyUsedVotes,
     available: vp.totalPower - alreadyUsedVotes,
     totalSupply: vp.totalSupply,
-  }
+  };
 
   if (body.cost > vp.available) {
-    console.log('Not enough voting power left. Unable to cast vote.')
+    console.log('Not enough voting power left. Unable to cast vote.');
     return { statusCode: 500, body: 'Not enough voting power left. Unable to cast vote.' };
   }
-  
+
   const data = await repository.CreateVote(body);
 
   return {

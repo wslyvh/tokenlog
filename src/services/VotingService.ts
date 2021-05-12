@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ethers } from 'ethers';
+import { Stats } from 'types/Stats';
 import { Token } from 'types/Token';
 import { Vote } from 'types/Vote';
 import { VotingPower } from 'types/VotingPower';
@@ -13,6 +14,7 @@ export default {
   GetUserVotes,
   CreateVote,
   GetVotes,
+  GetStats,
 };
 
 async function GetTokenInfo(address: string, chainId?: number): Promise<Token | undefined> {
@@ -23,10 +25,9 @@ async function GetTokenInfo(address: string, chainId?: number): Promise<Token | 
 
   // Check decimals seperately as it's not in the ERC721 standard.
   let decimals = 0;
-  try { 
+  try {
     decimals = await erc20.decimals();
-  }
-  catch(e) { 
+  } catch (e) {
     console.log("Couldn't fetch token decimals. Potential ERC721?");
   }
 
@@ -70,10 +71,9 @@ async function GetVotingPower(
   const erc20 = new ethers.Contract(tokenAddress, ERC20_READ, provider);
 
   let decimals = 0;
-  try { 
+  try {
     decimals = await erc20.decimals();
-  }
-  catch(e) { 
+  } catch (e) {
     // Ignore error: decimals are fetched seperately as it's not in the ERC721 standard.
   }
 
@@ -165,7 +165,7 @@ async function GetCombinedVotingPower(
     voted: alreadyUsedVotes,
     available: totalBalance - alreadyUsedVotes,
     totalSupply: totalSupply,
-    tokenBalances: totalVotingPower
+    tokenBalances: totalVotingPower,
   };
 }
 
@@ -202,4 +202,15 @@ async function GetVotes(org: string, repo: string): Promise<Array<Vote>> {
   }
 
   return [];
+}
+
+async function GetStats(org: string, repo: string, days?: string): Promise<Stats | undefined> {
+  try {
+    const result = await axios.get(`/.netlify/functions/stats?org=${org}&repo=${repo}&days=${days}`);
+    if (result.status !== 200) throw new Error("Couldn't get statistics");
+
+    return result.data;
+  } catch {
+    console.error("Couldn't get statistics");
+  }
 }

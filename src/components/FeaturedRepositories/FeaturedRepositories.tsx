@@ -29,7 +29,8 @@ const projects = [
   },
   {
     title: 'Commons Stack',
-    description: 'We are revisiting the TEC mission, vision and values and proposing new statements using Tokenlog to pick the best ones.',
+    description:
+      'We are revisiting the TEC mission, vision and values and proposing new statements using Tokenlog to pick the best ones.',
     imageUrl: 'https://avatars.githubusercontent.com/u/72481541',
     link: '/CommonsBuild/TokenLog-SoftGov',
   },

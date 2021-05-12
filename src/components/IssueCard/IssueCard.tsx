@@ -19,12 +19,10 @@ export function IssueCard(props: IssueCardProps) {
         <div className="col-md-10">
           <div className="card-body p-4">
             <span className="card-title">
-              {props.issue.title}
-              <small className="text-muted mr-2 float-right">
-                <a href={props.issue.url} target="_blank" rel="noopener noreferrer">
-                  #{props.issue.number}
-                </a>
-              </small>
+              <a href={props.issue.url} target="_blank" rel="noopener noreferrer">
+                {props.issue.title}
+              </a>
+              <small className="text-muted mr-2 float-right">(#{props.issue.number})</small>
             </span>
 
             <LabelBadges labels={props.issue.labels} />
