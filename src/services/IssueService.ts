@@ -56,7 +56,7 @@ async function GetRepositoryIssues(
   repo: string,
   state: IssueState = IssueState.OPEN,
   labels: string = '',
-  limit: number = 25,
+  limit: number = 100,
   page: number = 1,
   sort: 'updated' | 'created' | 'comments' | undefined = 'updated',
   direction: 'asc' | 'desc' | undefined = 'desc'
