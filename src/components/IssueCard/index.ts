@@ -1,1 +1,0 @@
-export { IssueCard } from './IssueCard';

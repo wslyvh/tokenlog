@@ -1,1 +1,0 @@
-export { FeaturedRepositories } from './FeaturedRepositories';

@@ -1,1 +1,0 @@
-export { VotingCard } from './VotingCard';

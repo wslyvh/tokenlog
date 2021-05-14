@@ -1,1 +1,0 @@
-export { RepositoryInfo } from './RepositoryInfo';
