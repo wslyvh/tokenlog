@@ -12,7 +12,7 @@ export class GithubService implements BacklogService {
     this.repository = repository
   }
 
-  public async GetBacklogs(): Promise<Array<Backlog>> {
+  public async GetBacklogs(inclDetails?: boolean): Promise<Array<Backlog>> {
     let backlogs = new Array<Backlog>()
 
     try {
@@ -22,19 +22,19 @@ export class GithubService implements BacklogService {
       console.error(e)
     }
 
+    if (!inclDetails) {
+      return backlogs
+    }
     const promises = await Promise.all(
       backlogs.map(async (i) => {
         try {
           return this.GetBacklog(i.ownerName, i.id, false)
-        } catch (e) {
-          console.log('DIDNDNNDND PROMISES')
-          // console.error(e)
+        } catch {
           return null
         }
       })
     )
 
-    console.log(promises)
     return promises.filter((i) => !!i)
   }
 

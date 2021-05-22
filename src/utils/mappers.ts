@@ -18,7 +18,7 @@ export function ToBacklog(source: any): Backlog {
     owner: ToOwner(source.owner),
     settings: source.settings?.data
       ? (JSON.parse(source.settings.data) as BacklogSettings)
-      : undefined,
+      : null,
     labels: source.labels?.nodes
       ? source.labels.nodes.map((label: any) => ToLabel(label))
       : [],

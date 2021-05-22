@@ -6,6 +6,9 @@ import { GithubService } from 'src/services/github'
 import { MongoRepository } from 'src/repository/MongoRepository'
 import { DEFAULT_CACHE_REVALIDATE } from 'src/utils/constants'
 import { Link } from 'src/components/elements/Link'
+import { RepoBreadcrumb } from 'src/components/RepoBreadcrumb'
+import { RepoNotFound } from 'src/components/RepoNotFound'
+import { Pagehead } from '@primer/components'
 
 interface Props {
   owner: Owner
@@ -19,9 +22,20 @@ interface Params extends ParsedUrlQuery {
 export default function OwnerPage(data: Props) {
   const owner = data.owner
 
+  if (!owner) {
+    return null
+  }
+  
+  // if (owner.backlogs.length <= 0) {
+  //   return <RepoNotFound />
+  // }
+
   return (
     <div id="owner">
-      <h2>{owner.name}</h2>
+      <RepoBreadcrumb />
+      
+      <Pagehead>{owner.name}</Pagehead>
+      
       <Link to={owner.url}>View on Github</Link>
     </div>
   )
@@ -45,7 +59,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   const repository = new MongoRepository()
   const service = new GithubService(repository)
   const owner = await service.GetOwner(context.params.owner)
-
+  
   if (!owner) {
     return {
       props: null,

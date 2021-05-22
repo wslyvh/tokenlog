@@ -15,6 +15,7 @@
     "@primer/components": "^28.0.3",
     "@primer/css": "^17.0.1",
     "@primer/octicons-react": "^14.1.0",
+    "@primer/styled-octicons": "^14.1.0",
     "dotenv": "^9.0.2",
     "moment": "^2.29.1",
     "mongoose": "^5.12.10",

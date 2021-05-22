@@ -1,7 +1,7 @@
 import { Backlog, BacklogItem, Owner, Vote } from 'src/types'
 
 export interface BacklogService {
-  GetBacklogs(): Promise<Array<Backlog>>
+  GetBacklogs(inclDetails?: boolean): Promise<Array<Backlog>>
   GetOwner(owner: string): Promise<Owner>
   GetBacklog(owner: string, id: string, inclFilters?: boolean): Promise<Backlog>
   GetBacklogItems(
