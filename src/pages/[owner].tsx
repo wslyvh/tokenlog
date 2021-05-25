@@ -32,7 +32,7 @@ export default function OwnerPage(data: Props) {
 
   return (
     <div id="owner">
-      <RepoBreadcrumb />
+      <RepoBreadcrumb paths={[owner.name]} />
       
       <Pagehead>{owner.name}</Pagehead>
       

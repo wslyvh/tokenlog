@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import VoteModel from 'src/models/VoteModel'
+import VoteModel from 'src/models/OldVoteModel'
 import { SERVER_CONFIG } from 'src/utils/config'
 import { DB_OPTIONS } from 'src/utils/db'
 import { Backlog, Vote, VoteSummary } from 'src/types'

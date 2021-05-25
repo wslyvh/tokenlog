@@ -32,7 +32,7 @@ export default function BacklogPage(data: Props) {
 
   return (
     <div id="backlog">
-      <RepoBreadcrumb />
+      <RepoBreadcrumb paths={[backlog.ownerName, backlog.name]} />
       
       <Pagehead>{backlog.name}</Pagehead>
 
