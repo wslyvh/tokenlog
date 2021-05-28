@@ -15,11 +15,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const v2models = await VoteModel.find()
   console.log(v2models.length, '# of votes on new DB from model')
 
-  const ExportedModels = require('export.json')
-  if (ExportedModels) {
+  try { 
+    const ExportedModels = require('export.json')
     console.log(`Creating ${ExportedModels.length} new models...`)
     const results = await VoteModel.create(ExportedModels)
     res.status(200).json(results)
+  } catch {
+    console.log('Unable to resolve and import new votes')
   }
 
   res.status(400).json('Unable to import votes')
