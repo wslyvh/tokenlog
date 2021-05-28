@@ -15,23 +15,11 @@ export class MockRepository
     return ['github:wslyvh/tokenlog']
   }
 
-  public async GetBacklogVotesAggregated(
-    owner: string,
-    repo: string,
-    state?: 'ALL' | 'OPEN' | 'CLOSED',
-    address?: string,
-    numbers?: number[]
-  ): Promise<VoteSummary[]> {
+  public async GetBacklogVotesAggregated(id: string): Promise<VoteSummary[]> {
     throw new Error('Method not implemented.')
   }
 
-  public async GetBacklogVotes(
-    owner: string,
-    repo: string,
-    state?: 'ALL' | 'OPEN' | 'CLOSED',
-    address?: string,
-    numbers?: number[]
-  ): Promise<Vote[]> {
+  public async GetBacklogVotes(id: string): Promise<Array<Vote>> {
     throw new Error('Method not implemented.')
   }
 }

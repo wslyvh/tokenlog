@@ -38,26 +38,6 @@ export class MongoVotingRepository
     }
   }
 
-  // public async GetBacklogVotesAggregated(
-  //   owner: string,
-  //   repo: string,
-  //   state?: 'ALL' | 'OPEN' | 'CLOSED',
-  //   address?: string,
-  //   numbers?: number[]
-  // ): Promise<VoteSummary[]> {
-  //   throw new Error('Method not implemented.')
-  // }
-
-  // public async GetBacklogVotes(
-  //   owner: string,
-  //   repo: string,
-  //   state?: 'ALL' | 'OPEN' | 'CLOSED',
-  //   address?: string,
-  //   numbers?: number[]
-  // ): Promise<Vote[]> {
-  //   throw new Error('Method not implemented.')
-  // }
-
   public async GetBacklogVotesAggregated(
     id: string
   ): Promise<Array<VoteSummary>> {
@@ -92,43 +72,17 @@ export class MongoVotingRepository
     }
   }
 
-  public async GetBacklogVotes(
-    owner: string,
-    repo: string,
-    state?: 'ALL' | 'OPEN' | 'CLOSED',
-    address?: string,
-    numbers?: number[]
-  ): Promise<Array<Vote>> {
-    if (!owner || !repo) throw new Error('Properties are empty or undefined.')
+  public async GetBacklogVotes(id: string): Promise<Array<Vote>> {
+    if (!id) throw new Error('id is empty or undefined.')
 
     try {
       await this.Connect()
 
-      const filter = this.getFilter(owner, repo, state, address, numbers)
-
-      // console.log("QUERY VOTES", filter);
-      return await VoteModel.find(filter)
+      return await VoteModel.find({ backlog: id })
     } catch (ex) {
       console.error(ex)
 
-      throw new Error(`Unable to get votes ${owner}/${repo}`)
+      throw new Error(`Unable to get votes ${id}`)
     }
-  }
-
-  private getFilter(
-    owner: string,
-    repo: string,
-    state?: 'ALL' | 'OPEN' | 'CLOSED',
-    address?: string,
-    numbers?: number[]
-  ): any {
-    let filter: any = { org: owner, repo: repo }
-    if (state === 'OPEN' || state === 'CLOSED')
-      filter = { ...filter, closed: state === 'CLOSED' } // TODO: replace with .state === filter
-    if (address) filter = { ...filter, address: address }
-    if (numbers && numbers.length > 0)
-      filter = { ...filter, number: { $in: numbers } }
-
-    return filter
   }
 }
