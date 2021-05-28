@@ -51,7 +51,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     .map((backlog: Backlog) => {
       if (backlog.type === 'github') {
         const owner = backlog.id.replace('github:', '').split('/')[0]
-        const repo = backlog.id.replace('github:', '').split('/')[0]
+        const repo = backlog.id.replace('github:', '').split('/')[1]
 
         return {
           params: { owner: owner, repo: repo },
