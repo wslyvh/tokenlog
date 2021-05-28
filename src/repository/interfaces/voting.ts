@@ -1,7 +1,9 @@
-import { Backlog, Vote, VoteSummary } from 'src/types'
+import { Vote, VoteSummary } from 'src/types'
+import { Repository } from './repository'
 
-export interface VotingRepository {
-  GetBacklogs(): Promise<Array<Backlog>>
+export interface VotingRepository extends Repository<Vote> {
+  GetBacklogIds(type?: string): Promise<Array<string>>
+
   GetBacklogVotesAggregated(
     owner: string,
     repo: string,

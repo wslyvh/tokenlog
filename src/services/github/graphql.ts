@@ -1,13 +1,13 @@
-const MAX_LIMIT = 100
+import { graphql } from '@octokit/graphql'
+import { APP_CONFIG } from '../../utils/config'
 
-const LABELS = `labels(first: ${MAX_LIMIT}) {
-    nodes {
-        id
-        name
-        description
-        color
-    }
-}`
+export const graphqlWithAuth: any = graphql.defaults({
+  headers: {
+    authorization: 'token ' + APP_CONFIG.GITHUB_ACCESS_TOKEN,
+  },
+})
+
+const MAX_LIMIT = 100
 const OWNER = `
     login
     avatarUrl
@@ -19,17 +19,7 @@ const OWNER = `
     userId: id
 }`
 
-export function GET_OWNER() {
-  return `query GetOwner($owner: String!) {
-        repositoryOwner(login: $owner) {
-            ${OWNER}
-        }
-    }`
-}
-
-export function GET_REPOSITORY(withLabels: boolean) {
-  const labels = withLabels ? LABELS : ''
-
+export function GET_REPOSITORY() {
   return `query GetRepository($owner: String!, $repo: String!) {
         repository(owner: $owner, name: $repo) {
             id
@@ -45,7 +35,6 @@ export function GET_REPOSITORY(withLabels: boolean) {
                     data: text
                 }
             }
-            ${labels}
         }
     }`
 }

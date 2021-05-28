@@ -1,5 +1,4 @@
 import { VoteSummary } from '.'
-import { Label } from './Label'
 import { Vote } from './Vote'
 
 export interface BacklogItem {
@@ -12,7 +11,6 @@ export interface BacklogItem {
   updated: Date
   closed: Date
   url: string
-  labels: Array<Label>
   commentsCount: number
   voteSummary?: VoteSummary
   votes: Array<Vote>

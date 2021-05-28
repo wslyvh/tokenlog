@@ -1,9 +1,10 @@
 export interface Vote {
-  key: string
+  backlog: string
   number: number
-  state: 'OPEN' | 'CLOSED'
   address: string
   amount: number
+  state: string
+  version: number
+  timestamp: Date
   signature: string
-  date: Date
 }

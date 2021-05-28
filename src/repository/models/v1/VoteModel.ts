@@ -1,7 +1,7 @@
 import { Document, Model, model, models, Schema } from 'mongoose'
-import { OldVote } from 'src/types/OldVote'
+import { Vote } from 'src/types/v1/Vote'
 
-interface OldVoteModel extends OldVote, Document {}
+interface VoteModel extends Vote, Document {}
 
 const voteSchema: Schema = new Schema({
   org: { type: String, required: true, lowercase: true, trim: true },
@@ -18,4 +18,4 @@ const voteSchema: Schema = new Schema({
 
 export default (models.Vote
   ? models.Vote
-  : model<OldVoteModel>('Vote', voteSchema)) as Model<OldVoteModel>
+  : model<VoteModel>('Vote', voteSchema)) as Model<VoteModel>

@@ -1,9 +1,8 @@
-import { Backlog, BacklogItem, Owner, Vote } from 'src/types'
+import { Backlog, BacklogItem, Vote } from 'src/types'
 
 export interface BacklogService {
-  GetBacklogs(inclDetails?: boolean): Promise<Array<Backlog>>
-  GetOwner(owner: string): Promise<Owner>
-  GetBacklog(owner: string, id: string, inclFilters?: boolean): Promise<Backlog>
+  GetBacklog(id: string): Promise<Backlog>
+
   GetBacklogItems(
     owner: string,
     id: string,
@@ -21,5 +20,4 @@ export interface BacklogService {
     address?: string,
     numbers?: number[]
   ): Promise<Array<Vote>>
-  // TODO: GetBacklogItem(org, repo, number) incl. All Votes
 }
