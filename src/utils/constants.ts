@@ -9,3 +9,4 @@ export const CREATOR_NOTICE = '2020 — wslyvh'
 export const DEFAULT_CACHE_REVALIDATE = 600
 
 export const PRIMARY_COLOR = '#2188FF'
+export const SECONDARY_COLOR = '#2f363d'

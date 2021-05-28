@@ -31,8 +31,8 @@ export class GithubService implements BacklogService {
 
       return this.ToBacklog(response.repository)
     } catch (e) {
+      console.log(`Unable to get backlog ${id}`)
       console.error(e)
-      throw new Error(`Unable to get backlog ${id}`)
     }
   }
 
@@ -58,9 +58,8 @@ export class GithubService implements BacklogService {
 
       return this.ToItems(results[0].repository, results[1])
     } catch (e) {
+      console.log(`Unable to get backlog items ${id}`)
       console.error(e)
-
-      throw new Error(`Unable to get backlog items ${owner}/${id}`)
     }
   }
 
@@ -76,7 +75,8 @@ export class GithubService implements BacklogService {
     try {
       return this.repository.GetBacklogVotes(owner, id, state, address, numbers)
     } catch (e) {
-      throw new Error(`Unable to get backlog votes ${owner}/${id}`)
+      console.log(`Unable to get backlog votes ${id}`)
+      console.error(e)
     }
   }
 
