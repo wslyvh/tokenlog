@@ -3,7 +3,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { APP_CONFIG } from 'src/utils/config'
 import VoteModel from 'src/repository/models/VoteModel'
 import { MongoVotingRepository } from 'src/repository/voting'
-import ExportedModels from 'export.json'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   console.log('Connect to new/v2 database..')
