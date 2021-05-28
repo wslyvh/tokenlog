@@ -12,7 +12,11 @@ export function RepoBreadcrumb(props: Props) {
     <div>
       <Breadcrumb>
         <Breadcrumb.Item>
-          <RepoIcon aria-label="GitHub Repository" color={SECONDARY_COLOR} size={16} />
+          <RepoIcon
+            aria-label="GitHub Repository"
+            color={SECONDARY_COLOR}
+            size={16}
+          />
         </Breadcrumb.Item>
         {props.paths.map((i, index) => {
           return (

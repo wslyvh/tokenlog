@@ -2,17 +2,8 @@ import { Backlog, BacklogItem, Vote } from 'src/types'
 
 export interface BacklogService {
   GetBacklog(id: string): Promise<Backlog>
+  GetBacklogItems(id: string): Promise<Array<BacklogItem>>
 
-  GetBacklogItems(
-    owner: string,
-    id: string,
-    type?: 'ISSUE' | 'PR',
-    state?: 'OPEN' | 'CLOSED' | 'MERGED',
-    sort?: 'CREATED_AT' | 'UPDATED_AT' | 'COMMENTS' | 'TOP',
-    order?: 'ASC' | 'DESC',
-    page?: number,
-    size?: number
-  ): Promise<Array<BacklogItem>>
   GetBacklogVotes(
     owner: string,
     id: string,

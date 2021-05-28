@@ -12,7 +12,7 @@ export class MockRepository
   }
 
   public async GetBacklogIds(): Promise<Array<string>> {
-    return ['github:wslyvh/tokenlog', 'github:commonsbuild/coordination']
+    return ['github:wslyvh/tokenlog']
   }
 
   public async GetBacklogVotesAggregated(

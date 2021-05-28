@@ -4,9 +4,9 @@ import { MockRepository } from './mock'
 import { MongoVotingRepository } from './voting'
 
 export function Create(): VotingRepository {
-  // if (APP_CONFIG.NODE_ENV === 'development') {
-  //     return new MockRepository()
-  // }
+  if (APP_CONFIG.NODE_ENV === 'development') {
+    return new MockRepository()
+  }
 
   return new MongoVotingRepository()
 }

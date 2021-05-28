@@ -7,7 +7,8 @@ export const graphqlWithAuth: any = graphql.defaults({
   },
 })
 
-const MAX_LIMIT = 100
+export const MAX_LIMIT = 100
+
 const OWNER = `
     login
     avatarUrl

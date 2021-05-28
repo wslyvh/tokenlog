@@ -1,4 +1,9 @@
-import { graphqlWithAuth, GET_ISSUES, GET_REPOSITORY } from './graphql'
+import {
+  graphqlWithAuth,
+  GET_ISSUES,
+  GET_REPOSITORY,
+  MAX_LIMIT,
+} from './graphql'
 import {
   Backlog,
   BacklogItem,
@@ -18,7 +23,7 @@ export class GithubService implements BacklogService {
   }
 
   public async GetBacklog(id: string): Promise<Backlog> {
-    if (!id) throw new Error('Id is empty or undefined.')
+    if (!id) throw new Error('id is empty or undefined.')
 
     try {
       const owner = id.replace(`${this.type}:`, '').split('/')[0]
@@ -36,27 +41,32 @@ export class GithubService implements BacklogService {
     }
   }
 
-  public async GetBacklogItems(
-    owner: string,
-    id: string,
-    type?: 'ISSUE' | 'PR',
-    state?: 'OPEN' | 'CLOSED' | 'MERGED',
-    sort?: 'CREATED_AT' | 'UPDATED_AT' | 'COMMENTS' | 'TOP',
-    order?: 'ASC' | 'DESC',
-    page?: number,
-    size?: number
-  ): Promise<Array<BacklogItem>> {
-    if (!owner || !id) throw new Error('Properties are empty or undefined.')
+  public async GetBacklogItems(id: string): Promise<Array<BacklogItem>> {
+    if (!id) throw new Error('id is empty or undefined.')
 
     try {
-      const voteState = state === 'MERGED' ? 'CLOSED' : state
-      const filter = { owner, repo: id, state, sort, order, size }
-      const results = await Promise.all([
-        graphqlWithAuth(GET_ISSUES(type || 'ISSUE'), filter),
-        this.repository.GetBacklogVotesAggregated(owner, id, voteState),
-      ])
+      const owner = id.replace(`${this.type}:`, '').split('/')[0]
+      const repo = id.replace(`${this.type}:`, '').split('/')[1]
 
-      return this.ToItems(results[0].repository, results[1])
+      // TODO: Pagination - and/or recursively fetch all if it's statically generated & cached
+      const items = await graphqlWithAuth(GET_ISSUES('ISSUE'), {
+        owner,
+        repo: repo,
+        state: 'OPEN',
+        sort: 'UPDATED_AT',
+        order: 'DESC',
+        size: MAX_LIMIT,
+      })
+      console.log('ITEMS', items.repository.issues)
+
+      // const results = await Promise.all([
+      //   graphqlWithAuth(GET_ISSUES(type || 'ISSUE'), filter),
+      //   this.repository.GetBacklogVotesAggregated(owner, id, voteState),
+      // ])
+
+      // return this.ToItems(results[0].repository, results[1])
+
+      return []
     } catch (e) {
       console.log(`Unable to get backlog items ${id}`)
       console.error(e)
