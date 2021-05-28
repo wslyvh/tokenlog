@@ -68,17 +68,11 @@ export class GithubService implements BacklogService {
     }
   }
 
-  public async GetBacklogVotes(
-    owner: string,
-    id: string,
-    state?: 'ALL' | 'OPEN' | 'CLOSED',
-    address?: string,
-    numbers?: number[]
-  ): Promise<Array<Vote>> {
-    if (!owner || !id) throw new Error('Properties are empty or undefined.')
+  public async GetBacklogVotes(id: string): Promise<Array<Vote>> {
+    if (!id) throw new Error('id is empty or undefined.')
 
     try {
-      return this.repository.GetBacklogVotes(owner, id, state, address, numbers)
+      return this.repository.GetBacklogVotes(id)
     } catch (e) {
       console.log(`Unable to get backlog votes ${id}`)
       console.error(e)
