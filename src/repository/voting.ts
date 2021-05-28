@@ -58,11 +58,13 @@ export class MongoVotingRepository
   //   throw new Error('Method not implemented.')
   // }
 
-  public async GetBacklogVotesAggregated(id: string): Promise<Array<VoteSummary>> {
-    if (!id) throw new Error('id is empty or undefined.');
+  public async GetBacklogVotesAggregated(
+    id: string
+  ): Promise<Array<VoteSummary>> {
+    if (!id) throw new Error('id is empty or undefined.')
 
     try {
-      await this.Connect();
+      await this.Connect()
 
       const aggregated = await VoteModel.aggregate([
         { $match: { backlog: id } },
@@ -74,19 +76,19 @@ export class MongoVotingRepository
             voteCount: { $sum: 1 },
           },
         },
-      ]);
+      ])
 
       return aggregated.map((i: any) => {
         return {
           number: i.number,
           totalAmount: i.totalAmount,
           voteCount: i.voteCount,
-        } as VoteSummary;
-      });
+        } as VoteSummary
+      })
     } catch (ex) {
-      console.error(ex);
+      console.error(ex)
 
-      throw new Error(`Unable to get vote summaries ${id}`);
+      throw new Error(`Unable to get vote summaries ${id}`)
     }
   }
 
@@ -97,30 +99,19 @@ export class MongoVotingRepository
     address?: string,
     numbers?: number[]
   ): Promise<Array<Vote>> {
-    if (!owner || !repo) throw new Error('Properties are empty or undefined.');
+    if (!owner || !repo) throw new Error('Properties are empty or undefined.')
 
     try {
-      await this.Connect();
+      await this.Connect()
 
-      const filter = this.getFilter(owner, repo, state, address, numbers);
+      const filter = this.getFilter(owner, repo, state, address, numbers)
 
       // console.log("QUERY VOTES", filter);
-      const models = await VoteModel.find(filter);
-
-      return models.map((i: any) => {
-        return {
-          number: i.number,
-          state: i.closed ? 'CLOSED' : 'OPEN', // TODO: i.state
-          address: i.address,
-          amount: i.amount,
-          signature: i.signature,
-          date: i.timestamp,
-        } as Vote;
-      });
+      return await VoteModel.find(filter)
     } catch (ex) {
-      console.error(ex);
+      console.error(ex)
 
-      throw new Error(`Unable to get votes ${owner}/${repo}`);
+      throw new Error(`Unable to get votes ${owner}/${repo}`)
     }
   }
 
@@ -131,12 +122,13 @@ export class MongoVotingRepository
     address?: string,
     numbers?: number[]
   ): any {
-    let filter: any = { org: owner, repo: repo };
-    if (state === 'OPEN' || state === 'CLOSED') filter = { ...filter, closed: state === 'CLOSED' }; // TODO: replace with .state === filter
-    if (address) filter = { ...filter, address: address };
-    if (numbers && numbers.length > 0) filter = { ...filter, number: { $in: numbers } };
+    let filter: any = { org: owner, repo: repo }
+    if (state === 'OPEN' || state === 'CLOSED')
+      filter = { ...filter, closed: state === 'CLOSED' } // TODO: replace with .state === filter
+    if (address) filter = { ...filter, address: address }
+    if (numbers && numbers.length > 0)
+      filter = { ...filter, number: { $in: numbers } }
 
-    return filter;
+    return filter
   }
-
 }

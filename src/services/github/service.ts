@@ -51,14 +51,14 @@ export class GithubService implements BacklogService {
       // TODO: Pagination - and/or recursively fetch all if it's statically generated & cached
       const results = await Promise.all([
         graphqlWithAuth(GET_ISSUES('ISSUE'), {
-            owner,
-            repo: repo,
-            state: 'OPEN',
-            sort: 'UPDATED_AT',
-            order: 'DESC',
-            size: MAX_LIMIT,
+          owner,
+          repo: repo,
+          state: 'OPEN',
+          sort: 'UPDATED_AT',
+          order: 'DESC',
+          size: MAX_LIMIT,
         }),
-        this.repository.GetBacklogVotesAggregated(id)
+        this.repository.GetBacklogVotesAggregated(id),
       ])
 
       return this.ToItems(results[0].repository, results[1])

@@ -53,7 +53,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   backlog.items = items.sort((a, b) => {
     const amountA = a.voteSummary?.totalAmount || 0
     const amountB = b.voteSummary?.totalAmount || 0
-    return (amountA <= amountB) ? 1 : -1
+    return amountA <= amountB ? 1 : -1
   })
 
   if (!backlog) {
