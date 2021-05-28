@@ -49,24 +49,19 @@ export class GithubService implements BacklogService {
       const repo = id.replace(`${this.type}:`, '').split('/')[1]
 
       // TODO: Pagination - and/or recursively fetch all if it's statically generated & cached
-      const items = await graphqlWithAuth(GET_ISSUES('ISSUE'), {
-        owner,
-        repo: repo,
-        state: 'OPEN',
-        sort: 'UPDATED_AT',
-        order: 'DESC',
-        size: MAX_LIMIT,
-      })
-      console.log('ITEMS', items.repository.issues)
+      const results = await Promise.all([
+        graphqlWithAuth(GET_ISSUES('ISSUE'), {
+            owner,
+            repo: repo,
+            state: 'OPEN',
+            sort: 'UPDATED_AT',
+            order: 'DESC',
+            size: MAX_LIMIT,
+        }),
+        this.repository.GetBacklogVotesAggregated(id)
+      ])
 
-      // const results = await Promise.all([
-      //   graphqlWithAuth(GET_ISSUES(type || 'ISSUE'), filter),
-      //   this.repository.GetBacklogVotesAggregated(owner, id, voteState),
-      // ])
-
-      // return this.ToItems(results[0].repository, results[1])
-
-      return []
+      return this.ToItems(results[0].repository, results[1])
     } catch (e) {
       console.log(`Unable to get backlog items ${id}`)
       console.error(e)
@@ -134,12 +129,12 @@ export class GithubService implements BacklogService {
       title: source.title,
       state: source.state,
       type: source.url?.includes('issues') ? 'ISSUE' : 'PR',
-      created: new Date(source.createdAt),
-      updated: new Date(source.updatedAt),
-      closed: new Date(source.closedAt),
+      // created: new Date(source.createdAt),
+      // updated: new Date(source.updatedAt),
+      // closed: new Date(source.closedAt),
       url: source.url,
       commentsCount: source.comments.totalCount,
-      voteSummary: summary,
+      voteSummary: summary ?? null,
       votes: [],
     }
   }

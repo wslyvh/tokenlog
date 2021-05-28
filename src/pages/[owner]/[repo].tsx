@@ -1,7 +1,7 @@
 import React from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { Backlog } from 'src/types'
+import { Backlog, BacklogItem } from 'src/types'
 import { DEFAULT_CACHE_REVALIDATE } from 'src/utils/constants'
 import { GithubService } from 'src/services/github/service'
 import { TokenlogService } from 'src/services/tokenlog'
@@ -47,9 +47,14 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
 ) => {
   const repository = Create()
   const service = new GithubService(repository)
-  const backlog = await service.GetBacklog(
-    `github:${context.params.owner}/${context.params.repo}`
-  )
+  const id = `github:${context.params.owner}/${context.params.repo}`
+  const backlog = await service.GetBacklog(id)
+  const items = await service.GetBacklogItems(id)
+  backlog.items = items.sort((a, b) => {
+    const amountA = a.voteSummary?.totalAmount || 0
+    const amountB = b.voteSummary?.totalAmount || 0
+    return (amountA <= amountB) ? 1 : -1
+  })
 
   if (!backlog) {
     return {

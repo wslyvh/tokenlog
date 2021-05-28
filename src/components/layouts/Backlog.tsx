@@ -1,11 +1,11 @@
-import { Pagehead } from '@primer/components'
+import { Flex, Truncate, UnderlineNav } from '@primer/components'
 import React from 'react'
-import { Backlog } from 'src/types'
+import { Backlog, BacklogItem } from 'src/types'
 import { Link } from '../elements/Link'
 import { RepoBreadcrumb } from '../RepoBreadcrumb'
 import { RepoNotFound } from '../RepoNotFound'
-import css from './backlog.module.scss'
 import { SettingsDialog } from '../SettingsDialog'
+import { MarkGithubIcon, IssueOpenedIcon, GraphIcon, GearIcon } from '@primer/styled-octicons'
 
 type Props = {
   backlog: Backlog
@@ -19,17 +19,48 @@ export function BacklogLayout(props: Props) {
   if (!props.backlog.settings) {
     return <RepoNotFound />
   }
-
+  
   return (
-    <div className={css['container']}>
-      <div className={css['header']}>
+    <div>
+      <Flex justifyContent="space-between">
         <RepoBreadcrumb paths={[props.backlog.owner, props.backlog.name]} />
-        <SettingsDialog settings={props.backlog.settings} />
+        <Flex className='m-1'>
+          <Link to={props.backlog.url} className='mr-2'>
+            <MarkGithubIcon aria-label="View on Github" />
+          </Link>
+          <SettingsDialog settings={props.backlog.settings} />
+        </Flex>
+      </Flex>
+
+      <div className='mt-2'>
+        <Truncate title={props.backlog.description} maxWidth={'100%'}>
+          {props.backlog.description}
+        </Truncate>
       </div>
 
-      <Pagehead>{props.backlog.name}</Pagehead>
+      <div className='mt-1'>
+        <UnderlineNav aria-label="Main">
+          <UnderlineNav.Link href="#items" selected>
+            <IssueOpenedIcon className='mr-2' /> Items
+          </UnderlineNav.Link>
+          <UnderlineNav.Link href="#insights">
+          <GraphIcon className='mr-2' /> Insights
+          </UnderlineNav.Link>
+          <UnderlineNav.Link href="#settings">
+            <GearIcon className='mr-2' />Settings
+          </UnderlineNav.Link>
+        </UnderlineNav>
+      </div>
 
-      <Link to={props.backlog.url}>View on Github</Link>
+      <div className='mt-2'>
+        {props.backlog.items.map((i: BacklogItem) => {
+          return (
+            <div key={i.number}>
+              #{i.number} {i.title} ({i.voteSummary?.totalAmount ?? 0} votes)
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }

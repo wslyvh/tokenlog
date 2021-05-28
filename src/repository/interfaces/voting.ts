@@ -5,8 +5,7 @@ export interface VotingRepository extends Repository<Vote> {
   GetBacklogIds(type?: string): Promise<Array<string>>
 
   GetBacklogVotesAggregated(
-    owner: string,
-    repo: string,
+    id: string,
     state?: 'ALL' | 'OPEN' | 'CLOSED',
     address?: string,
     numbers?: number[]

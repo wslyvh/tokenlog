@@ -22,7 +22,7 @@ export function SettingsDialog(props: Props) {
         />
       </span>
 
-      <Dialog
+      {/* <Dialog
         returnFocusRef={returnFocusRef}
         isOpen={isOpen}
         onDismiss={() => setIsOpen(false)}
@@ -32,7 +32,7 @@ export function SettingsDialog(props: Props) {
         <Box p={3}>
           <pre>{JSON.stringify(props.settings, null, 2)}</pre>
         </Box>
-      </Dialog>
+      </Dialog> */}
     </div>
   )
 }
