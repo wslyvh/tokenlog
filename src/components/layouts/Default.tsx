@@ -4,6 +4,7 @@ import Header from '@primer/components/lib/Header'
 import StyledOcticon from '@primer/components/lib/StyledOcticon'
 import { HomeIcon } from '@primer/octicons-react'
 import React, { ReactNode } from 'react'
+import { Connect } from '../Connect'
 import css from './default.module.scss'
 
 type Props = {
@@ -23,12 +24,7 @@ export function Default(props: Props) {
               </Header.Link>
             </Header.Item>
             <Header.Item mr={0}>
-              <Avatar
-                src="https://github.com/octocat.png"
-                size={20}
-                square
-                alt="@octocat"
-              />
+              <Connect />
             </Header.Item>
           </Header>
         </header>

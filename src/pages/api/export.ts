@@ -9,7 +9,7 @@ const fs = require('fs')
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   console.log('Connect to old/v1 database..')
   await mongoose.connect(
-    process.env.REACT_APP_DB_CONNECTIONSTRING_OLD,
+    process.env.DB_CONNECTIONSTRING_OLD,
     APP_CONFIG.DB_OPTIONS
   )
 
