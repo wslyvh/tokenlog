@@ -8,6 +8,6 @@
 			"decimals": 18
 		}
 	}],
-	"network": 1,
+	"chainId": 1,
 	"labels": ["enhancement"]
 }
