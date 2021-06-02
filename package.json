@@ -19,7 +19,6 @@
     "@primer/styled-octicons": "^14.1.0",
     "@walletconnect/web3-provider": "^1.4.1",
     "aws4": "^1.11.0",
-    "dotenv": "^9.0.2",
     "ethereum-blockies-base64": "^1.0.2",
     "moment": "^2.29.1",
     "mongodb-client-encryption": "^1.2.3",

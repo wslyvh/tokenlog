@@ -2,12 +2,13 @@ import React, { createContext, ReactNode, useEffect, useState } from 'react'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3Modal from 'web3modal'
 import { Network, Web3Provider } from '@ethersproject/providers'
+import { APP_CONFIG } from 'src/utils/config'
 
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      infuraId: process.env.INFURA_ID,
+      infuraId: APP_CONFIG.INFURA_ID,
     },
   },
 }

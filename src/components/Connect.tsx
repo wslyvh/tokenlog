@@ -38,13 +38,13 @@ export function Connect() {
   }
   return (
     <div>
-      <span
-        role='button'
+      <ButtonInvisible
+        css=""
         className="text-normal color-text-white border color-border-tertiary rounded px-2 py-1"
         onClick={web3Context.connect}
       >
         Connect
-      </span>
+      </ButtonInvisible>
     </div>
   )
 }

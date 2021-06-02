@@ -8,8 +8,7 @@ export.json
 
 # env
 .env
-
-/OLD
+.env.local
 
 # testing
 /coverage
