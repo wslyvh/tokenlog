@@ -1,9 +1,13 @@
 {
-	"votingMethod": "QUADRATIC",
-	"tokens": [{
-		"address": "0x6b175474e89094c44da98b954eedeac495271d0f",
-		"symbol": "DAI",
-		"decimals": 18
+	"method": "QUADRATIC",
+	"strategy": [{
+		"name": "erc20-balance-of",
+		"params": {
+			"address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+			"symbol": "DAI",
+			"decimals": 18
+		}
 	}],
+	"chainId": 1,
 	"labels": ["enhancement"]
 }

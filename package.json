@@ -17,6 +17,7 @@
     "@primer/css": "^17.0.1",
     "@primer/octicons-react": "^14.1.0",
     "@primer/styled-octicons": "^14.1.0",
+    "@snapshot-labs/snapshot.js": "^0.1.9",
     "@walletconnect/web3-provider": "^1.4.1",
     "aws4": "^1.11.0",
     "ethereum-blockies-base64": "^1.0.2",

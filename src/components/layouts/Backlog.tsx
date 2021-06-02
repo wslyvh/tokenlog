@@ -1,3 +1,4 @@
+import snapshot from '@snapshot-labs/snapshot.js';
 import { Flex, Truncate, UnderlineNav } from '@primer/components'
 import React, { useState } from 'react'
 import { Backlog, BacklogItem } from 'src/types'
@@ -10,6 +11,7 @@ import {
   GraphIcon,
   GearIcon,
 } from '@primer/styled-octicons'
+import { useWeb3 } from 'src/hooks/useWeb3';
 
 type Props = {
   backlog: Backlog
@@ -17,6 +19,21 @@ type Props = {
 
 export function BacklogLayout(props: Props) {
   const [tab, setTab] = useState('items')
+  const web3Context = useWeb3()
+
+  async function GetScore() { 
+    if (web3Context.address) {
+      const scores = await snapshot.utils.getScores(
+        '',
+        props.backlog.settings.strategy,
+        web3Context.network.chainId.toString(),
+        web3Context.provider,
+        [web3Context.address],
+      )
+      
+      console.log(scores[0][web3Context.address])
+    }
+  }
 
   if (!props.backlog) {
     return <></>
@@ -83,7 +100,9 @@ export function BacklogLayout(props: Props) {
         {tab === 'insights' && <span>Voting insights</span>}
 
         {tab === 'settings' && (
-          <pre>{JSON.stringify(props.backlog.settings, null, 2)}</pre>
+          <div>
+            <pre>{JSON.stringify(props.backlog.settings, null, 2)}</pre>
+          </div>
         )}
       </div>
     </div>

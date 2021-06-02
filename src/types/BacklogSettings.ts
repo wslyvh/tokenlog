@@ -1,7 +1,8 @@
-import { Token } from './Token'
+import { Strategy } from './Strategy'
 
 export interface BacklogSettings {
-  votingMethod: 'STANDARD' | 'QUADRATIC'
-  tokens: Array<Token>
+  method: 'STANDARD' | 'QUADRATIC'
+  strategy: Array<Strategy>
+  chainId: number
   labels: Array<string>
 }
