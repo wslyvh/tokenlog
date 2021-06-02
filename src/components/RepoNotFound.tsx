@@ -3,7 +3,11 @@ import { Link } from './elements/Link'
 import { RepoIcon } from '@primer/styled-octicons'
 import { PRIMARY_COLOR } from 'src/utils/constants'
 
-export function RepoNotFound() {
+interface Props {
+  customText?: string
+}
+
+export function RepoNotFound(props: Props) {
   return (
     <div className="blankslate">
       <RepoIcon
@@ -13,10 +17,14 @@ export function RepoNotFound() {
         color={PRIMARY_COLOR}
       />
       <h3 className="mb-1">Repository not configured.</h3>
-      <p>
-        This repository isn't configured to use Tokenlog yet. Check out the
-        documentation to get started.
-      </p>
+      {props.customText && <p>{props.customText}</p>}
+      {!props.customText && (
+        <p>
+          This repository isn't configured to use Tokenlog yet. Check out the
+          documentation to get started.
+        </p>
+      )}
+
       <Link
         className="btn btn-primary my-3"
         to="https://github.com/wslyvh/tokenlog#readme"

@@ -1,10 +1,10 @@
 import { ThemeProvider } from '@primer/components'
-import Avatar from '@primer/components/lib/Avatar'
 import Header from '@primer/components/lib/Header'
 import StyledOcticon from '@primer/components/lib/StyledOcticon'
 import { HomeIcon } from '@primer/octicons-react'
 import React, { ReactNode } from 'react'
 import { Connect } from '../Connect'
+import { Link } from '../elements/Link'
 import css from './default.module.scss'
 
 type Props = {
@@ -18,10 +18,10 @@ export function Default(props: Props) {
         <header>
           <Header>
             <Header.Item full>
-              <Header.Link href="/" fontSize={2}>
+              <Link to="/">
                 <StyledOcticon icon={HomeIcon} size={16} mr={2} />
                 <span>Tokenlog</span>
-              </Header.Link>
+              </Link>
             </Header.Item>
             <Header.Item mr={0}>
               <Connect />

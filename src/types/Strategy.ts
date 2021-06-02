@@ -1,4 +1,4 @@
 export interface Strategy {
-    name: string
-    params: any
+  name: string
+  params: any
 }

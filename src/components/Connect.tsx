@@ -16,14 +16,15 @@ export function Connect() {
       <div>
         <Dropdown>
           <summary>
-            <Flex alignItems="center" className="mt-2">
+            <Flex alignItems="center" className="">
+              <span className="pt-1 mr-2">
+                {ShortenAddress(web3Context.address)}
+              </span>
               <Avatar
-                className="mr-2"
                 src={makeBlockie(web3Context.address)}
                 size={20}
                 alt={web3Context.address}
               />
-              <span>{ShortenAddress(web3Context.address)}</span>
               <Dropdown.Caret />
             </Flex>
           </summary>

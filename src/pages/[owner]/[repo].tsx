@@ -1,12 +1,14 @@
 import React from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { Backlog, BacklogItem } from 'src/types'
+import { Backlog } from 'src/types'
 import { DEFAULT_CACHE_REVALIDATE } from 'src/utils/constants'
 import { GithubService } from 'src/services/github/service'
 import { TokenlogService } from 'src/services/tokenlog'
 import { Create } from 'src/repository/factory'
 import { BacklogLayout } from 'src/components/layouts/Backlog'
+import { BacklogContextProvider } from 'src/context/backlog-context'
+import { VoteContextProvider } from 'src/context/vote-context'
 
 interface Props {
   backlog: Backlog
@@ -18,7 +20,13 @@ interface Params extends ParsedUrlQuery {
 }
 
 export default function BacklogPage(data: Props) {
-  return <BacklogLayout backlog={data.backlog} />
+  return (
+    <BacklogContextProvider backlog={data.backlog}>
+      <VoteContextProvider>
+        <BacklogLayout />
+      </VoteContextProvider>
+    </BacklogContextProvider>
+  )
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
