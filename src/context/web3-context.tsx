@@ -1,29 +1,29 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react'
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import Web3Modal from "web3modal";
-import { Network, Web3Provider } from '@ethersproject/providers';
+import WalletConnectProvider from '@walletconnect/web3-provider'
+import Web3Modal from 'web3modal'
+import { Network, Web3Provider } from '@ethersproject/providers'
 
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      infuraId: process.env.INFURA_ID
-    }
-  }
-};
-
-const initialWeb3Modal = {
-  network: "mainnet",
-  cacheProvider: true,
-  providerOptions
+      infuraId: process.env.INFURA_ID,
+    },
+  },
 }
 
-interface Props { 
+const initialWeb3Modal = {
+  network: 'mainnet',
+  cacheProvider: true,
+  providerOptions,
+}
+
+interface Props {
   children: ReactNode
 }
 
 interface Web3ContextType {
-  loading: boolean,
+  loading: boolean
   network: Network | undefined
   provider: Web3Provider | undefined
   address: string | undefined
@@ -52,7 +52,7 @@ export function Web3ContextProvider(props: Props) {
   const [context, setContext] = useState(initialState)
 
   useEffect(() => {
-    const web3Modal = new Web3Modal(initialWeb3Modal);    
+    const web3Modal = new Web3Modal(initialWeb3Modal)
     if (web3Modal.cachedProvider) {
       initialConnect()
     } else {
@@ -65,15 +65,15 @@ export function Web3ContextProvider(props: Props) {
   }, [])
 
   async function connect() {
-    const web3Modal = new Web3Modal(initialWeb3Modal);
-    const web3 = await web3Modal.connect();
+    const web3Modal = new Web3Modal(initialWeb3Modal)
+    const web3 = await web3Modal.connect()
     const provider = new Web3Provider(web3)
     const network = await provider.getNetwork()
     const signer = provider.getSigner()
     const address = await signer.getAddress()
 
-    provider.on("accountsChanged", onAccountsChanged);
-    provider.on("networkChanged", onNetworkChanged);
+    provider.on('accountsChanged', onAccountsChanged)
+    provider.on('networkChanged', onNetworkChanged)
 
     setContext({
       ...context,
@@ -85,14 +85,14 @@ export function Web3ContextProvider(props: Props) {
   }
 
   async function disconnect() {
-    const web3Modal = new Web3Modal(initialWeb3Modal);
-    web3Modal.clearCachedProvider();
+    const web3Modal = new Web3Modal(initialWeb3Modal)
+    web3Modal.clearCachedProvider()
 
     if (context.provider) {
-      context.provider.off("accountsChanged", this.changedAccount);
-      context.provider.off("networkChanged", this.networkChanged);
+      context.provider.off('accountsChanged', this.changedAccount)
+      context.provider.off('networkChanged', this.networkChanged)
     }
-    
+
     setContext({ ...initialState, loading: false })
   }
 
@@ -104,5 +104,9 @@ export function Web3ContextProvider(props: Props) {
     console.log('onNetworkChanged', networkId)
   }
 
-  return <Web3Context.Provider value={context}>{props.children}</Web3Context.Provider>
+  return (
+    <Web3Context.Provider value={context}>
+      {props.children}
+    </Web3Context.Provider>
+  )
 }

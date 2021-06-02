@@ -1,5 +1,5 @@
 import { Flex, Truncate, UnderlineNav } from '@primer/components'
-import React from 'react'
+import React, { useState } from 'react'
 import { Backlog, BacklogItem } from 'src/types'
 import { Link } from '../elements/Link'
 import { RepoBreadcrumb } from '../RepoBreadcrumb'
@@ -17,6 +17,8 @@ type Props = {
 }
 
 export function BacklogLayout(props: Props) {
+  const [tab, setTab] = useState('items')
+
   if (!props.backlog) {
     return <></>
   }
@@ -33,7 +35,6 @@ export function BacklogLayout(props: Props) {
           <Link to={props.backlog.url} className="mr-2">
             <MarkGithubIcon aria-label="View on Github" />
           </Link>
-          <SettingsDialog settings={props.backlog.settings} />
         </Flex>
       </Flex>
 
@@ -45,13 +46,25 @@ export function BacklogLayout(props: Props) {
 
       <div className="mt-1">
         <UnderlineNav aria-label="Main">
-          <UnderlineNav.Link href="#items" selected>
+          <UnderlineNav.Link
+            href="#items"
+            onClick={() => setTab('items')}
+            selected={tab === 'items'}
+          >
             <IssueOpenedIcon className="mr-2" /> Items
           </UnderlineNav.Link>
-          <UnderlineNav.Link href="#insights">
+          <UnderlineNav.Link
+            href="#insights"
+            onClick={() => setTab('insights')}
+            selected={tab === 'insights'}
+          >
             <GraphIcon className="mr-2" /> Insights
           </UnderlineNav.Link>
-          <UnderlineNav.Link href="#settings">
+          <UnderlineNav.Link
+            href="#settings"
+            onClick={() => setTab('settings')}
+            selected={tab === 'settings'}
+          >
             <GearIcon className="mr-2" />
             Settings
           </UnderlineNav.Link>
@@ -59,13 +72,20 @@ export function BacklogLayout(props: Props) {
       </div>
 
       <div className="mt-2">
-        {props.backlog.items.map((i: BacklogItem) => {
-          return (
-            <div key={i.number}>
-              #{i.number} {i.title} ({i.voteSummary?.totalAmount ?? 0} votes)
-            </div>
-          )
-        })}
+        {tab === 'items' &&
+          props.backlog.items.map((i: BacklogItem) => {
+            return (
+              <div key={i.number}>
+                #{i.number} {i.title} ({i.voteSummary?.totalAmount ?? 0} votes)
+              </div>
+            )
+          })}
+
+        {tab === 'insights' && <span>Voting insights</span>}
+
+        {tab === 'settings' && (
+          <pre>{JSON.stringify(props.backlog.settings, null, 2)}</pre>
+        )}
       </div>
     </div>
   )
