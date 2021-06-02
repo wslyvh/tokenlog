@@ -4,7 +4,6 @@ import { Backlog, BacklogItem } from 'src/types'
 import { Link } from '../elements/Link'
 import { RepoBreadcrumb } from '../RepoBreadcrumb'
 import { RepoNotFound } from '../RepoNotFound'
-import { SettingsDialog } from '../SettingsDialog'
 import {
   MarkGithubIcon,
   IssueOpenedIcon,
