@@ -40,7 +40,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
   return {
     props: {
-      backlogs: backlogs,
+      backlogs: backlogs.filter((i) => !!i.settings),
     },
     revalidate: DEFAULT_CACHE_REVALIDATE,
   }
