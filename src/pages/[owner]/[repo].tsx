@@ -20,6 +20,10 @@ interface Params extends ParsedUrlQuery {
 }
 
 export default function BacklogPage(data: Props) {
+  if (typeof window === 'undefined') {
+    return null
+  }
+
   return (
     <BacklogContextProvider backlog={data.backlog}>
       <VoteContextProvider>
