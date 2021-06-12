@@ -5,13 +5,13 @@ export interface BacklogItem {
   id: number
   number: number
   title: string
+  description?: string
+  author?: string
   state: 'OPEN' | 'CLOSED'
   type: 'ISSUE' | 'PR'
-  // created: Date
-  // updated: Date
-  // closed: Date
+  created: number
+  updated: number
   url: string
-  commentsCount: number
   voteSummary?: VoteSummary
   votes: Array<Vote>
 }

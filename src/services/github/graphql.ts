@@ -62,14 +62,15 @@ export function GET_ISSUES(type: 'ISSUE' | 'PR') {
                     id
                     number
                     title
+                    bodyText
                     state
+                    author {
+                      login
+                    }
                     createdAt
                     updatedAt
                     closedAt
                     url
-                    comments {
-                    totalCount
-                    }
                     labels(first: ${MAX_LIMIT}) {
                         nodes {
                             id

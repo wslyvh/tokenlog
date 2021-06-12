@@ -121,13 +121,19 @@ export class GithubService implements BacklogService {
       id: source.id,
       number: source.number,
       title: source.title,
+      description: source.bodyText,
+      author: source.author.login,
       state: source.state,
       type: source.url?.includes('issues') ? 'ISSUE' : 'PR',
-      // created: new Date(source.createdAt),
-      // updated: new Date(source.updatedAt),
-      // closed: new Date(source.closedAt),
+      created: (source.createdAt
+        ? new Date(source.createdAt)
+        : new Date(0)
+      ).getTime(),
+      updated: (source.updatedAt
+        ? new Date(source.createdAt)
+        : new Date(0)
+      ).getTime(),
       url: source.url,
-      commentsCount: source.comments.totalCount,
       voteSummary: summary ?? null,
       votes: [],
     }
