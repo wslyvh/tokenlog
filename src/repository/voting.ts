@@ -31,7 +31,7 @@ export class MongoVotingRepository
     try {
       await this.Connect()
 
-      return await VoteModel.find().distinct('backlog')
+      return VoteModel.find().distinct('backlog')
     } catch (ex) {
       console.error(ex)
       throw new Error(`Unable to get backlog ids.`)
@@ -68,7 +68,7 @@ export class MongoVotingRepository
     } catch (ex) {
       console.error(ex)
 
-      throw new Error(`Unable to get vote summaries ${id}`)
+      throw new Error(`Unable to get backlog vote summaries ${id}`)
     }
   }
 
@@ -78,11 +78,42 @@ export class MongoVotingRepository
     try {
       await this.Connect()
 
-      return await VoteModel.find({ backlog: id })
+      return VoteModel.find({ backlog: id })
     } catch (ex) {
       console.error(ex)
 
-      throw new Error(`Unable to get votes ${id}`)
+      throw new Error(`Unable to get backlog votes ${id}`)
+    }
+  }
+
+  public async GetUserVotes(id: string, address: string): Promise<Array<Vote>> {
+    if (!id) throw new Error('id is empty or undefined.')
+    if (!address) throw new Error('address is empty or undefined.')
+
+    try {
+      await this.Connect()
+
+      return VoteModel.find({
+        backlog: id.toLowerCase(),
+        address: address,
+      })
+    } catch (ex) {
+      console.error(ex)
+
+      throw new Error(`Unable to get user votes ${id}`)
+    }
+  }
+
+  public async CloseVotes(id: string, numbers: Array<number>): Promise<void> {
+    try {
+      await this.Connect()
+
+      const filter = { backlog: id.toLowerCase(), number: { $in: numbers } }
+      const update = { state: 'CLOSED' }
+
+      await VoteModel.updateMany(filter, update)
+    } catch (ex) {
+      console.error(ex)
     }
   }
 }

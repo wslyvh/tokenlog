@@ -108,7 +108,14 @@ export function BacklogLayout() {
             )}
 
             {tab === 'votes' && (
-              <div>Voting Power: {voteContext.votingPower}</div>
+              <>
+                <div>Current total voting power: {voteContext.votingPower}</div>
+                <div>Used voting power: {voteContext.votingPowerUsed}</div>
+                <div>
+                  <p>My Votes:</p>
+                  <pre>{JSON.stringify(voteContext.votes, null, 2)}</pre>
+                </div>
+              </>
             )}
           </div>
         </>
