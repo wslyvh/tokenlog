@@ -90,7 +90,8 @@ export function ItemsView() {
                   />
                   <span>{i.voteSummary?.totalAmount ?? 0}</span>
                 </Flex>
-                <Flex className="mx-4" flexDirection="column">
+                <Flex 
+                  flexGrow={1} className="mx-4" flexDirection="column">
                   <Flex justifyContent="space-between">
                     <Link className="f4 text-bold mr-2" to={i.url}>
                       <Truncate
