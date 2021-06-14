@@ -13,14 +13,11 @@ const fetcher = async (url: string) => {
   return result.data
 }
 
-export function useUserVotes(id: string, address: string): Array<Vote> {
-  const { data, error } = useSWR(
-    `/api/uservotes?backlog=${id}&address=${address}`,
-    fetcher
-  )
+export function useBacklogVotes(id: string): Array<Vote> {
+  const { data, error } = useSWR(`/api/votes?backlog=${id}`, fetcher)
 
   if (error) {
-    console.log('Failed to load userVotes')
+    console.log('Failed to load backlog votes', id)
     return []
   }
   if (!data) return []

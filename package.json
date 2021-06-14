@@ -11,7 +11,9 @@
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'"
   },
   "dependencies": {
+    "@ethersproject/bytes": "^5.3.0",
     "@ethersproject/providers": "^5.3.0",
+    "@ethersproject/strings": "^5.3.0",
     "@octokit/graphql": "^4.6.2",
     "@primer/components": "^28.0.3",
     "@primer/css": "^17.0.1",

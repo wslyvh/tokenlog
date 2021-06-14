@@ -16,19 +16,15 @@ export default async (
     req.query['backlog'] && typeof req.query['backlog'] === 'string'
       ? req.query['backlog'].toString()
       : ''
-  const address =
-    req.query['address'] && typeof req.query['address'] === 'string'
-      ? req.query['address'].toString()
-      : ''
-  if (!backlogId || !address)
+  if (!backlogId)
     return res.status(400).json({ status: 400, message: 'Bad Request' })
 
-  const result = await repo.GetUserVotes(backlogId, address)
+  const result = await repo.GetBacklogVotes(backlogId)
   if (result) {
     return res.status(200).json({ status: 200, data: result, message: '' })
   }
 
   return res
     .status(400)
-    .json({ status: 400, message: `Unable to get user votes. ${backlogId}` })
+    .json({ status: 400, message: `Unable to get backlog votes. ${backlogId}` })
 }

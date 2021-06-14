@@ -12,17 +12,16 @@ import {
   VerifiedIcon,
 } from '@primer/styled-octicons'
 import moment from 'moment'
-import { useRouter } from 'next/router'
 import React, { ChangeEvent, useState } from 'react'
 import { useBacklog } from 'src/hooks/useBacklog'
 import { BacklogItem } from 'src/types'
 import { PRIMARY_COLOR } from 'src/utils/constants'
 import { Link } from './elements/Link'
+import { ItemVote } from './ItemVote'
 import { NoItemsFound } from './NoItemsFound'
 import { NoOpenItems } from './NoOpenItems'
 
 export function ItemsView() {
-  const router = useRouter()
   const backlog = useBacklog()
   const [searchValue, setSearchValue] = useState('')
   const [items, setItems] = useState(backlog.items)
@@ -90,8 +89,7 @@ export function ItemsView() {
                   />
                   <span>{i.voteSummary?.totalAmount ?? 0}</span>
                 </Flex>
-                <Flex 
-                  flexGrow={1} className="mx-4" flexDirection="column">
+                <Flex flexGrow={1} className="mx-4" flexDirection="column">
                   <Flex justifyContent="space-between">
                     <Link className="f4 text-bold mr-2" to={i.url}>
                       <Truncate
@@ -104,21 +102,21 @@ export function ItemsView() {
                       </Truncate>
                     </Link>
                     {i.voteSummary?.voteCount && (
-                      <Tooltip
-                        aria-label={`${i.voteSummary.voteCount} votes cast`}
+                      <Flex
+                        flexShrink={0}
+                        flexWrap="nowrap"
+                        alignItems="center"
+                        className="color-text-secondary"
                       >
-                        <Flex
-                          flexShrink={0}
-                          flexWrap="nowrap"
-                          alignItems="center"
-                          className="color-text-secondary"
+                        <Tooltip
+                          aria-label={`${i.voteSummary.voteCount} votes cast`}
                         >
                           <VerifiedIcon />
                           <span className="ml-1">
                             {i.voteSummary.voteCount}
                           </span>
-                        </Flex>
-                      </Tooltip>
+                        </Tooltip>
+                      </Flex>
                     )}
                   </Flex>
                   <Truncate title={i.description} inline maxWidth="100%">

@@ -14,12 +14,21 @@ import { useBacklog } from 'src/hooks/useBacklog'
 import { useVote } from 'src/hooks/useVote'
 import { ItemsView } from '../ItemsView'
 import { NoSettingsFound } from '../NoSettingsFound'
+import { useWeb3 } from 'src/hooks/useWeb3'
+import { GetUsedVotingPower, GetUserVotes } from 'src/utils/voting'
 
 export function BacklogLayout() {
   const router = useRouter()
   const backlog = useBacklog()
+  const web3Context = useWeb3()
   const voteContext = useVote()
   const [tab, setTab] = useState('items')
+
+  const userVotes = GetUserVotes(voteContext.backlogVotes, web3Context.address)
+  const usedVotingPower = GetUsedVotingPower(
+    voteContext.backlogVotes,
+    web3Context.address
+  )
 
   useEffect(() => {
     if (router.asPath.includes('#')) {
@@ -91,7 +100,7 @@ export function BacklogLayout() {
                 onClick={() => setTab('votes')}
                 selected={tab === 'votes'}
               >
-                <VerifiedIcon className="mr-2" /> Voting
+                <VerifiedIcon className="mr-2" /> My votes
               </UnderlineNav.Link>
             </UnderlineNav>
           </div>
@@ -99,7 +108,14 @@ export function BacklogLayout() {
           <div className="my-4">
             {tab === 'items' && <ItemsView />}
 
-            {tab === 'insights' && <span>Voting insights</span>}
+            {tab === 'insights' && (
+              <>
+                <div>
+                  <p>{voteContext.backlogVotes.length} total votes.</p>
+                  <pre>{JSON.stringify(voteContext.backlogVotes, null, 2)}</pre>
+                </div>
+              </>
+            )}
 
             {tab === 'settings' && (
               <div>
@@ -107,14 +123,18 @@ export function BacklogLayout() {
               </div>
             )}
 
-            {tab === 'votes' && (
+            {tab === 'votes' && web3Context.address && (
               <>
-                <div>Current total voting power: {voteContext.votingPower}</div>
-                <div>Used voting power: {voteContext.votingPowerUsed}</div>
+                <div>Total voting power: {voteContext.votingPower}</div>
+                <div>Used voting power: {usedVotingPower} on {userVotes.length} votes.</div>
                 <div>
-                  <p>My Votes:</p>
-                  <pre>{JSON.stringify(voteContext.votes, null, 2)}</pre>
+                  <pre>{JSON.stringify(userVotes, null, 2)}</pre>
                 </div>
+              </>
+            )}
+            {tab === 'votes' && !web3Context.address && (
+              <>
+                <p>Connect your account first.</p>
               </>
             )}
           </div>
