@@ -93,7 +93,7 @@ export function InsightView() {
                         alignItems="center"
                         >
                         <SelectMenu css="">
-                            <Button as="summary">Period</Button>
+                            <Button css="" as="summary">Period</Button>
                             <SelectMenu.Modal css="" align="right">
                                 <SelectMenu.Header css="">Filter activity</SelectMenu.Header>
                                 <SelectMenu.List>
