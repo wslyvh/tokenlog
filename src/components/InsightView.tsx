@@ -92,15 +92,15 @@ export function InsightView() {
                         justifyContent="center"
                         alignItems="center"
                         >
-                        <SelectMenu>
+                        <SelectMenu css="">
                             <Button as="summary">Period</Button>
-                            <SelectMenu.Modal align="right">
-                                <SelectMenu.Header>Filter activity</SelectMenu.Header>
+                            <SelectMenu.Modal css="" align="right">
+                                <SelectMenu.Header css="">Filter activity</SelectMenu.Header>
                                 <SelectMenu.List>
                                     {Object.keys(Types).map((i: string, index: number) => {
                                         const display = i === Types.Forever ? 'Everything' : '1 ' + i
                                         return(
-                                            <SelectMenu.Item onClick={() => {onFilter(i)}}> 
+                                            <SelectMenu.Item css="" onClick={() => {onFilter(i)}}> 
                                             {data.type === i && (<CheckIcon className="mr-2" />)} {display}</SelectMenu.Item>
                                         )
                                     })}
