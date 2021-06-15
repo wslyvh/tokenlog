@@ -16,6 +16,7 @@ import { ItemsView } from '../ItemsView'
 import { NoSettingsFound } from '../NoSettingsFound'
 import { useWeb3 } from 'src/hooks/useWeb3'
 import { GetUsedVotingPower, GetUserVotes } from 'src/utils/voting'
+import { InsightView } from '../InsightView'
 
 export function BacklogLayout() {
   const router = useRouter()
@@ -108,14 +109,7 @@ export function BacklogLayout() {
           <div className="my-4">
             {tab === 'items' && <ItemsView />}
 
-            {tab === 'insights' && (
-              <>
-                <div>
-                  <p>{voteContext.backlogVotes.length} total votes.</p>
-                  <pre>{JSON.stringify(voteContext.backlogVotes, null, 2)}</pre>
-                </div>
-              </>
-            )}
+            {tab === 'insights' && <InsightView />}
 
             {tab === 'settings' && (
               <div>
