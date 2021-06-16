@@ -75,6 +75,14 @@ export function InsightView() {
             return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
         }).reverse()[0]
     }
+    if(vote.backlogVotes.length == 0)
+    {
+        return(
+            <div>
+                No votes found!
+            </div>
+        )
+    }
 
     return(
         <div>
