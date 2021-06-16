@@ -19,6 +19,7 @@ interface data {
 
 export function InsightView() {
     const vote = useVote()
+    const dateFormat = 'MMMM D, YYYY'
     const [data, setData] = useState<data>({
         votes: vote.backlogVotes,
         date: new Date(),
@@ -73,15 +74,12 @@ export function InsightView() {
     function firstVote(votes: Array<Vote>) : Vote {
         return votes.sort((a, b) => {
             return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-        }).reverse()[0]
+        })[0]
     }
+    
     if(vote.backlogVotes.length == 0)
     {
-        return(
-            <div>
-                No votes found!
-            </div>
-        )
+        return(<div>No votes found!</div>)
     }
 
     return(
@@ -90,7 +88,7 @@ export function InsightView() {
                 <Flex>
                     <Flex flexGrow={1} flexDirection="column">
                         <Heading fontSize={3}>
-                            {moment(data.date).format("MMMM D, YYYY")} - {moment().format("MMMM D, YYYY")}
+                            {moment(data.date).format(dateFormat)} - {moment().format(dateFormat)}
                         </Heading>
                     </Flex>
                     <Flex
@@ -118,19 +116,10 @@ export function InsightView() {
                     </Flex>
                 </Flex>
             </Pagehead>
-            {data.votes.length === 0 && (
-                <div>
-                    {data.type === 'Forever' && (
-                        <span>There hasn’t been any voting activity.</span>
-                    )}
-                    {data.type !== 'Forever' && (
-                        <span>There hasn’t been any voting activity in the last {data.type}.</span>
-                    )}
-                </div>
-            )}
+            {data.votes.length === 0 && (<span>There hasn’t been any voting activity in the last {data.type}.</span>)}
             {data.votes.length > 0 && (
                 <div>
-                    <p>{data.votes.length} total votesss.</p>
+                    <p>{data.votes.length} total votes.</p>
                     <p>{uniqueVoters(data.votes).length} unique voters</p>
                     <p>{totalVotingPower(data.votes)} total voting power</p>
                     <p>{averageVotingPower(data.votes)} average voting power</p>
