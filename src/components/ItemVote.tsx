@@ -53,7 +53,7 @@ export function ItemVote(props: Props) {
     let signature = ''
 
     const signer = web3Context.provider.getSigner()
-    if (web3Context.provider.provider?.wc) {
+    if ((web3Context.provider.provider as any)?.wc) {
       signature = await web3Context.provider.send('personal_sign', [
         hexlify(toUtf8Bytes(JSON.stringify(message))),
         web3Context.address,
