@@ -29,10 +29,9 @@ const projects = [
   },
   {
     title: 'Commons Stack',
-    description:
-      'We are revisiting the TEC mission, vision and values and proposing new statements using Tokenlog to pick the best ones.',
+    description: 'Where we organize the Commons Stack Core Team\'s efforts',
     imageUrl: 'https://avatars.githubusercontent.com/u/72481541',
-    link: '/CommonsBuild/TokenLog-SoftGov',
+    link: '/commons-stack/iteration0',
   },
   {
     title: 'Tokenlog',
@@ -43,7 +42,7 @@ const projects = [
   {
     title: 'Token Engineering Commons (TEC)',
     description: 'Coordination for all the work across the Token Engineering Commons (TEC)',
-    imageUrl: 'https://avatars1.githubusercontent.com/u/72481541',
+    imageUrl: 'https://pbs.twimg.com/profile_images/1359180303332433923/J1XNdjPW_400x400.png',
     link: '/CommonsBuild/coordination',
   },
   {
