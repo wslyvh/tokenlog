@@ -47,7 +47,7 @@ export function VoteContextProvider(props: Props) {
     }
 
     updateContext()
-  }, [web3Context.address, backlog])
+  }, [web3Context.address, backlog, backlogVotes])
 
   async function vote(): Promise<boolean> {
     console.log('VOTE')
