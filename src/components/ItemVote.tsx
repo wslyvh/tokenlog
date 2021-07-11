@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { toUtf8Bytes } from '@ethersproject/strings'
 import { hexlify } from '@ethersproject/bytes'
 import { useBacklog } from 'src/hooks/useBacklog'
@@ -17,6 +17,7 @@ export function ItemVote(props: Props) {
   const web3Context = useWeb3()
   const voteContext = useVote()
 
+  const [submittingVote, setSubmittingVote] = useState(false)
   const userVotes = GetUserVotes(voteContext.backlogVotes, web3Context.address)
   const itemVotes = userVotes.filter((i) => i.number === props.number)
   const itemCost = itemVotes.map((i) => i.amount).reduce((a, b) => a + b, 0)
@@ -27,6 +28,7 @@ export function ItemVote(props: Props) {
   )
 
   async function submitVote(value: number) {
+    setSubmittingVote(true)
     const message = {
       backlog: backlog.id,
       number: props.number,
@@ -46,6 +48,9 @@ export function ItemVote(props: Props) {
       } as Vote
 
       console.log('Creating vote..', vote)
+      const result = await voteContext.vote(vote)
+      console.log('Done', usedVotingPower, votingPower, web3Context.address)
+      setSubmittingVote(false)
     }
   }
 
@@ -69,7 +74,18 @@ export function ItemVote(props: Props) {
     <div>
       <h4>Vote</h4>
       <div>
-        {usedVotingPower >= votingPower && (
+        {!web3Context.address && (
+          <p className="color-text-warning">
+            <span
+              className="tooltipped tooltipped-n"
+              aria-label="Not enough voting power left"
+            >
+              ⚠️
+            </span>
+            <span className="ml-1">Connect your account first.</span>
+          </p>
+        )}
+        {/* {web3Context.address && usedVotingPower >= votingPower && (
           <p className="color-text-warning">
             <span
               className="tooltipped tooltipped-n"
@@ -79,17 +95,17 @@ export function ItemVote(props: Props) {
             </span>
             <span className="ml-1">Not enough voting power left.</span>
           </p>
-        )}
-        {usedVotingPower < votingPower && (
+        )} */}
+        {/* {usedVotingPower < votingPower && ( */}
           <>
             <QuadraticVote
               current={itemCost}
               max={votingPower - usedVotingPower}
               onSubmit={submitVote}
-              loading={false}
+              loading={submittingVote}
             />
           </>
-        )}
+        {/* )} */}
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import {
   Box,
   ButtonPrimary,
+  Dialog,
   Flex,
   TextInput,
   Tooltip,
@@ -24,8 +25,14 @@ import { NoOpenItems } from './NoOpenItems'
 export function ItemsView() {
   const backlog = useBacklog()
   const [searchValue, setSearchValue] = useState('')
-  const [items, setItems] = useState(backlog.items)
-
+  const [items, setItems] = useState(() => {
+    return backlog.items.sort((a, b) => {
+      const amountA = a.voteSummary?.totalAmount || 0
+      const amountB = b.voteSummary?.totalAmount || 0
+      return amountA <= amountB ? 1 : -1
+    })
+  })
+  
   function onSearch(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value
     setSearchValue(value)
@@ -70,66 +77,92 @@ export function ItemsView() {
         {backlog.items.length === 0 && <NoOpenItems />}
         {items.length === 0 && <NoItemsFound criteria={searchValue} />}
         {items.map((i: BacklogItem, index: number) => {
+          const [showDialog, setShowDialog] = useState(false)
+          const returnFocusRef = React.useRef(null)
           const lastItem = items.length === index + 1
+
           return (
-            <Box key={i.number} className={lastItem ? '' : 'border-bottom'}>
-              <Flex alignItems="flex-start" className="m-2">
-                <Flex
-                  width={80}
-                  flexShrink={0}
-                  flexDirection="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  className="border"
-                >
-                  <ChevronUpIcon
-                    size={24}
-                    aria-label={'Vote on item #' + i.number}
-                    color={PRIMARY_COLOR}
-                  />
-                  <span>{i.voteSummary?.totalAmount ?? 0}</span>
-                </Flex>
-                <Flex flexGrow={1} className="mx-4" flexDirection="column">
-                  <Flex justifyContent="space-between">
-                    <Link className="f4 text-bold mr-2" to={i.url}>
-                      <Truncate
-                        title={i.title}
-                        inline
-                        expandable={false}
-                        maxWidth="100%"
-                      >
-                        {i.title}
-                      </Truncate>
-                    </Link>
-                    {i.voteSummary?.voteCount && (
-                      <Flex
-                        flexShrink={0}
-                        flexWrap="nowrap"
-                        alignItems="center"
-                        className="color-text-secondary"
-                      >
-                        <Tooltip
-                          aria-label={`${i.voteSummary.voteCount} votes cast`}
-                        >
-                          <VerifiedIcon />
-                          <span className="ml-1">
-                            {i.voteSummary.voteCount}
-                          </span>
-                        </Tooltip>
-                      </Flex>
-                    )}
-                  </Flex>
-                  <Truncate title={i.description} inline maxWidth="100%">
-                    {i.description}
+            <React.Fragment key={i.number}>
+              <Dialog 
+                css='' 
+                returnFocusRef={returnFocusRef} 
+                isOpen={showDialog} 
+                onDismiss={() => setShowDialog(false)} 
+                aria-labelledby="header-id">
+                <Dialog.Header id="header-id">
+                  <Truncate
+                    title={i.title}
+                    inline
+                    expandable={false}
+                    maxWidth="100%"
+                    className='mr-4'>
+                    #{i.number} {i.title}
                   </Truncate>
-                  <p className="pt-2 mb-0 text-small color-text-tertiary">
-                    #{i.number} opened {moment(i.created).fromNow()} by{' '}
-                    {i.author}
-                    {i.voteSummary?.voteCount || 0} votes
-                  </p>
+                </Dialog.Header>
+                <Box p={3}>
+                  <ItemVote number={i.number} />
+                </Box>
+              </Dialog>
+              <Box className={lastItem ? '' : 'border-bottom'}>
+                <Flex alignItems="flex-start" className="m-2">
+                  <Flex ref={returnFocusRef}
+                    width={80}
+                    flexShrink={0}
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    className="border"
+                    onClick={() => setShowDialog(true)}
+                  >
+                    <ChevronUpIcon
+                      size={24}
+                      aria-label={'Vote on item #' + i.number}
+                      color={PRIMARY_COLOR}
+                    />
+                    <span>{i.voteSummary?.totalAmount ?? 0}</span>
+                  </Flex>
+                  <Flex flexGrow={1} className="mx-4" flexDirection="column">
+                    <Flex justifyContent="space-between">
+                      <Link className="f4 text-bold mr-2" to={i.url}>
+                        <Truncate
+                          title={i.title}
+                          inline
+                          expandable={false}
+                          maxWidth="100%"
+                        >
+                          {i.title}
+                        </Truncate>
+                      </Link>
+                      {i.voteSummary?.voteCount && (
+                        <Flex
+                          flexShrink={0}
+                          flexWrap="nowrap"
+                          alignItems="center"
+                          className="color-text-secondary"
+                        >
+                          <Tooltip
+                            aria-label={`${i.voteSummary.voteCount} votes cast`}
+                          >
+                            <VerifiedIcon />
+                            <span className="ml-1">
+                              {i.voteSummary.voteCount}
+                            </span>
+                          </Tooltip>
+                        </Flex>
+                      )}
+                    </Flex>
+                    <Truncate title={i.description} inline maxWidth="100%">
+                      {i.description}
+                    </Truncate>
+                    <p className="pt-2 mb-0 text-small color-text-tertiary">
+                      #{i.number} opened {moment(i.created).fromNow()} by{' '}
+                      {i.author}
+                      {i.voteSummary?.voteCount || 0} votes
+                    </p>
+                  </Flex>
                 </Flex>
-              </Flex>
-            </Box>
+              </Box>
+            </React.Fragment>
           )
         })}
       </div>

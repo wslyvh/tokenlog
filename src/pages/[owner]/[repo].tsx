@@ -61,13 +61,8 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   const service = new GithubService(repository)
   const id = `github:${context.params.owner}/${context.params.repo}`
   const backlog = await service.GetBacklog(id)
-  const items = await service.GetBacklogItems(id)
-  backlog.items = items.sort((a, b) => {
-    const amountA = a.voteSummary?.totalAmount || 0
-    const amountB = b.voteSummary?.totalAmount || 0
-    return amountA <= amountB ? 1 : -1
-  })
-
+  backlog.items = await service.GetBacklogItems(id)
+  
   if (!backlog) {
     return {
       props: null,

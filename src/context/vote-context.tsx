@@ -3,7 +3,6 @@ import snapshot from '@snapshot-labs/snapshot.js'
 import { useWeb3 } from 'src/hooks/useWeb3'
 import { useBacklog } from 'src/hooks/useBacklog'
 import { Vote } from 'src/types'
-import { useBacklogVotes } from 'src/hooks/useBacklogVotes'
 
 interface Props {
   children: ReactNode
@@ -12,7 +11,7 @@ interface Props {
 interface VoteContextType {
   backlogVotes: Array<Vote>
   votingPower: number
-  vote: () => Promise<boolean>
+  vote: (vote: Vote) => Promise<boolean>
 }
 
 export const VoteContext = createContext<VoteContextType>({
@@ -30,15 +29,18 @@ export function VoteContextProvider(props: Props) {
   const [context, setContext] = useState(initialState)
   const web3Context = useWeb3()
   const backlog = useBacklog()
-  const backlogVotes = useBacklogVotes(backlog.id)
+  const backlogVotes = []// useBacklogVotes(backlog.id)
 
   useEffect(() => {
+    // console.log('useEffect VoteContext')
     async function updateContext() {
       let votingPower = 0
       if (web3Context.address && backlog.settings?.strategy) {
+        // console.log('Get VotingPower')
         votingPower = await getVotingPower()
       }
 
+      // console.log('Updating Context', votingPower, backlogVotes.length)
       setContext({
         ...context,
         backlogVotes: backlogVotes,
@@ -47,13 +49,21 @@ export function VoteContextProvider(props: Props) {
     }
 
     updateContext()
-  }, [web3Context.address, backlog, backlogVotes])
+  }, [web3Context.address, backlog])
 
-  async function vote(): Promise<boolean> {
+  async function vote(vote: Vote): Promise<boolean> {
     console.log('VOTE')
 
-    setContext({ ...initialState })
-    return false
+    // submit 
+    backlogVotes.push(vote)
+    setContext({
+      ...context,
+      backlogVotes: backlogVotes,
+    })
+    return true
+
+    // setContext({ ...initialState })
+    // return false
   }
 
   async function getVotingPower(): Promise<number> {

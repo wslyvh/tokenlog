@@ -74,7 +74,7 @@ export function QuadraticVote(props: Props) {
         You already have {props.current} votes (
         {getQuadraticCost(props.current)} VP) on this item.
       </p>
-      {disableSubmit() && (
+      {quadraticCost > props.max && (
         <p className="color-text-warning">
           <span
             className="tooltipped tooltipped-n"
