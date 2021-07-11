@@ -54,7 +54,6 @@ export function ItemVote(props: Props) {
 
       console.log('Creating vote..', vote)
       const result = await voteContext.vote(vote)
-      console.log('Done', usedVotingPower, votingPower, web3Context.address)
       setSubmittingVote(false)
     }
   }

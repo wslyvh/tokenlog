@@ -116,12 +116,6 @@ export class GithubService implements BacklogService {
   }
 
   private ToItem(source: any, votes: Array<Vote>): BacklogItem {
-    // if (votes) {
-    //   const totalVoteValue = votes.reduce((value, vote) => value + vote.amount, 0)
-    //   const totalVoteCount = votes.length
-    //   console.log('VOTES', votes, totalVoteValue, totalVoteCount)
-    // }
-    
     return {
       id: source.id,
       number: source.number,

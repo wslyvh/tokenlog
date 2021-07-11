@@ -71,9 +71,22 @@ export function VoteContextProvider(props: Props) {
   async function vote(vote: Vote): Promise<boolean> {
     console.log('VOTE #', vote.number)
 
+    const updatedBacklog = {
+      ...backlog,
+    }
+
     // TODO: POST vote to API & add to global context
-    backlog.items.find(i => i.number === vote.number).votes.push(vote)
-    backlogContext.setBacklog(backlog)
+
+    const itemIndex = updatedBacklog.items.findIndex(i => i.number === vote.number)
+    updatedBacklog.items[itemIndex].votes = [...updatedBacklog.items[itemIndex].votes, vote]
+    updatedBacklog.items[itemIndex].totalVoteValue = updatedBacklog.items[itemIndex].votes.reduce((value, vote) => value + vote.amount, 0),
+    updatedBacklog.items[itemIndex].totalVoteCount = updatedBacklog.items[itemIndex].votes.length
+    
+    backlogContext.setBacklog(updatedBacklog)
+    setContext({
+      ...context,
+      backlogVotes: updatedBacklog.items.flatMap(i => i.votes)
+    })
 
     return true
   }
