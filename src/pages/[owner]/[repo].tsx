@@ -63,15 +63,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   const backlog = await service.GetBacklog(id)
   backlog.items = await service.GetBacklogItems(id)
   
-  // if (id === 'github:wslyvh/tokenlog' && backlog.items[1]) {
-  //   const item = backlog.items[1]
-  //   const votes = item.votes[0]
-  //   console.log('BACKLOG ITEM', item)
-  //   console.log("BACKLOG VOTES", votes)
-
-  //   console.log("BACKLOG", backlog)
-  // }
-  
   if (!backlog) {
     return {
       props: null,
