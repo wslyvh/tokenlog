@@ -3,5 +3,5 @@ export interface Message {
   number: number
   amount: number
   version: number
-  timestamp: Date
+  timestamp: number
 }

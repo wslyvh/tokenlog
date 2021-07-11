@@ -5,7 +5,7 @@ import { useBacklog } from 'src/hooks/useBacklog'
 import { useVote } from 'src/hooks/useVote'
 import { useWeb3 } from 'src/hooks/useWeb3'
 import { Message, Vote } from 'src/types'
-import { GetUsedVotingPower, GetUserVotes } from 'src/utils/voting'
+import { GetUserVotes } from 'src/utils/voting'
 import { QuadraticVote } from './QuadraticVote'
 
 interface Props {
@@ -16,16 +16,14 @@ export function ItemVote(props: Props) {
   const backlog = useBacklog()
   const web3Context = useWeb3()
   const voteContext = useVote()
+  const backlogVotes = voteContext.backlogVotes
 
   const [submittingVote, setSubmittingVote] = useState(false)
-  const userVotes = GetUserVotes(voteContext.backlogVotes, web3Context.address)
+  const userVotes = GetUserVotes(backlogVotes, web3Context.address)
   const itemVotes = userVotes.filter((i) => i.number === props.number)
   const itemCost = itemVotes.map((i) => i.amount).reduce((a, b) => a + b, 0)
   const votingPower = voteContext.votingPower
-  const usedVotingPower = GetUsedVotingPower(
-    voteContext.backlogVotes,
-    web3Context.address
-  )
+  const usedVotingPower = voteContext.usedVotingPower
 
   async function submitVote(value: number) {
     setSubmittingVote(true)
@@ -34,10 +32,17 @@ export function ItemVote(props: Props) {
       number: props.number,
       amount: value,
       version: 1,
-      timestamp: new Date(),
+      timestamp: new Date().getTime(),
     }
 
-    const signature = await signMessage(message)
+    let signature = ''
+    try {
+      signature = await signMessage(message)
+    }
+    catch (ex) {
+      console.log('Signing message failed or denied.', ex)
+      setSubmittingVote(false)
+    }
 
     if (signature) {
       const vote = {
@@ -85,27 +90,13 @@ export function ItemVote(props: Props) {
             <span className="ml-1">Connect your account first.</span>
           </p>
         )}
-        {/* {web3Context.address && usedVotingPower >= votingPower && (
-          <p className="color-text-warning">
-            <span
-              className="tooltipped tooltipped-n"
-              aria-label="Not enough voting power left"
-            >
-              ⚠️
-            </span>
-            <span className="ml-1">Not enough voting power left.</span>
-          </p>
-        )} */}
-        {/* {usedVotingPower < votingPower && ( */}
-          <>
-            <QuadraticVote
-              current={itemCost}
-              max={votingPower - usedVotingPower}
-              onSubmit={submitVote}
-              loading={submittingVote}
-            />
-          </>
-        {/* )} */}
+
+        <QuadraticVote
+          current={itemCost}
+          max={votingPower - usedVotingPower}
+          onSubmit={submitVote}
+          loading={submittingVote}
+        />
       </div>
     </div>
   )

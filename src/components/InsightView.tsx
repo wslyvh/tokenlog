@@ -42,7 +42,7 @@ export function InsightView() {
     function onFilter(type: string) {
         if(!type || type === DateFilterTypes.everything) {
             setData({
-                date: firstVote(vote.backlogVotes).timestamp,
+                date: new Date(firstVote(vote.backlogVotes).timestamp),
                 votes: vote.backlogVotes,
                 type: DateFilterTypes.everything
             })
@@ -82,7 +82,7 @@ export function InsightView() {
 
     function firstVote(votes: Array<Vote>) : Vote {
         return votes.sort((a, b) => {
-            return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+            return a.timestamp - b.timestamp
         })[0]
     }
     

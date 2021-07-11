@@ -10,8 +10,15 @@ const voteSchema: Schema = new Schema({
   amount: { type: Number, required: true },
   state: { type: String },
   version: { type: Number, required: true },
-  timestamp: { type: Date, required: true },
+  timestamp: { type: Number, required: true },
   signature: { type: String, required: true },
+})
+
+voteSchema.set('toObject', {
+  transform: function (doc, ret) {
+    delete ret._id
+    delete ret.__v
+  }
 })
 
 export default (models.Vote

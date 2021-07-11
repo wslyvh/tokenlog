@@ -1,12 +1,5 @@
-import { useContext } from 'react'
-import { BacklogContext } from 'src/context/backlog-context'
+import { useBacklogContext } from './useBacklogContext'
 
 export function useBacklog() {
-  const context = useContext(BacklogContext)
-
-  // if (context === undefined) {
-  //   throw new Error('useBacklog must be used within a BacklogProvider')
-  // }
-
-  return context.backlog
+  return useBacklogContext().backlog
 }

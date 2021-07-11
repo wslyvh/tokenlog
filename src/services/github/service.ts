@@ -9,7 +9,6 @@ import {
   BacklogItem,
   BacklogSettings,
   Vote,
-  VoteSummary,
 } from 'src/types'
 import { BacklogService } from 'src/services/interfaces/backlog'
 import { VotingRepository } from 'src/repository/interfaces/voting'
@@ -58,7 +57,7 @@ export class GithubService implements BacklogService {
           order: 'DESC',
           size: MAX_LIMIT,
         }),
-        this.repository.GetBacklogVotesAggregated(id),
+        this.repository.GetBacklogVotes(id),
       ])
 
       return this.ToItems(results[0].repository, results[1])
@@ -95,12 +94,12 @@ export class GithubService implements BacklogService {
     }
   }
 
-  private ToItems(source: any, votes: Array<VoteSummary>): Array<BacklogItem> {
+  private ToItems(source: any, votes: Array<Vote>): Array<BacklogItem> {
     if (source.issues?.nodes) {
       return source.issues.nodes.map((issue: any) =>
         this.ToItem(
           issue,
-          votes.find((v) => v.number === issue.number)
+          votes.filter((v) => v.number === issue.number)
         )
       )
     }
@@ -108,7 +107,7 @@ export class GithubService implements BacklogService {
       return source.pullRequests.nodes.map((pr: any) =>
         this.ToItem(
           pr,
-          votes.find((v) => v.number === pr.number)
+          votes.filter((v) => v.number === pr.number)
         )
       )
     }
@@ -116,7 +115,13 @@ export class GithubService implements BacklogService {
     return []
   }
 
-  private ToItem(source: any, summary: VoteSummary | undefined): BacklogItem {
+  private ToItem(source: any, votes: Array<Vote>): BacklogItem {
+    // if (votes) {
+    //   const totalVoteValue = votes.reduce((value, vote) => value + vote.amount, 0)
+    //   const totalVoteCount = votes.length
+    //   console.log('VOTES', votes, totalVoteValue, totalVoteCount)
+    // }
+    
     return {
       id: source.id,
       number: source.number,
@@ -134,8 +139,9 @@ export class GithubService implements BacklogService {
         : new Date(0)
       ).getTime(),
       url: source.url,
-      voteSummary: summary ?? null,
-      votes: [],
+      votes: votes,
+      totalVoteValue: votes.reduce((value, vote) => value + vote.amount, 0),
+      totalVoteCount: votes.length
     }
   }
 }

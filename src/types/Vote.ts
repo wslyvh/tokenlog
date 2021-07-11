@@ -5,6 +5,6 @@ export interface Vote {
   amount: number
   state: string
   version: number
-  timestamp: Date
+  timestamp: number
   signature: string
 }

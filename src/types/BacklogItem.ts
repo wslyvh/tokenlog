@@ -1,4 +1,3 @@
-import { VoteSummary } from '.'
 import { Vote } from './Vote'
 
 export interface BacklogItem {
@@ -12,6 +11,7 @@ export interface BacklogItem {
   created: number
   updated: number
   url: string
-  voteSummary?: VoteSummary
   votes: Array<Vote>
+  totalVoteValue: number
+  totalVoteCount: number
 }

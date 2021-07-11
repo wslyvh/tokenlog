@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 import VoteModel from 'src/repository/models/VoteModel'
 import { Vote } from 'src/types/Vote'
-import { VoteSummary } from 'src/types/VoteSummary'
 import { APP_CONFIG } from 'src/utils/config'
 import { BaseRepository } from './base'
 import { VotingRepository } from './interfaces/voting'
@@ -38,69 +37,18 @@ export class MongoVotingRepository
     }
   }
 
-  public async GetBacklogVotesAggregated(
-    id: string
-  ): Promise<Array<VoteSummary>> {
-    if (!id) throw new Error('id is empty or undefined.')
-
-    try {
-      await this.Connect()
-
-      const aggregated = await VoteModel.aggregate([
-        { $match: { backlog: id } },
-        {
-          $group: {
-            _id: { number: '$number' },
-            number: { $first: '$number' },
-            totalAmount: { $sum: '$amount' },
-            voteCount: { $sum: 1 },
-          },
-        },
-      ])
-
-      return aggregated.map((i: any) => {
-        return {
-          number: i.number,
-          totalAmount: i.totalAmount,
-          voteCount: i.voteCount,
-        } as VoteSummary
-      })
-    } catch (ex) {
-      console.error(ex)
-
-      throw new Error(`Unable to get backlog vote summaries ${id}`)
-    }
-  }
-
   public async GetBacklogVotes(id: string): Promise<Array<Vote>> {
     if (!id) throw new Error('id is empty or undefined.')
 
     try {
       await this.Connect()
 
-      return VoteModel.find({ backlog: id })
+      const models = await VoteModel.find({ backlog: id })
+      return models.map(i => i.toObject())
     } catch (ex) {
       console.error(ex)
 
       throw new Error(`Unable to get backlog votes ${id}`)
-    }
-  }
-
-  public async GetUserVotes(id: string, address: string): Promise<Array<Vote>> {
-    if (!id) throw new Error('id is empty or undefined.')
-    if (!address) throw new Error('address is empty or undefined.')
-
-    try {
-      await this.Connect()
-
-      return VoteModel.find({
-        backlog: id.toLowerCase(),
-        address: address,
-      })
-    } catch (ex) {
-      console.error(ex)
-
-      throw new Error(`Unable to get user votes ${id}`)
     }
   }
 

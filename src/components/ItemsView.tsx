@@ -27,9 +27,7 @@ export function ItemsView() {
   const [searchValue, setSearchValue] = useState('')
   const [items, setItems] = useState(() => {
     return backlog.items.sort((a, b) => {
-      const amountA = a.voteSummary?.totalAmount || 0
-      const amountB = b.voteSummary?.totalAmount || 0
-      return amountA <= amountB ? 1 : -1
+      return a.totalVoteValue <= b.totalVoteValue ? 1 : -1
     })
   })
   
@@ -119,7 +117,7 @@ export function ItemsView() {
                       aria-label={'Vote on item #' + i.number}
                       color={PRIMARY_COLOR}
                     />
-                    <span>{i.voteSummary?.totalAmount ?? 0}</span>
+                    <span>{i.totalVoteValue}</span>
                   </Flex>
                   <Flex flexGrow={1} className="mx-4" flexDirection="column">
                     <Flex justifyContent="space-between">
@@ -133,7 +131,7 @@ export function ItemsView() {
                           {i.title}
                         </Truncate>
                       </Link>
-                      {i.voteSummary?.voteCount && (
+                      {i.totalVoteCount && (
                         <Flex
                           flexShrink={0}
                           flexWrap="nowrap"
@@ -141,11 +139,11 @@ export function ItemsView() {
                           className="color-text-secondary"
                         >
                           <Tooltip
-                            aria-label={`${i.voteSummary.voteCount} votes cast`}
+                            aria-label={`${i.totalVoteCount} vote(s) cast`}
                           >
                             <VerifiedIcon />
                             <span className="ml-1">
-                              {i.voteSummary.voteCount}
+                              {i.totalVoteCount}
                             </span>
                           </Tooltip>
                         </Flex>
@@ -157,7 +155,6 @@ export function ItemsView() {
                     <p className="pt-2 mb-0 text-small color-text-tertiary">
                       #{i.number} opened {moment(i.created).fromNow()} by{' '}
                       {i.author}
-                      {i.voteSummary?.voteCount || 0} votes
                     </p>
                   </Flex>
                 </Flex>

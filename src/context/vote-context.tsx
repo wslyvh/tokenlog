@@ -3,67 +3,79 @@ import snapshot from '@snapshot-labs/snapshot.js'
 import { useWeb3 } from 'src/hooks/useWeb3'
 import { useBacklog } from 'src/hooks/useBacklog'
 import { Vote } from 'src/types'
+import { useBacklogVotes } from 'src/hooks/useBacklogVotes'
+import { GetUsedVotingPower } from 'src/utils/voting'
+import { useBacklogContext } from 'src/hooks/useBacklogContext'
 
 interface Props {
   children: ReactNode
 }
 
 interface VoteContextType {
-  backlogVotes: Array<Vote>
   votingPower: number
+  usedVotingPower: number
+  backlogVotes: Array<Vote>,
   vote: (vote: Vote) => Promise<boolean>
 }
 
 export const VoteContext = createContext<VoteContextType>({
-  backlogVotes: [],
   votingPower: 0,
+  usedVotingPower: 0,
+  backlogVotes: [],
   vote: async () => false,
 })
 
 export function VoteContextProvider(props: Props) {
+  const backlogContext = useBacklogContext()
+  const backlog = useBacklog()
+  const initialVotes = backlog.items.flatMap(i => i.votes)
   const initialState = {
-    backlogVotes: [],
     votingPower: 0,
+    usedVotingPower: 0,
+    backlogVotes: initialVotes,
     vote,
   }
   const [context, setContext] = useState(initialState)
+  const backlogVotes = useBacklogVotes(backlog.id)
   const web3Context = useWeb3()
-  const backlog = useBacklog()
-  const backlogVotes = []// useBacklogVotes(backlog.id)
 
   useEffect(() => {
-    // console.log('useEffect VoteContext')
-    async function updateContext() {
-      let votingPower = 0
-      if (web3Context.address && backlog.settings?.strategy) {
-        // console.log('Get VotingPower')
-        votingPower = await getVotingPower()
-      }
-
-      // console.log('Updating Context', votingPower, backlogVotes.length)
+    if (backlogVotes && backlogVotes.length > 0) {
       setContext({
         ...context,
-        backlogVotes: backlogVotes,
+        backlogVotes: backlogVotes
+      })
+    }
+  }, [backlogVotes])
+
+  useEffect(() => {
+    async function updateContext() {
+      let votingPower = 0
+      let usedVotingPower = 0
+      
+      if (web3Context.address && backlog.settings?.strategy) {
+        votingPower = await getVotingPower()
+        usedVotingPower = GetUsedVotingPower(backlogVotes, web3Context.address)
+      }
+
+      setContext({
+        ...context,
         votingPower,
+        usedVotingPower
       })
     }
 
     updateContext()
-  }, [web3Context.address, backlog])
+  }, [web3Context.address, backlog.settings, backlogVotes])
 
   async function vote(vote: Vote): Promise<boolean> {
-    console.log('VOTE')
+    console.log('VOTE #', vote.number)
 
-    // submit 
-    backlogVotes.push(vote)
-    setContext({
-      ...context,
-      backlogVotes: backlogVotes,
-    })
+    // TODO: POST vote to API & add to global context
+    backlog.items.find(i => i.number === vote.number).votes.push(vote)
+    backlogContext.setBacklog(backlog)
+
     return true
-
-    // setContext({ ...initialState })
-    // return false
   }
 
   async function getVotingPower(): Promise<number> {

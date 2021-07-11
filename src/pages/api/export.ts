@@ -16,6 +16,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const v1models = await VoteModel.find()
   console.log(v1models.length, '# of votes on OLD db')
 
+  if (v1models.length === 0) {
+    return res.status(200).json('No old models found..')
+  }
+
   console.log('Map to new/v2 data models..')
   const newModels = v1models.map((i: V1Vote) => {
     const org = i.org === 'tecommons' ? 'commonsbuild' : i.org
@@ -26,14 +30,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       amount: i.cost,
       state: i.closed ? 'CLOSED' : 'OPEN',
       version: 2,
-      timestamp: i.timestamp,
+      timestamp: (i.timestamp ? new Date(i.timestamp) : new Date(0)).getTime(),
       signature: i.signature,
     } as V2Vote
   })
 
+  const filename = 'export.json'
+  console.log('New models created..', 'Writing to disk', filename)
   const data = JSON.stringify(newModels, null, 2)
   try {
-    fs.writeFileSync('export.json', data)
+    fs.writeFileSync(filename, data)
   } catch {
     console.log('Unable to write export to disk')
   }
