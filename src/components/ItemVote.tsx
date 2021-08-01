@@ -5,7 +5,6 @@ import { useBacklog } from 'src/hooks/useBacklog'
 import { useVote } from 'src/hooks/useVote'
 import { useWeb3 } from 'src/hooks/useWeb3'
 import { Message, Vote } from 'src/types'
-import { GetUserVotes } from 'src/utils/voting'
 import { QuadraticVote } from './QuadraticVote'
 
 interface Props {
@@ -16,10 +15,9 @@ export function ItemVote(props: Props) {
   const backlog = useBacklog()
   const web3Context = useWeb3()
   const voteContext = useVote()
-  const backlogVotes = voteContext.backlogVotes
 
   const [submittingVote, setSubmittingVote] = useState(false)
-  const userVotes = GetUserVotes(backlogVotes, web3Context.address)
+  const userVotes = voteContext.userVotes
   const itemVotes = userVotes.filter((i) => i.number === props.number)
   const itemCost = itemVotes.map((i) => i.amount).reduce((a, b) => a + b, 0)
   const votingPower = voteContext.votingPower

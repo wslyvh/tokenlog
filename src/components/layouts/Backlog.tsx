@@ -15,7 +15,6 @@ import { useVote } from 'src/hooks/useVote'
 import { ItemsView } from '../ItemsView'
 import { NoSettingsFound } from '../NoSettingsFound'
 import { useWeb3 } from 'src/hooks/useWeb3'
-import { GetUserVotes } from 'src/utils/voting'
 import { InsightView } from '../InsightView'
 
 export function BacklogLayout() {
@@ -25,7 +24,7 @@ export function BacklogLayout() {
   const voteContext = useVote()
   const [tab, setTab] = useState('items')
 
-  const userVotes = GetUserVotes(voteContext.backlogVotes, web3Context.address)
+  const userVotes = voteContext.userVotes
   const usedVotingPower = voteContext.usedVotingPower
 
   useEffect(() => {
