@@ -44,11 +44,10 @@ export function VoteContextProvider(props: Props) {
       let votingPower = 0
       let usedVotingPower = 0
       let userVotes = []
-      let backlogVotes = []
+      const backlogVotes = backlog.items.flatMap(i => i.votes)
       
       if (web3Context.address && backlog.settings?.strategy) {
         votingPower = await getVotingPower()
-        backlogVotes = backlog.items.flatMap(i => i.votes)
         userVotes = backlogVotes.filter((i) => i.address === web3Context.address)
         usedVotingPower = userVotes.map((i) => i.amount).reduce((a, b) => a + b, 0)
       }
