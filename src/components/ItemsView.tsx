@@ -17,6 +17,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { useBacklog } from 'src/hooks/useBacklog'
 import { BacklogItem } from 'src/types'
 import { PRIMARY_COLOR } from 'src/utils/constants'
+import { AddressAvatars } from './AddressAvatars'
 import { Link } from './elements/Link'
 import { ItemVote } from './ItemVote'
 import { NoItemsFound } from './NoItemsFound'
@@ -78,6 +79,7 @@ export function ItemsView() {
           const [showDialog, setShowDialog] = useState(false)
           const returnFocusRef = React.useRef(null)
           const lastItem = items.length === index + 1
+          const addresses = [...new Set(i.votes.flatMap(i => i.address))]
 
           return (
             <React.Fragment key={i.number}>
@@ -121,7 +123,7 @@ export function ItemsView() {
                   </Flex>
                   <Flex flexGrow={1} className="mx-4" flexDirection="column">
                     <Flex justifyContent="space-between">
-                      <Link className="f4 text-bold mr-2" to={i.url}>
+                      <Link className="f4 text-bold" to={i.url}>
                         <Truncate
                           title={i.title}
                           inline
@@ -131,31 +133,19 @@ export function ItemsView() {
                           {i.title}
                         </Truncate>
                       </Link>
-                      {i.totalVoteCount && (
-                        <Flex
-                          flexShrink={0}
-                          flexWrap="nowrap"
-                          alignItems="center"
-                          className="color-text-secondary"
-                        >
-                          <Tooltip
-                            aria-label={`${i.totalVoteCount} vote(s) cast`}
-                          >
-                            <VerifiedIcon />
-                            <span className="ml-1">
-                              {i.totalVoteCount}
-                            </span>
-                          </Tooltip>
-                        </Flex>
-                      )}
                     </Flex>
                     <Truncate title={i.description} inline maxWidth="100%">
                       {i.description}
                     </Truncate>
-                    <p className="pt-2 mb-0 text-small color-text-tertiary">
+                    <p className="pt-1 mb-0 text-small color-text-tertiary">
                       #{i.number} opened {moment(i.created).fromNow()} by{' '}
                       {i.author}
                     </p>
+                    {i.totalVoteCount > 0 && (
+                      <div className='mt-3'>
+                        <AddressAvatars addresses={addresses} totalVoteCount={i.totalVoteCount} />
+                      </div>
+                    )}
                   </Flex>
                 </Flex>
               </Box>
