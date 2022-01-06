@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/wslyvh/tokenlog/branch/master/graph/badge.svg?token=LTQZY64K6X)](undefined)
 
 
-<img src="https://tokenlog.xyz/icon.png" alt="ETH Gas.watch" width="50"/> 
+<img src="https://tokenlog.xyz/icon.png" alt="ETH Gas.watch" width="50"/>
 
 # Token-weighted Backlogs
 
@@ -13,7 +13,7 @@ It allows projects to continuously gather feedback from their token holders in o
 
 > A better way for projects to collaborate with their biggest supporters.
 
-## Summary 
+## Summary
 Tokenlog works on any Github repository and leaves your current workflow in place. Voting is either by a 1-token, 1-vote, or as by default through quadratic voting. Quadratic voting is a collective decision-making procedure where individuals allocate votes to express the degree of their preferences, rather than just the direction of their preferences. More details at [ETH Gas Station](https://ethgasstation.info/blog/quadratic-funding-in-a-nutshell/)
 
 ## Links
@@ -22,7 +22,7 @@ Tokenlog works on any Github repository and leaves your current workflow in plac
 - All Issues https://github.com/wslyvh/tokenlog/issues
 
 ## Documentation
-Tokenlog works on any Github repository and follows Github's relative paths, e.g. `tokenlog.xyz/<org>/<repo>`. To allow voting, see the following Config section. Once voted on an issue, these votes will remain 'fixed' until the issue is resolved. When an issue is closed, all votes on it will be 'released' and available to use for voting on other issues. 
+Tokenlog works on any Github repository and follows Github's relative paths, e.g. `tokenlog.xyz/<org>/<repo>`. To allow voting, see the following Config section. Once voted on an issue, these votes will remain 'fixed' until the issue is resolved. When an issue is closed, all votes on it will be 'released' and available to use for voting on other issues.
 
 ## Config
 Tokenlog tries to pull a configuration directly from your repository. This proofs ownership of the repo and doesn't require any curation or management. Just upload a `tokenlog.json` config to the root of your repository.
@@ -49,9 +49,9 @@ Advanced configuration
 ```
 
 - `tokenAddress` is the token that people are allowed to vote with
-- `labels` is an optional list of Github labels that allows you to (&&-) filter on which issues token holders can vote on 
+- `labels` is an optional list of Github labels that allows you to (&&-) filter on which issues token holders can vote on
 - `votingMethod` is an optional option to select voting method. Default is **STANDARD**. Can be one of:
-    - `STANDARD` for 1-token, 1-vote voting 
+    - `STANDARD` for 1-token, 1-vote voting
     - `QUADRATIC` for quadratic voting
 - `chainId` is an optional id of the network the token is deployed. Default is **1** (Mainnet). Can be one of:
     - `1` - Mainnet
@@ -60,15 +60,16 @@ Advanced configuration
     - `5` - Kovan
     - `42` - Goerli
     - `100` - xDAI
+    - `137` - Polygon
 
 ## Contributing
 Contributions are always welcome, no matter how large or small. If you've found a bug, have a suggestion, feature request or any other feedback, post them at https://github.com/wslyvh/tokenlog/issues/new
 
-If you want to contribute to the codebase, open up an issue or pull-request so we can discuss on the best way to do so. 
+If you want to contribute to the codebase, open up an issue or pull-request so we can discuss on the best way to do so.
 
 If you want to help with our backlog, check out https://tokenlog.xyz/wslyvh/tokenlog
 
-## Development 
+## Development
 `yarn start` or `npm run start`
 
 Runs the app in the development mode. By default, it runs at [http://localhost:3000](http://localhost:3000).

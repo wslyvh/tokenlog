@@ -43,7 +43,7 @@ export function TokenInfo() {
                 settings. You can switch to a different network by using Metamask, or any Web3-enabled browser.
               </p>
               <p>
-                <strong>Supported networks:</strong> mainnet, ropsten, rinkeby, kovan, goerli &amp; xdai
+                <strong>Supported networks:</strong> mainnet, ropsten, rinkeby, kovan, goerli, polygon, &amp; xdai
               </p>
               <h3>Voting Power</h3>
               <p>
