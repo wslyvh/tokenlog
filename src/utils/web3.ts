@@ -3,13 +3,16 @@ import { ethers } from 'ethers';
 import { BaseProvider } from 'ethers/providers';
 
 export const Injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42, 100],
+  supportedChainIds: [1, 3, 4, 5, 42, 100, 137],
 });
 
 export async function GetProvider(chainId?: number): Promise<BaseProvider> {
   switch (chainId) {
     case 100:
       return new ethers.providers.JsonRpcProvider('https://rpc.xdaichain.com/');
+
+    case 137:
+      return new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/');
 
     default:
       return ethers.getDefaultProvider(GetNetworkName(chainId ?? 1));
@@ -66,6 +69,8 @@ export function GetNetworkName(chainId: number): string {
       return 'kovan';
     case 100:
       return 'xdai';
+    case 137:
+      return 'polygon';
   }
 
   return 'homestead';
@@ -82,6 +87,8 @@ export function GetNetworkColor(network: string): string {
     case 'goerli':
       return 'dark';
     case 'xdai':
+      return 'light';
+    case 'polygon':
       return 'light';
   }
 
@@ -101,6 +108,10 @@ export function GetEtherscanLink(address: string, chainId: number, type: 'addres
     case 100:
       if (type === 'token') return `https://blockscout.com/poa/xdai/tokens/${address}`;
       if (type === 'address') return `https://blockscout.com/poa/xdai/address/${address}`;
+    case 137:
+      if (type === 'token') return `https://polygonscan.com/token/${address}`
+      if (type === 'address') return `https://polygonscan.com/address/${address}`
+      
   }
 
   return `https://www.etherscan.io/${type}/${address}`;
