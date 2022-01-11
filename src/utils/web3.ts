@@ -108,10 +108,11 @@ export function GetEtherscanLink(address: string, chainId: number, type: 'addres
     case 100:
       if (type === 'token') return `https://blockscout.com/poa/xdai/tokens/${address}`;
       if (type === 'address') return `https://blockscout.com/poa/xdai/address/${address}`;
+      break;
     case 137:
       if (type === 'token') return `https://polygonscan.com/token/${address}`
       if (type === 'address') return `https://polygonscan.com/address/${address}`
-      
+      break;
   }
 
   return `https://www.etherscan.io/${type}/${address}`;
