@@ -1,6 +1,7 @@
 {
   "name": "tokenlog",
   "description": "Token weighted backlogs",
+  "license": "MIT",
   "author": "wslyvh",
   "version": "0.1.0",
   "scripts": {
