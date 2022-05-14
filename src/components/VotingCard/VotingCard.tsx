@@ -13,6 +13,10 @@ interface VotingCardProps {
   issue: Issue;
 }
 
+function getQuadraticCost(value: number): number {
+  return Number(Math.pow(value, 2).toFixed(2));
+}
+
 export function VotingCard(props: VotingCardProps) {
   const web3Context = useWeb3React();
   const repoContext = useRepositoryContext();
@@ -96,7 +100,7 @@ export function VotingCard(props: VotingCardProps) {
             setVoting(false)
             setVoteCount(voteCount + votes[0]);
             setVotingAmount([0,0])
-            setCostAndVotes([0,0])
+            setCostAndVotes([getQuadraticCost(voteCount + votes[0]), voteCount + votes[0]])
           }
         }
       }
