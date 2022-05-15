@@ -97,10 +97,13 @@ export function VotingCard(props: VotingCardProps) {
               votingPower: vp,
             });
 
+            const previousVotes = props.issue.votes.filter((i) => i.address === web3Context.account);
+            const previousVotesIndividual = previousVotes.reduce((a, b) => a + b.amount, 0);
+
             setVoting(false)
             setVoteCount(voteCount + votes[0]);
             setVotingAmount([0,0])
-            setCostAndVotes([getQuadraticCost(voteCount + votes[0]), voteCount + votes[0]])
+            setCostAndVotes([getQuadraticCost(previousVotesIndividual + votes[0]), previousVotesIndividual + votes[0]])
           }
         }
       }
