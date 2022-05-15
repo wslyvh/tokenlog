@@ -117,6 +117,19 @@ class VoteRepository {
 
     return [];
   }
+
+  async DeleteVotesFromRepo(org: string, repo: string): Promise<void> {
+    try {
+      await this.Connect();
+
+      const filter = { org: org.toLowerCase(), repo: repo.toLowerCase() };
+
+      console.log('DELETING VOTES from', filter)
+      await VoteModel.deleteMany(filter);
+    } catch (ex) {
+      console.error(ex);
+    }
+  }
 }
 
 export default VoteRepository;
