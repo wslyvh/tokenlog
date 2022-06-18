@@ -9,7 +9,7 @@ export const Injected = new InjectedConnector({
 export async function GetProvider(chainId?: number): Promise<BaseProvider> {
   switch (chainId) {
     case 100:
-      return new ethers.providers.JsonRpcProvider('https://rpc.xdaichain.com/');
+      return new ethers.providers.JsonRpcProvider('https://rpc.gnosischain.com/');
 
     case 137:
       return new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/');
@@ -38,7 +38,7 @@ export async function GetProvider(chainId?: number): Promise<BaseProvider> {
   //   case 42:
   //     return new ethers.providers.JsonRpcProvider('https://poa-kovan.gateway.pokt.network/v1/5f9180e3b90218002e9cea69');
   //   case 100:
-  //     return new ethers.providers.JsonRpcProvider('https://rpc.xdaichain.com/');
+  //     return new ethers.providers.JsonRpcProvider('https://rpc.gnosischain.com/');
   //   default:
   //     return new ethers.providers.JsonRpcProvider(
   //       'https://eth-mainnet.gateway.pokt.network/v1/5f9180e3b90218002e9cea69'
