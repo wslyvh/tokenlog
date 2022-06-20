@@ -16,4 +16,6 @@ export interface RepositorySettings {
   votingMethod?: VotingMethod;
   chainId?: number;
   imageUrl?: string;
+  getTokenMessage?: string;
+  getTokenLink?: string;
 }

@@ -154,12 +154,25 @@ export function TokenInfo() {
     }
   };
 
+  const renderTokenMessage = () => {
+    if(repoContext.settings?.getTokenMessage && repoContext.settings?.getTokenLink) {
+      return (
+        <>
+          {repoContext.settings?.getTokenMessage} <a href={repoContext.settings?.getTokenLink}>here.</a>
+        </>
+      );
+    }
+  }
+
   return (
     <div className="card">
       <div className="card-body">
         <h5 className="card-title">{renderTokenName()}</h5>
         <h6 className="card-subtitle my-1 text-muted">{renderTokenLink()}</h6>
         <p className="card-text text-truncate">{renderBalance()}</p>
+        {(repoContext.settings?.getTokenMessage && repoContext.settings?.getTokenLink) ? 
+        <p className="card-text text-truncate">{renderTokenMessage()}</p> :
+        null}
         <NetworkBadge chainId={chainId} networkName={GetNetworkName(chainId)} />
 
         <span role="button" className="card-link" data-toggle="modal" data-target={`#repo-config-info`}>
